@@ -355,6 +355,48 @@
   .cover + .profile{margin-top:-40px;position:relative}
   .cover + .profile .avatar{border:4px solid #fff;width:88px;height:88px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
   .cover + .profile > div:last-child{padding-top:40px}
+  /* ---------- Vị thần của những quyết định ---------- */
+  .oracle-sticker{position:absolute;left:calc(50% - 70px);bottom:100px;z-index:5;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:rotate(5deg);transition:transform .2s;touch-action:none}
+  .oracle-sticker svg{animation:orcFloat 3.2s ease-in-out infinite;filter:drop-shadow(0 6px 10px rgba(59,29,143,.35))}
+  .oracle-sticker .glint{animation:orcTwinkle 1.6s ease-in-out infinite}
+  .oracle-sticker .bubble{display:inline-block;background:#3b1d8f;color:#f6d23a;border:2px solid var(--ink);border-radius:99px;padding:3px 10px;font-weight:800;font-size:12px;margin-bottom:4px;box-shadow:2px 2px 0 var(--ink)}
+  .oracle-sticker:hover{transform:rotate(-2deg) scale(1.08)}
+  .oracle-sticker.dragging{cursor:grabbing;transform:rotate(-8deg) scale(1.12);transition:none}
+  @keyframes orcFloat{50%{transform:translateY(-6px) rotate(-2deg)}}
+  @keyframes orcTwinkle{50%{opacity:.25}}
+
+  .window.oracle-win .body{padding:0;background:radial-gradient(120% 80% at 50% 0%,#3b1d8f 0%,#1b1250 55%,#0d0a2e 100%);color:#ece8ff;scrollbar-width:none}
+  .window.oracle-win .body::-webkit-scrollbar{display:none}
+  .orc{position:relative;padding:18px 20px 16px;text-align:center;overflow:hidden}
+  .orc-stars{position:absolute;inset:0;pointer-events:none}
+  .orc-stars i{position:absolute;color:#f6d23a;font-style:normal;opacity:.2;animation:orcTwinkle 2.6s ease-in-out infinite}
+  .orc h2{position:relative;color:#fff!important;font-size:21px!important;margin:0 0 8px!important}
+  .orc h2 span{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;color:#f6d23a;font-size:26px}
+  .orc-steps{position:relative;text-align:left;margin:0 0 10px;padding-left:20px;font-size:12.5px;line-height:1.55;color:#cfc8f5}
+  .orc textarea{position:relative;width:100%;font:inherit;font-size:13px;padding:8px 11px;border-radius:10px;border:1px solid rgba(246,210,58,.35);background:rgba(255,255,255,.08);color:#fff;resize:none;margin:0 0 14px}
+  .orc textarea::placeholder{color:#a79fd6}
+  .orc textarea:focus{outline:none;border-color:#f6d23a;box-shadow:0 0 0 3px rgba(246,210,58,.18)}
+  .orc-book{position:relative;width:190px;height:230px;margin:0 auto;perspective:1000px;cursor:pointer;outline:none}
+  .orc-book::before{content:"";position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(circle,rgba(246,210,58,.35),transparent 65%);animation:orcGlow 2.4s ease-in-out infinite;pointer-events:none}
+  .orc-book:focus-visible .orc-cover{box-shadow:0 0 0 3px #f6d23a}
+  .orc-page{position:absolute;inset:0;border-radius:4px 12px 12px 4px;background:linear-gradient(90deg,#efe6cf,#fffaf0 12%,#fffaf0);box-shadow:inset 6px 0 10px rgba(0,0,0,.12),0 10px 30px rgba(0,0,0,.45);display:grid;place-items:center;padding:20px 18px;color:#2a1a5e}
+  .orc-page small{display:block;font-size:11px;color:#8a7fb5;margin-bottom:8px;word-break:break-word}
+  .orc-page p{margin:0;font-family:"Instrument Serif",serif;font-style:italic;font-size:24px;line-height:1.2;min-height:1.2em}
+  .orc-cover{position:absolute;inset:0;transform-origin:left center;transition:transform 1.05s cubic-bezier(.6,.05,.25,1);transform-style:preserve-3d;backface-visibility:hidden;border-radius:4px 12px 12px 4px;border-left:12px solid #160e46;background:radial-gradient(circle at 50% 35%,#5b34c4,#2a1670 70%);box-shadow:0 12px 30px rgba(0,0,0,.5);color:#f6d23a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+  .orc-cover i{font-style:normal;font-size:34px;animation:orcTwinkle 2s ease-in-out infinite}
+  .orc-cover b{letter-spacing:4px;font-size:18px}
+  .orc-cover small{font-family:"Instrument Serif",serif;font-style:italic;font-size:17px;line-height:1.1;color:#fde68a}
+  .orc-cover em{margin-top:14px;font-style:normal;font-size:10.5px;letter-spacing:1px;color:#c4b5fd;text-transform:uppercase}
+  .orc-book.open .orc-cover{transform:rotateY(-168deg)}
+  .orc-book.open::before{animation:none;opacity:.5}
+  .orc-book.shake{animation:orcShake .65s ease-in-out}
+  @keyframes orcShake{15%{transform:rotate(-4deg)}30%{transform:rotate(4deg)}45%{transform:rotate(-3deg) scale(1.03)}60%{transform:rotate(3deg) scale(1.05)}75%{transform:rotate(-1deg)}}
+  @keyframes orcGlow{50%{transform:scale(1.08);opacity:.6}}
+  .orc-actions{position:relative;min-height:38px;margin-top:16px}
+  .orc-actions .btn{background:#f6d23a;color:#1b1250!important}
+  .orc-note{position:relative;font-size:11px;color:#a79fd6;margin:8px 0 0}
+  @media (prefers-reduced-motion:reduce){.oracle-sticker svg,.oracle-sticker .glint,.orc-stars i,.orc-book::before,.orc-cover i{animation:none}.orc-cover{transition:none}}
+
   /* album */
   .album{columns:2;column-gap:10px}
   .album figure{margin:0 0 10px;break-inside:avoid;cursor:zoom-in;border-radius:10px;overflow:hidden;position:relative}
@@ -437,7 +479,7 @@
 
   /* ---------- Màn hình nhỏ: xếp dọc ---------- */
   @media (max-width:1100px), (max-height:640px){
-    .sticky,.polaroid,.coffee-sticker{display:none}
+    .sticky,.polaroid,.coffee-sticker,.oracle-sticker{display:none}
     #desktop{overflow:auto;padding:24px 16px 110px}
     .hero{position:static;transform:none;margin:10px 0 28px}
     .zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:26px;max-width:900px;margin:0 auto}
@@ -446,12 +488,23 @@
     .zone,.tw,.mw{cursor:auto;touch-action:auto}
     .tw{position:relative;inset:auto!important;width:auto;height:340px!important}
     .mw{position:relative;inset:auto!important;width:auto}
+    /* cửa sổ mở ngay giữa màn hình đang xem (không phụ thuộc vị trí cuộn), nền phía sau mờ tối */
+    .window,.window.wide{position:fixed;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;transform:translate(-50%,-50%);width:min(94vw,600px);max-height:calc(100dvh - 150px);animation:popM .24s cubic-bezier(.2,.9,.3,1.2)}
+    .window.wide{width:min(94vw,860px)}
+    .titlebar{cursor:default}
+    body.has-win .win-backdrop{display:block}
+    body.has-win #desktop{overflow:hidden}
+    body.has-win .dock .tip.always{opacity:0}
   }
+  @keyframes popM{from{opacity:0;transform:translate(-50%,-46%) scale(.94)}}
+  .win-backdrop{display:none;position:fixed;inset:0;z-index:95;background:rgba(15,15,40,.45);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);animation:fadeBg .2s ease-out}
+  @keyframes fadeBg{from{opacity:0}}
   @media (max-width:760px){
     .menubar{gap:12px;padding:0 12px}
     .menubar .right .st,.menubar .hide-m,.music .mlabel{display:none}
+    .titlebar .zone-tag{display:none}
+    .titlebar .t{left:70px;right:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     #clock{display:none}
-    .window,.window.wide{left:3vw!important;top:8px!important;width:94vw;max-height:calc(100vh - 130px)}
     .body{padding:18px 16px}
     .cover{margin:-18px -16px 0;height:150px}
     .dock .app{width:38px;height:38px;border-radius:10px}
@@ -508,6 +561,19 @@
   <div class="polaroid" data-photo="2" style="left:300px;top:70px;width:150px;transform:rotate(5deg)"><i class="tape"></i><img src="assets/me/selfie.jpg" alt="Thành Tín"><span>hi, it's Tín!</span></div>
   <div class="polaroid" data-photo="5" style="right:310px;top:40px;width:150px;transform:rotate(-4deg)"><i class="tape"></i><img src="assets/me/desk.jpg" alt="Góc làm việc của Tín"><span>góc làm việc</span></div>
   <div class="polaroid" data-photo="6" style="left:350px;bottom:110px;width:140px;transform:rotate(-6deg)"><i class="tape"></i><img src="assets/me/summit.jpg" alt="Tín trên đỉnh núi"><span>lên đỉnh!</span></div>
+
+  <div class="oracle-sticker" data-open="oracle" title="Vị thần của những quyết định">
+    <div class="bubble">hỏi vị thần ✦</div>
+    <svg width="78" height="86" viewBox="0 0 78 86" aria-hidden="true">
+      <g class="glint" fill="#f6d23a"><path d="M8 14l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M68 6l1.5 3.5 3.5 1.5-3.5 1.5L68 16l-1.5-3.5L63 11l3.5-1.5z"/><path d="M70 58l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z"/></g>
+      <path d="M16 20h44a4 4 0 0 1 4 4v52a4 4 0 0 1-4 4H16z" fill="#fffaf0" stroke="#14142b" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M12 16a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v56a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" fill="#3b1d8f" stroke="#14142b" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M19 12v64" stroke="#14142b" stroke-width="3"/>
+      <path d="M39 30l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#f6d23a"/>
+      <circle cx="33" cy="58" r="2.6" fill="#fff"/><circle cx="46" cy="58" r="2.6" fill="#fff"/>
+      <path d="M35.5 64q4 3.5 8 0" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
 
   <div class="coffee-sticker" data-open="coffee" title="Buy me a coffee">
     <div class="bubble">buy me a coffee ☕</div>
@@ -568,23 +634,23 @@ const THREADS = {
 const SHOP_IMG = 'assets/shop/';
 const PRODUCTS = [
   // Đồ dùng văn phòng
-  {cat:'vp', name:'Lịt hít tủ lạnh', price:99000, img:''},
-  {cat:'vp', name:'Lịch để bàn (có thể đổi màu theo yêu cầu)', price:90000, img:''},
+  {cat:'vp', name:'Lịt hít tủ lạnh', price:99000, img:'1790566307589.webp'},
+  {cat:'vp', name:'Lịch để bàn (có thể đổi màu theo yêu cầu)', price:90000, img:'1788618383066.webp'},
   {cat:'vp', name:'Lót ly hình cúc áo', price:60000, img:'1788684911672.webp'},
   {cat:'vp', name:'Gối đỡ điện thoại', price:150000, img:'1786615997246.webp'},
   {cat:'vp', name:'Desk Organizer', price:285000, img:'1786616168169.webp'},
   {cat:'vp', name:'Khay đựng đồ dùng bàn làm việc', price:90000, img:'1786618108688.webp'},
   {cat:'vp', name:'Giá đỡ điện thoại thiết kế tối giản', price:99000, img:'1786618244852.webp'},
   {cat:'vp', name:'Hộp đựng tài liệu', price:110000, img:'1786618770072.webp'},
-  {cat:'vp', name:'Giá đỡ / Hộp đựng củ sạc Apple 20W USB-C', price:89000, img:''},
-  {cat:'vp', name:'Ống cắm bút hình khủng long T-Rex', price:180000, img:''},
+  {cat:'vp', name:'Giá đỡ / Hộp đựng củ sạc Apple 20W USB-C', price:89000, img:'1786699811484.webp'},
+  {cat:'vp', name:'Ống cắm bút hình khủng long T-Rex', price:180000, img:'1786619195363.webp'},
   {cat:'vp', name:'Giá đỡ tai nghe cao', price:200000, img:'1786700212611.webp'},
   {cat:'vp', name:'Giá đỡ tai nghe thấp', price:120000, img:'1786700575435.webp'},
   {cat:'vp', name:'Hộp film ký ức', price:80000, img:'1790525167114.jpeg'},
   // Đèn trang trí decor
   {cat:'den', name:'Đèn phong cách retro hình tam giác', price:289000, img:'1786616554782.webp'},
   {cat:'den', name:'Đèn bàn hiện đại Zen Glow', price:279000, img:'1786616740909.webp'},
-  {cat:'den', name:'Đèn Bubble', price:279000, img:''},
+  {cat:'den', name:'Đèn Bubble', price:279000, img:'1786616915795.webp'},
   {cat:'den', name:'Đèn bàn Cumulis', price:289000, img:'1786617402609.webp'},
   {cat:'den', name:'Đèn vòng hiện đại', price:289000, img:'1786699220383.webp'},
   {cat:'den', name:'Đèn retro và chân máy', price:799000, img:'1786699328950.webp'},
@@ -803,6 +869,72 @@ const WINDOWS = {
       };
     }},
 
+  /* ---------- VỊ THẦN CỦA NHỮNG QUYẾT ĐỊNH ---------- */
+  oracle:{title:'Vị thần của những quyết định ✦', cls:'oracle-win', w:420, html:() => `
+    <div class="orc">
+      <div class="orc-stars" aria-hidden="true"></div>
+      <h2>Vị thần của <span>những quyết định</span></h2>
+      <ol class="orc-steps">
+        <li>Nhắm mắt, nghĩ thật rõ điều bạn mong muốn hoặc đang phân vân.</li>
+        <li>Nói thầm nó ra, hoặc viết vào đây nếu muốn.</li>
+        <li>Chạm vào cuốn sách để nghe lời phán.</li>
+      </ol>
+      <textarea id="orcQ" rows="2" maxlength="160" placeholder="Điều mình đang băn khoăn là… (không bắt buộc)"></textarea>
+      <div class="orc-book" id="orcBook" role="button" tabindex="0" aria-label="Mở sách để nhận câu trả lời">
+        <div class="orc-page"><div><small id="orcAsk"></small><p id="orcText" aria-live="polite"></p></div></div>
+        <div class="orc-cover"><i>✦</i><b>VỊ THẦN</b><small>của những<br>quyết định</small><em>chạm để mở</em></div>
+      </div>
+      <div class="orc-actions"><button class="btn" type="button" id="orcAgain" hidden>Hỏi điều khác ✦</button></div>
+      <p class="orc-note">Chỉ để vui và tham khảo thôi nha, quyết định cuối cùng vẫn là của bạn ♡</p>
+    </div>`,
+    onOpen: w => {
+      const book = w.querySelector('#orcBook'), text = w.querySelector('#orcText'), ask = w.querySelector('#orcAsk');
+      const q = w.querySelector('#orcQ'), again = w.querySelector('#orcAgain');
+      const stars = w.querySelector('.orc-stars');
+      stars.innerHTML = Array.from({length: 28}, () =>
+        `<i style="left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${(Math.random()*3).toFixed(2)}s;font-size:${6 + Math.random()*8}px">✦</i>`).join('');
+      const recent = [];
+      let busy = false, typer;
+      const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      const pick = () => {
+        let i; do { i = Math.floor(Math.random() * ORACLE.length); } while (recent.includes(i) && recent.length < ORACLE.length);
+        recent.push(i); if (recent.length > 8) recent.shift();
+        return ORACLE[i];
+      };
+      const burst = () => {
+        const r = book.getBoundingClientRect();
+        for (let i = 0; i < 16; i++) {
+          const h = document.createElement('div'); h.className = 'heart-pop';
+          h.textContent = ['✦','✧','⋆','✦'][i % 4]; h.style.color = ['#f6d23a','#c4b5fd','#fff','#fbbf24'][i % 4];
+          h.style.left = r.left + r.width / 2 + 'px'; h.style.top = r.top + r.height / 3 + 'px';
+          h.style.setProperty('--dx', (Math.random() * 260 - 130) + 'px'); h.style.animationDelay = (i * 35) + 'ms';
+          document.body.appendChild(h); setTimeout(() => h.remove(), 1700);
+        }
+      };
+      const reveal = () => {
+        if (busy) return;
+        if (book.classList.contains('open')) return reset();
+        busy = true;
+        const answer = pick(), question = q.value.trim();
+        ask.innerHTML = question ? `“${esc(question)}”` : '';
+        text.textContent = '';
+        book.classList.add('shake');
+        setTimeout(() => {
+          book.classList.remove('shake'); book.classList.add('open'); burst();
+          let k = 0;
+          clearInterval(typer);
+          typer = setInterval(() => {                       // chữ hiện dần như đang được viết ra
+            text.textContent = answer.slice(0, ++k);
+            if (k >= answer.length) { clearInterval(typer); busy = false; again.hidden = false; }
+          }, 45);
+        }, 650);
+      };
+      const reset = () => { clearInterval(typer); busy = false; book.classList.remove('open'); again.hidden = true; q.value = ''; q.focus({preventScroll: true}); };
+      book.onclick = reveal;
+      book.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal(); } };
+      again.onclick = reset;
+    }},
+
   /* ---------- CHUNG ---------- */
   contact:{title:'Contact', w:440, html:() => `
     <h2>Liên hệ <span class="blue">✉</span></h2>
@@ -829,6 +961,71 @@ const WINDOWS = {
     <p>Chúc bạn một ngày đi làm thật nhẹ nhàng và qua deadline êm ru!</p>
     <div class="btn-row"><a class="btn" href="${ME.threads}" target="_blank">Follow @tin.tr_20s</a><a class="btn yellow" href="#" onclick="openWin('shop');return false">Ghé shop 9TO5</a><a class="btn ghost" href="#" onclick="openWin('coffee');return false">Mời mình ly cà phê ☕</a></div>`},
 };
+
+/* Vị thần của những quyết định - các lời phán (tự viết theo tinh thần cuốn sách, không chép từ sách).
+   Thêm / sửa câu tại đây, mỗi câu càng ngắn càng "linh". */
+const ORACLE = [
+  'Có. Và đừng hỏi lại nữa.',
+  'Chưa phải lúc này.',
+  'Cứ làm đi, sai thì sửa.',
+  'Câu trả lời là không, nhưng không phải mãi mãi.',
+  'Hãy đợi thêm một tuần.',
+  'Hỏi người bạn tin nhất.',
+  'Trái tim bạn đã biết rồi.',
+  'Đừng vội, thứ tốt cần thời gian.',
+  'Nắm lấy, cơ hội không gõ cửa hai lần.',
+  'Buông bỏ cũng là một lựa chọn đúng.',
+  'Ngủ một giấc rồi hãy quyết.',
+  'Làm cho xong việc hôm nay trước đã.',
+  'Thử một lần cho biết.',
+  'Hãy bắt đầu thật nhỏ.',
+  'Đó không phải việc của bạn.',
+  'Có, nếu bạn chịu nói ra.',
+  'Đừng tiêu tiền vì nó.',
+  'Đáng để đầu tư.',
+  'Lắng nghe nhiều hơn, nói ít lại.',
+  'Hãy hỏi lại khi trời mưa.',
+  'Điều đó sẽ tự đến với bạn.',
+  'Bạn cần thêm thông tin.',
+  'Chậm mà chắc.',
+  'Đi theo trực giác.',
+  'Kết quả sẽ khiến bạn bất ngờ.',
+  'Đừng để người khác quyết thay bạn.',
+  'Một bước lùi để tiến ba bước.',
+  'Cứ thoải mái, mọi chuyện sẽ ổn.',
+  'Không đáng để bạn mất ngủ.',
+  'Hãy viết nó ra giấy trước.',
+  'Có, nhưng hãy chuẩn bị kỹ.',
+  'Tập trung vào điều bạn kiểm soát được.',
+  'Đây là lúc nói "có" với bản thân.',
+  'Đây là lúc nói "không" với người khác.',
+  'Hãy làm như thể không ai đang nhìn.',
+  'Kiên nhẫn sẽ được đền đáp.',
+  'Đừng so sánh, hãy tự hỏi mình muốn gì.',
+  'Mọi thứ đều có giá của nó.',
+  'Chắc chắn rồi.',
+  'Tuyệt đối không.',
+  'Hãy để nó qua đêm nay.',
+  'Câu trả lời nằm ở người bạn sắp gặp.',
+  'Đổi cách hỏi, bạn sẽ có câu trả lời khác.',
+  'Thành thật là con đường ngắn nhất.',
+  'Bạn xứng đáng với điều tốt hơn.',
+  'Đừng đợi hoàn hảo mới bắt đầu.',
+  'Một ly cà phê rồi hãy quyết.',
+  'Gửi tin nhắn đó đi.',
+  'Đừng gửi tin nhắn đó.',
+  'Deadline sẽ trả lời giúp bạn.',
+  'Làm xong rồi hãy kể với người khác.',
+  'Hôm nay chưa, ngày mai thì có thể.',
+  'Bạn đã sẵn sàng hơn bạn nghĩ.',
+  'Hãy cười, rồi mọi thứ nhẹ hơn.',
+  'Đó là một bài học, không phải thất bại.',
+  'Đi một vòng cho đầu óc thoáng đã.',
+  'Hãy tin vào thời điểm.',
+  'Có cái giá phải trả, nhưng xứng đáng.',
+  'Đừng nghĩ nữa, hãy cảm nhận.',
+  'Câu trả lời là có.',
+];
 
 /* Buy me a coffee - các món gợi ý (giá chỉ để gợi ý, QR không tự điền số tiền) */
 const COFFEE = [
@@ -884,9 +1081,9 @@ const DOCK = [
   {id:'creator', color:'#0000F4', tip:'Booking brand', svg:'<path d="M4 10v4h3l6 4V6L7 10z" fill="#fff"/><path d="M16 9a4 4 0 0 1 0 6" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>'},
   {id:'shop',    color:'#f2b705', tip:'Shop 9TO5', svg:'<path d="M5 8h14l-1.2 11H6.2z" fill="#fff"/><path d="M9 10V7a3 3 0 0 1 6 0v3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>'},
   {id:'photos',  color:'#ff8a3d', tip:'Ảnh của Tín', svg:'<rect x="3" y="6" width="18" height="13" rx="2.5" fill="#fff"/><circle cx="12" cy="12.5" r="3.3" fill="#ff8a3d"/><rect x="8" y="4" width="8" height="3" rx="1" fill="#fff"/>'},
+  {id:'oracle',  color:'#3b1d8f', tip:'Vị thần quyết định', svg:'<path d="M6 4h11a2 2 0 0 1 2 2v14H8a2 2 0 0 1-2-2z" fill="#fff"/><path d="M12.5 8l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z" fill="#3b1d8f"/>'},
   {id:'coffee',  color:'#8b5a3c', tip:'Buy me a coffee', svg:'<path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="#fff"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 3.5c-1 1.2 1 2 0 3.2M11.5 3.5c-1 1.2 1 2 0 3.2" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>'},
   {id:'contact', color:'#9b8cff', tip:'Contact', svg:'<rect x="3" y="6" width="18" height="12" rx="2" fill="#fff"/><path d="M4 7l8 6 8-6" fill="none" stroke="#9b8cff" stroke-width="1.8"/>'},
-  {id:'resume',  color:'#fff', tip:'Resume', text:'<span style="color:#d64545;font-size:13px">PDF</span>'},
   'sep',
   {id:'love',    color:'#ff5c8a', tip:'open me', always:true, svg:'<path d="M12 19s-7-4.3-7-9.5A3.5 3.5 0 0 1 12 7a3.5 3.5 0 0 1 7 2.5C19 14.7 12 19 12 19z" fill="#fff"/>'},
 ];
@@ -1103,6 +1300,7 @@ ZONES.forEach(zn => {
 draggable($("#sticky"));
 // sticker "buy me a coffee": kéo đi đâu cũng được, bấm (không kéo) thì mở cửa sổ mời cà phê
 draggable($(".coffee-sticker"));
+draggable($(".oracle-sticker"));
 document.querySelectorAll('.polaroid').forEach(pl => {
   // mỗi ảnh đung đưa một nhịp khác nhau cho tự nhiên
   pl.style.setProperty('--sw', (4.5 + Math.random() * 3).toFixed(2) + 's');
@@ -1119,6 +1317,8 @@ const opened = {};
 function openWin(id){
   const def = WINDOWS[id]; if (!def) return;
   if (opened[id]) { opened[id].style.zIndex = ++z; return; }
+  // màn hình nhỏ: chỉ 1 cửa sổ tại một thời điểm -> đóng cửa sổ đang mở trước khi mở cái mới
+  if (stacked.matches) Object.values(opened).forEach(o => o.querySelector('.c').click());
   const w = document.createElement('section');
   w.className = 'window' + (def.wide ? ' wide' : '') + (def.cls ? ' ' + def.cls : '');
   const zone = def.zone && ZONES.find(x => x.id === def.zone);
@@ -1134,7 +1334,7 @@ function openWin(id){
   w.innerHTML = `<div class="titlebar"><div class="lights"><span class="c" title="Đóng"></span><span class="m" title="Đóng"></span><span class="z" title="Phóng to"></span></div><div class="t">${def.title}</div>${zone ? `<span class="zone-tag" style="${tagStyle}">${zone.title.replace(/^\S+\s/,'')}</span>` : ''}</div><div class="body">${html}</div>`;
   $('#desktop').appendChild(w);
   opened[id] = w;
-  const close = () => { w.remove(); delete opened[id]; };
+  const close = () => { w.remove(); delete opened[id]; syncBackdrop(); };
   w.querySelector('.c').onclick = close;
   w.querySelector('.m').onclick = close;
   w.querySelector('.z').onclick = () => {
@@ -1144,10 +1344,19 @@ function openWin(id){
     w.dataset.full = full ? '0' : '1';
   };
   w.addEventListener('pointerdown', () => w.style.zIndex = ++z);
-  draggable(w, w.querySelector('.titlebar'));
+  draggable(w, w.querySelector('.titlebar'), {enabled: () => !stacked.matches});
   if (def.onOpen) def.onOpen(w);
+  syncBackdrop();
 }
 window.openWin = openWin;
+
+// Màn hình nhỏ: nền mờ phía sau cửa sổ đang mở. Chạm vào nền = đóng cửa sổ trên cùng. Nền phía sau không cuộn được.
+const backdrop = document.createElement('div');
+backdrop.className = 'win-backdrop';
+document.body.appendChild(backdrop);
+const topWindow = () => Object.values(opened).sort((a, b) => b.style.zIndex - a.style.zIndex)[0];
+backdrop.addEventListener('click', () => topWindow()?.querySelector('.c').click());
+function syncBackdrop(){ document.body.classList.toggle('has-win', Object.keys(opened).length > 0); }
 document.querySelectorAll('[data-open]').forEach(a => a.onclick = () => openWin(a.dataset.open));
 addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
@@ -1351,12 +1560,16 @@ const MARKET = {
 
   /* ----- Giá vàng nhẫn ----- */
   const gold = make('gold', '🪙 Giá vàng nhẫn', 'https://www.vang.today/');
+  let goldRetry;
   const loadGold = async () => {
+    clearTimeout(goldRetry);
     const [today, hist, pnj] = await Promise.allSettled([
       getJSON('https://www.vang.today/api/prices'),
       getJSON('https://www.vang.today/api/prices?type=SJ9999&days=7'),
       getJSON('https://edge-api.pnj.io/ecom-frontend/v1/get-gold-price?zone=00'),
     ]);
+    // nguồn nào lỗi thoáng qua (mạng chập chờn, máy chủ bận) thì 20 giây sau tự thử lại
+    if ([today, hist, pnj].some(r => r.status === 'rejected')) goldRetry = setTimeout(loadGold, 20e3);
     const rows = [];
     let when = '';
     if (today.status === 'fulfilled' && today.value.success) {
