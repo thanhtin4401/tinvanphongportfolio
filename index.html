@@ -397,6 +397,39 @@
   .orc-note{position:relative;font-size:11px;color:#a79fd6;margin:8px 0 0}
   @media (prefers-reduced-motion:reduce){.oracle-sticker svg,.oracle-sticker .glint,.orc-stars i,.orc-book::before,.orc-cover i{animation:none}.orc-cover{transition:none}}
 
+  /* ---------- Cửa sổ biểu đồ vàng / chứng khoán ---------- */
+  .mw .mw-more{position:absolute;top:9px;right:11px;font-size:10.5px;font-weight:800;color:var(--brand);background:var(--brand-tint);border-radius:99px;padding:1px 7px;pointer-events:none}
+  .mw .mw-sub{right:84px}
+  .mw:hover .mw-more{background:var(--brand);color:#fff}
+  .cw{display:flex;flex-direction:column;gap:10px}
+  .cw-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px 16px;flex-wrap:wrap}
+  .cw-name{font-weight:900;font-size:20px;line-height:1.2}
+  .cw-sub,.cw-unit{font-size:12px;color:var(--muted);font-weight:500}
+  .cw-price{text-align:right;font-variant-numeric:tabular-nums}
+  .cw-price b{font-size:24px;font-weight:900;letter-spacing:-.5px}
+  .cw-price small{display:block;font-size:12.5px;font-weight:700}
+  .cw-tools{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+  .seg{display:inline-flex;flex-wrap:wrap;background:#f1f1f8;border-radius:10px;padding:3px;gap:2px}
+  .seg button{border:0;background:none;padding:5px 11px;border-radius:8px;font-weight:700;font-size:12px;color:var(--muted);cursor:pointer}
+  .seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+  .cw-legend{font-size:12px;color:var(--muted);min-height:18px;display:flex;gap:4px 12px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+  .cw-legend b{color:var(--ink)}
+  .cw-chart{position:relative;height:320px;border:1px solid #ececf4;border-radius:12px;overflow:hidden;transition:opacity .2s}
+  .cw-chart.loading{opacity:.45}
+  .cw-chart .msg{position:absolute;inset:0;z-index:3;display:grid;place-items:center;padding:16px;text-align:center;color:var(--muted);font-size:13px;background:rgba(255,255,255,.88)}
+  .cw .fine{margin:0}
+  .cw-search{position:relative}
+  .body .cw-search input{margin:0;padding-left:34px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b6b80' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E") no-repeat 11px 50%/16px}
+  .sugg{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:5;list-style:none;margin:0;padding:4px;background:#fff;border:1px solid #e3e3f3;border-radius:10px;box-shadow:var(--shadow);max-height:270px;overflow:auto}
+  .sugg li{display:flex;gap:8px;align-items:baseline;padding:7px 9px;border-radius:7px;cursor:pointer;font-size:13px}
+  .sugg li b{min-width:62px}
+  .sugg li span{color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sugg li em{font-style:normal;font-size:10.5px;color:var(--muted)}
+  .sugg li.on,.sugg li:hover{background:var(--brand-tint)}
+  .quick{display:flex;gap:6px;flex-wrap:wrap}
+  .quick .chip{padding:3px 10px;font-size:11.5px}
+  @media (max-width:760px){.cw-chart{height:250px}.cw-price{text-align:left}}
+
   /* album */
   .album{columns:2;column-gap:10px}
   .album figure{margin:0 0 10px;break-inside:avoid;cursor:zoom-in;border-radius:10px;overflow:hidden;position:relative}
@@ -868,6 +901,42 @@ const WINDOWS = {
         toast('Cảm ơn bạn nhiều lắm! Chúc bạn một ngày thật xinh ♡');
       };
     }},
+
+  /* ---------- BIỂU ĐỒ GIÁ VÀNG / CHỨNG KHOÁN (mở khi bấm vào widget) ---------- */
+  goldchart:{title:'Biểu đồ giá vàng nhẫn 🪙', wide:true, html:() => `
+    <div class="cw">
+      <div class="cw-head">
+        <div><div class="cw-name" id="gName">Nhẫn SJC 9999</div><div class="cw-sub">Triệu đồng / lượng · cập nhật theo ngày</div></div>
+        <div class="cw-price"><b id="gSell">…</b><small id="gChg"></small></div>
+      </div>
+      <div class="cw-tools">
+        <div class="seg" id="gType">${GOLD_TYPES.map((t, i) => `<button type="button" data-v="${t.id}" class="${i ? '' : 'on'}">${t.name}</button>`).join('')}</div>
+        <div class="seg" id="gRange">${CHART_RANGES.map((r, i) => `<button type="button" data-v="${r.days}" class="${i ? '' : 'on'}">${r.label}</button>`).join('')}</div>
+      </div>
+      <div class="cw-legend" id="gLegend"></div>
+      <div class="cw-chart" id="gChart"><div class="msg">Đang tải biểu đồ…</div></div>
+      <p class="fine">Nguồn: vang.today · Đường vàng là giá bán ra, đường xanh là giá mua vào.</p>
+    </div>`, onOpen: w => goldChart(w)},
+
+  stockchart:{title:'Biểu đồ chứng khoán 📈', wide:true, html:() => `
+    <div class="cw">
+      <div class="cw-search">
+        <input id="sQ" type="search" placeholder="Tìm mã chứng khoán: FPT, VCB, HPG…" autocomplete="off" spellcheck="false" aria-label="Tìm mã chứng khoán">
+        <ul class="sugg" id="sList" hidden></ul>
+      </div>
+      <div class="quick">${STOCK_QUICK.map(s => `<button type="button" class="chip" data-sym="${s}">${s}</button>`).join('')}</div>
+      <div class="cw-head">
+        <div><div class="cw-name" id="sName">…</div><div class="cw-sub" id="sDesc"></div></div>
+        <div class="cw-price"><b id="sPrice">…</b><small id="sChg"></small></div>
+      </div>
+      <div class="cw-tools">
+        <div class="seg" id="sRange">${CHART_RANGES.map((r, i) => `<button type="button" data-v="${r.days}" class="${i ? '' : 'on'}">${r.label}</button>`).join('')}</div>
+        <span class="cw-sub" id="sUnit"></span>
+      </div>
+      <div class="cw-legend" id="sLegend"></div>
+      <div class="cw-chart" id="sChart"><div class="msg">Đang tải biểu đồ…</div></div>
+      <p class="fine">Nguồn: VNDirect · Nến ngày · Chỉ để tham khảo, không phải khuyến nghị đầu tư.</p>
+    </div>`, onOpen: w => stockChart(w)},
 
   /* ---------- VỊ THẦN CỦA NHỮNG QUYẾT ĐỊNH ---------- */
   oracle:{title:'Vị thần của những quyết định ✦', cls:'oracle-win', w:420, html:() => `
@@ -1495,6 +1564,221 @@ addEventListener('pointermove', e => {
   place(); addEventListener('resize', place); document.fonts?.ready.then(place);
 })();
 
+// ---------- Biểu đồ giá vàng & chứng khoán ----------
+// Thư viện Lightweight Charts (TradingView, mã nguồn mở) chỉ tải khi người xem mở biểu đồ lần đầu.
+const CHART_RANGES = [{label: '3 tháng', days: 92}, {label: '6 tháng', days: 183}, {label: '1 năm', days: 366}];
+const GOLD_TYPES = [{id: 'SJ9999', name: 'Nhẫn SJC 9999'}, {id: 'BT9999NTT', name: 'Nhẫn tròn Bảo Tín'}];
+const STOCK_QUICK = ['VNINDEX', 'VN30', 'HNX', 'UPCOM', 'FPT', 'VCB', 'HPG', 'MWG'];
+let stockChartSymbol = 'VNINDEX';
+const escHTML = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let lwcLoading;
+const loadLWC = () => lwcLoading ??= new Promise((res, rej) => {
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js';
+  s.onload = () => res(window.LightweightCharts);
+  s.onerror = () => { lwcLoading = null; rej(new Error('lwc')); };
+  document.head.appendChild(s);
+});
+const fetchJSON = async url => { const r = await fetch(url, {cache: 'no-store'}); if (!r.ok) throw new Error(r.status); return JSON.parse(await r.text()); };
+// máy chủ dữ liệu thỉnh thoảng từ chối 1 lượt -> thử lại tối đa 3 lần
+const fetchRetry = async (url, tries = 3) => {
+  for (let i = 1; ; i++) {
+    try { return await fetchJSON(url); }
+    catch (e) { if (i >= tries) throw e; await new Promise(r => setTimeout(r, 700 * i)); }
+  }
+};
+// thông báo lỗi nằm trên khung biểu đồ, có nút thử lại
+const chartMsg = (box, text, retry) => {
+  box.querySelector('.msg')?.remove();
+  if (!text) return;
+  const m = document.createElement('div'); m.className = 'msg';
+  m.innerHTML = `<div>${text}${retry ? ' <button type="button" class="btn ghost" style="padding:4px 10px;font-size:12px;margin-left:6px">Thử lại</button>' : ''}</div>`;
+  if (retry) m.querySelector('button').onclick = retry;
+  box.appendChild(m);
+};
+const UP = '#12a150', DOWN = '#e0312b';
+const chgHTML = (d, base, fmt) => {
+  const c = d > 0 ? 'up' : d < 0 ? 'down' : 'flat', a = d > 0 ? '▲' : d < 0 ? '▼' : '■';
+  return `<span class="${c}">${a} ${fmt(Math.abs(d))} (${d >= 0 ? '+' : '−'}${Math.abs(d / base * 100).toFixed(2)}%)</span>`;
+};
+// khung biểu đồ dùng chung
+async function makeChart(w, box, priceFormatter){
+  const LWC = await loadLWC();
+  box.innerHTML = '';
+  const chart = LWC.createChart(box, {
+    autoSize: true,
+    layout: {background: {color: '#ffffff'}, textColor: '#6b6b80', fontFamily: '"Be Vietnam Pro", system-ui, sans-serif', fontSize: 11},
+    grid: {vertLines: {color: '#f2f2f8'}, horzLines: {color: '#f2f2f8'}},
+    rightPriceScale: {borderVisible: false},
+    timeScale: {borderVisible: false, fixLeftEdge: true, fixRightEdge: true},
+    crosshair: {mode: LWC.CrosshairMode.Normal},
+    localization: {locale: 'vi-VN', priceFormatter, dateFormat: 'dd/MM/yyyy'},
+  });
+  w.querySelector('.titlebar .c').addEventListener('click', () => chart.remove());   // đóng cửa sổ thì giải phóng biểu đồ
+  return {LWC, chart};
+}
+const sliceDays = (rows, days) => { const from = new Date(Date.now() - days * 864e5).toISOString().slice(0, 10); return rows.filter(r => r.time >= from); };
+const segPick = (seg, fn) => seg.querySelectorAll('button').forEach(b => b.onclick = () => {
+  seg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); fn(b.dataset.v);
+});
+const vnDate = iso => iso.split('-').reverse().join('/');
+
+/* ----- Giá vàng nhẫn: đường bán ra / mua vào, 3 tháng · 6 tháng · 1 năm ----- */
+async function goldChart(w){
+  const box = w.querySelector('#gChart'), legend = w.querySelector('#gLegend');
+  const trF = v => v.toLocaleString('vi-VN', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+  const cache = {};
+  let type = GOLD_TYPES[0].id, days = CHART_RANGES[0].days, ui;
+  try { ui = await makeChart(w, box, trF); }
+  catch (e) { box.innerHTML = '<div class="msg">Không tải được thư viện biểu đồ, thử lại sau nhé.</div>'; return; }
+  const {chart} = ui;
+  const sell = chart.addAreaSeries({lineColor: '#d4a106', topColor: 'rgba(246,210,58,.35)', bottomColor: 'rgba(246,210,58,0)', lineWidth: 2, title: 'Bán'});
+  const buy = chart.addLineSeries({color: '#0000F4', lineWidth: 2, title: 'Mua'});
+  let rows = [];
+  const showLegend = r => { legend.innerHTML = r ? `<span>${vnDate(r.time)}</span><span>Mua vào <b>${trF(r.buy)}</b></span><span>Bán ra <b>${trF(r.sell)}</b></span><span>Chênh <b>${trF(r.sell - r.buy)}</b></span>` : ''; };
+  const draw = () => {
+    const part = sliceDays(rows, days);
+    sell.setData(part.map(r => ({time: r.time, value: r.sell})));
+    buy.setData(part.map(r => ({time: r.time, value: r.buy})));
+    chart.timeScale().fitContent();
+    const last = part[part.length - 1], first = part[0];
+    w.querySelector('#gName').textContent = GOLD_TYPES.find(t => t.id === type).name;
+    w.querySelector('#gSell').innerHTML = last ? `${trF(last.sell)} <span class="cw-unit">bán ra</span>` : '…';
+    w.querySelector('#gChg').innerHTML = last && first ? chgHTML(last.sell - first.sell, first.sell, v => trF(v) + ' tr') + ` <span class="cw-sub">trong ${CHART_RANGES.find(r => r.days == days).label}</span>` : '';
+    showLegend(last);
+  };
+  let seq = 0;
+  const load = async () => {
+    const my = ++seq, t = type;                       // chỉ vẽ kết quả của lần chọn mới nhất
+    box.classList.add('loading'); chartMsg(box, '');
+    try {
+      if (!cache[t]) {
+        const d = await fetchRetry(`https://www.vang.today/api/prices?type=${t}&days=366`);
+        cache[t] = (d.history || []).map(h => ({time: h.date, buy: h.prices[t]?.buy / 1e6, sell: h.prices[t]?.sell / 1e6}))
+          .filter(r => r.buy && r.sell).sort((a, b) => a.time < b.time ? -1 : 1);
+      }
+      if (my !== seq) return;
+      rows = cache[t]; draw();
+    } catch (e) {
+      if (my !== seq) return;
+      chartMsg(box, 'Không tải được dữ liệu giá vàng.', load);
+    }
+    box.classList.remove('loading');
+  };
+  chart.subscribeCrosshairMove(p => {
+    if (!p.time) return showLegend(sliceDays(rows, days).at(-1));
+    const t = typeof p.time === 'string' ? p.time : `${p.time.year}-${String(p.time.month).padStart(2, '0')}-${String(p.time.day).padStart(2, '0')}`;
+    showLegend(rows.find(r => r.time === t));
+  });
+  segPick(w.querySelector('#gType'), v => { type = v; load(); });
+  segPick(w.querySelector('#gRange'), v => { days = +v; draw(); });
+  load();
+}
+
+/* ----- Chứng khoán: nến ngày + khối lượng, tìm mã bất kỳ ----- */
+async function stockChart(w){
+  const box = w.querySelector('#sChart'), legend = w.querySelector('#sLegend');
+  const q = w.querySelector('#sQ'), list = w.querySelector('#sList');
+  let sym = stockChartSymbol, days = CHART_RANGES[0].days, rows = [], isIndex = true, ui;
+  const fmtP = v => isIndex ? v.toLocaleString('vi-VN', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+                            : Math.round(v * 1000).toLocaleString('vi-VN');
+  const fmtV = v => v >= 1e6 ? (v / 1e6).toLocaleString('vi-VN', {maximumFractionDigits: 1}) + ' tr' : Math.round(v).toLocaleString('vi-VN');
+  try { ui = await makeChart(w, box, v => fmtP(v)); }
+  catch (e) { box.innerHTML = '<div class="msg">Không tải được thư viện biểu đồ, thử lại sau nhé.</div>'; return; }
+  const {chart} = ui;
+  const candles = chart.addCandlestickSeries({upColor: UP, downColor: DOWN, borderUpColor: UP, borderDownColor: DOWN, wickUpColor: UP, wickDownColor: DOWN});
+  const vol = chart.addHistogramSeries({priceScaleId: '', priceFormat: {type: 'volume'}, lastValueVisible: false, priceLineVisible: false});
+  vol.priceScale().applyOptions({scaleMargins: {top: .8, bottom: 0}});
+  candles.priceScale().applyOptions({scaleMargins: {top: .08, bottom: .25}});
+
+  const showLegend = r => {
+    if (!r) return legend.innerHTML = '';
+    const c = r.close >= r.open ? 'up' : 'down';
+    legend.innerHTML = `<span>${vnDate(r.time)}</span><span>Mở <b>${fmtP(r.open)}</b></span><span>Cao <b>${fmtP(r.high)}</b></span><span>Thấp <b>${fmtP(r.low)}</b></span><span>Đóng <b class="${c}">${fmtP(r.close)}</b></span><span>KL <b>${fmtV(r.volume)}</b></span>`;
+  };
+  const draw = () => {
+    const part = sliceDays(rows, days);
+    candles.setData(part);
+    vol.setData(part.map(r => ({time: r.time, value: r.volume, color: r.close >= r.open ? 'rgba(18,161,80,.35)' : 'rgba(224,49,43,.35)'})));
+    chart.timeScale().fitContent();
+    showLegend(part.at(-1));
+  };
+  let loadSeq = 0;
+  const load = async s => {
+    const my = ++loadSeq;
+    sym = s.toUpperCase().trim(); stockChartSymbol = sym;
+    w.querySelectorAll('.quick .chip').forEach(c => c.classList.toggle('on', c.dataset.sym === sym));
+    w.querySelector('#sName').textContent = sym;
+    box.classList.add('loading'); chartMsg(box, '');
+    try {
+      const now = Math.floor(Date.now() / 1000), base = 'https://dchart-api.vndirect.com.vn/dchart';
+      const [info, h] = await Promise.all([
+        fetchJSON(`${base}/symbols?symbol=${encodeURIComponent(sym)}`).catch(() => ({})),
+        fetchJSON(`${base}/history?resolution=D&symbol=${encodeURIComponent(sym)}&from=${now - 400 * 86400}&to=${now}`)
+          .catch(() => ({})),                          // mã không tồn tại -> máy chủ trả rỗng
+      ]);
+      if (my !== loadSeq) return;
+      if (!h.t?.length) throw new Error('empty');
+      isIndex = (info.type || '').toUpperCase() === 'INDEX';
+      const day = t => new Date(t * 1000).toLocaleDateString('en-CA', {timeZone: 'Asia/Ho_Chi_Minh'});
+      rows = h.t.map((t, i) => ({time: day(t), open: h.o[i], high: h.h[i], low: h.l[i], close: h.c[i], volume: h.v[i]}));
+      const last = rows.at(-1), prev = rows.at(-2) || last;
+      w.querySelector('#sDesc').textContent = [info.description && info.description !== sym ? info.description : '', info['exchange-listed']].filter(Boolean).join(' · ');
+      w.querySelector('#sPrice').textContent = fmtP(last.close);
+      w.querySelector('#sChg').innerHTML = chgHTML(last.close - prev.close, prev.close, fmtP) + ` <span class="cw-sub">phiên ${vnDate(last.time)}</span>`;
+      w.querySelector('#sUnit').textContent = isIndex ? 'Đơn vị: điểm' : 'Đơn vị: đồng / cổ phiếu';
+      candles.applyOptions({priceFormat: {type: 'price', precision: isIndex ? 2 : 2, minMove: .01}});
+      draw();
+    } catch (e) {
+      if (my !== loadSeq) return;
+      rows = []; candles.setData([]); vol.setData([]); legend.innerHTML = '';
+      w.querySelector('#sDesc').textContent = ''; w.querySelector('#sPrice').textContent = '…'; w.querySelector('#sChg').innerHTML = ''; w.querySelector('#sUnit').textContent = '';
+      chartMsg(box, `Không tìm thấy dữ liệu cho mã "${escHTML(sym)}". Thử mã khác nhé.`);
+    }
+    box.classList.remove('loading');
+  };
+  chart.subscribeCrosshairMove(p => {
+    if (!p.time) return showLegend(sliceDays(rows, days).at(-1));
+    const t = typeof p.time === 'string' ? p.time : `${p.time.year}-${String(p.time.month).padStart(2, '0')}-${String(p.time.day).padStart(2, '0')}`;
+    showLegend(rows.find(r => r.time === t));
+  });
+  segPick(w.querySelector('#sRange'), v => { days = +v; draw(); });
+  w.querySelectorAll('.quick .chip').forEach(c => c.onclick = () => { q.value = ''; list.hidden = true; load(c.dataset.sym); });
+
+  // ô tìm kiếm: gợi ý mã khi gõ (cổ phiếu, chỉ số, chứng chỉ quỹ)
+  let items = [], active = -1, timer, seq = 0;
+  const renderList = () => {
+    list.hidden = !items.length;
+    list.innerHTML = items.map((it, i) => `<li data-i="${i}" class="${i === active ? 'on' : ''}"><b>${escHTML(it.symbol)}</b><span>${escHTML(it.description || '')}</span><em>${escHTML(it.exchange)}</em></li>`).join('');
+  };
+  const choose = it => { if (!it) return; q.value = ''; items = []; renderList(); q.blur(); load(it.symbol); };
+  q.addEventListener('input', () => {
+    clearTimeout(timer);
+    const v = q.value.trim();
+    if (!v) { items = []; return renderList(); }
+    timer = setTimeout(async () => {
+      const my = ++seq;
+      try {
+        const r = await fetchJSON(`https://dchart-api.vndirect.com.vn/dchart/search?limit=30&query=${encodeURIComponent(v)}&type=&exchange=`);
+        if (my !== seq) return;
+        items = (r || []).filter(x => /CỔ PHIẾU|CHỈ SỐ|QUỸ|ETF/i.test(x.type || '')).slice(0, 8);
+        active = items.length ? 0 : -1; renderList();
+      } catch (e) { items = []; renderList(); }
+    }, 220);
+  });
+  q.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault(); if (!items.length) return;
+      active = (active + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length; renderList();
+    } else if (e.key === 'Enter') {
+      e.preventDefault(); items.length ? choose(items[Math.max(0, active)]) : q.value.trim() && (load(q.value), q.value = '');
+    } else if (e.key === 'Escape' && !list.hidden) { e.stopPropagation(); items = []; renderList(); }
+  });
+  list.addEventListener('pointerdown', e => { const li = e.target.closest('li'); if (li) { e.preventDefault(); choose(items[+li.dataset.i]); } });
+  q.addEventListener('blur', () => setTimeout(() => { items = []; renderList(); }, 150));
+  load(sym);
+}
+
 // ---------- Widget thị trường: giá vàng nhẫn (theo ngày) + VN-Index (trực tiếp trong phiên) ----------
 // Dữ liệu lấy thẳng từ các API công khai cho phép gọi từ trình duyệt (CORS):
 //   vang.today  - giá nhẫn SJC / Bảo Tín Minh Châu + thay đổi so với hôm trước + lịch sử 7 ngày
@@ -1548,9 +1832,16 @@ const MARKET = {
   const make = (kind, title, href) => {
     const el = document.createElement('section');
     el.className = 'mw ' + kind;
-    el.innerHTML = `<a class="mw-title" href="${href}" target="_blank" rel="noopener">${title}</a><div class="mw-sub"></div><div class="mw-body"><div class="msg">Đang tải…</div></div>`;
+    el.innerHTML = `<a class="mw-title" href="${href}" target="_blank" rel="noopener">${title}</a><span class="mw-more">📊 Biểu đồ</span><div class="mw-sub"></div><div class="mw-body"><div class="msg">Đang tải…</div></div>`;
     zonesEl.appendChild(el);
     draggable(el, el, {enabled: () => !stacked.matches, onDrag: () => el.dataset.moved = '1'});
+    // bấm vào widget (không phải kéo) -> mở cửa sổ biểu đồ 3 tháng / 6 tháng / 1 năm
+    el.title = 'Bấm để xem biểu đồ';
+    el.addEventListener('click', e => {
+      if (e.target.closest('a, button')) return;
+      if (kind === 'stock') stockChartSymbol = 'VNINDEX';
+      openWin(kind === 'gold' ? 'goldchart' : 'stockchart');
+    });
     return el;
   };
   const fail = (el, retry) => {
