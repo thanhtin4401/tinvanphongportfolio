@@ -142,8 +142,15 @@
   .hero .sub b{color:var(--ink)}
   @keyframes bob{50%{transform:translateY(-.08em)}}
   /* chữ "portfolio." phóng to theo chuột */
-  .hero .big{pointer-events:auto;display:inline-block;padding:30px 12px 0;cursor:default}
+  .hero .big{pointer-events:auto;display:inline-block;position:relative;padding:30px 12px 0;cursor:default}
   .hero .big .ltr{display:inline-block;transform-origin:50% 90%;transition:transform .18s ease-out,margin .18s ease-out,color .25s ease}
+  /* kéo thả từng chữ để xếp lại */
+  .hero .big .ltr:not(.dotw){cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+  .hero .big.dragging,.hero .big.dragging .ltr{cursor:grabbing}
+  .hero .big .ltr.held{position:relative;z-index:2;transition:color .25s ease;color:var(--brand);text-shadow:0 10px 18px rgba(0,0,244,.18)}
+  .hero .big .ltr.o.held{color:var(--ink)}
+  .hero .big .ltr.hop{animation:hop .55s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i) * 55ms)}
+  @keyframes hop{40%{transform:translateY(-.25em) rotate(-6deg)}}
   /* hiệu ứng mở màn khi mới vào trang */
   .hero .welcome{animation:heroUp .7s ease-out .1s backwards}
   .hero .sub{animation:heroUp .7s ease-out 1.45s backwards}
@@ -251,6 +258,13 @@
   .profile{display:flex;gap:16px;align-items:center;margin-bottom:10px}
   .avatar{width:72px;height:72px;border-radius:50%;flex:none;background:var(--c,var(--brand));color:#fff;display:grid;place-items:center;font-weight:900;font-size:28px;overflow:hidden}
   .avatar img{width:100%;height:100%;object-fit:cover}
+  /* khung #OPENTOWORK kiểu LinkedIn */
+  .avatar.otw{position:relative}
+  .avatar.otw::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;
+    background:conic-gradient(transparent 0 100deg,#43703b 140deg,#3c6a35 265deg,transparent 305deg);
+    -webkit-mask:radial-gradient(circle closest-side,transparent 63%,#000 65%);mask:radial-gradient(circle closest-side,transparent 63%,#000 65%)}
+  .avatar.otw svg{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+  .avatar.otw text{fill:#fff;font:900 10.5px/1 "Be Vietnam Pro",system-ui,sans-serif;letter-spacing:.6px}
   .timeline{list-style:none;padding:0;margin:0}
   .timeline li{padding:8px 0 8px 18px;border-left:2px solid #e2e2ec;position:relative}
   .timeline li::before{content:"";position:absolute;left:-6px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--work)}
@@ -372,15 +386,11 @@
   .orc-stars i{position:absolute;color:#f6d23a;font-style:normal;opacity:.2;animation:orcTwinkle 2.6s ease-in-out infinite}
   .orc h2{position:relative;color:#fff!important;font-size:21px!important;margin:0 0 8px!important}
   .orc h2 span{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;color:#f6d23a;font-size:26px}
-  .orc-steps{position:relative;text-align:left;margin:0 0 10px;padding-left:20px;font-size:12.5px;line-height:1.55;color:#cfc8f5}
-  .orc textarea{position:relative;width:100%;font:inherit;font-size:13px;padding:8px 11px;border-radius:10px;border:1px solid rgba(246,210,58,.35);background:rgba(255,255,255,.08);color:#fff;resize:none;margin:0 0 14px}
-  .orc textarea::placeholder{color:#a79fd6}
-  .orc textarea:focus{outline:none;border-color:#f6d23a;box-shadow:0 0 0 3px rgba(246,210,58,.18)}
+  .orc-steps{position:relative;text-align:left;margin:0 0 18px;padding-left:20px;font-size:12.5px;line-height:1.55;color:#cfc8f5}
   .orc-book{position:relative;width:190px;height:230px;margin:0 auto;perspective:1000px;cursor:pointer;outline:none}
   .orc-book::before{content:"";position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(circle,rgba(246,210,58,.35),transparent 65%);animation:orcGlow 2.4s ease-in-out infinite;pointer-events:none}
   .orc-book:focus-visible .orc-cover{box-shadow:0 0 0 3px #f6d23a}
   .orc-page{position:absolute;inset:0;border-radius:4px 12px 12px 4px;background:linear-gradient(90deg,#efe6cf,#fffaf0 12%,#fffaf0);box-shadow:inset 6px 0 10px rgba(0,0,0,.12),0 10px 30px rgba(0,0,0,.45);display:grid;place-items:center;padding:20px 18px;color:#2a1a5e}
-  .orc-page small{display:block;font-size:11px;color:#8a7fb5;margin-bottom:8px;word-break:break-word}
   .orc-page p{margin:0;font-family:"Instrument Serif",serif;font-style:italic;font-size:24px;line-height:1.2;min-height:1.2em}
   .orc-cover{position:absolute;inset:0;transform-origin:left center;transition:transform 1.05s cubic-bezier(.6,.05,.25,1);transform-style:preserve-3d;backface-visibility:hidden;border-radius:4px 12px 12px 4px;border-left:12px solid #160e46;background:radial-gradient(circle at 50% 35%,#5b34c4,#2a1670 70%);box-shadow:0 12px 30px rgba(0,0,0,.5);color:#f6d23a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
   .orc-cover i{font-style:normal;font-size:34px;animation:orcTwinkle 2s ease-in-out infinite}
@@ -739,7 +749,9 @@ const WINDOWS = {
   /* ---------- KHU 1: CÔNG VIỆC ---------- */
   work:{zone:'work', title:'Hồ sơ công việc', html:`
     <div class="cover" style="background-image:url(assets/me/stage.jpg);background-position:center 35%"></div>
-    <div class="profile"><div class="avatar"><img src="assets/me/avatar.jpg" alt="Thành Tín"></div>
+    <div class="profile"><div class="avatar otw" title="#OpenToWork"><img src="assets/me/avatar.jpg" alt="Thành Tín">
+      <svg viewBox="0 0 100 100" aria-label="#OPENTOWORK"><path id="otwArc" d="M8.6 33.4 A44 44 0 1 0 93.3 57.6" fill="none"/>
+        <text><textPath href="#otwArc" startOffset="9%">#OPENTOWORK</textPath></text></svg></div>
       <div><h2 style="margin:0">Tin Tran-Luong-Thanh</h2>
       <div style="color:var(--muted)">Associate Engineer · Software Engineer · Product Owner<br>TP. Hồ Chí Minh, Việt Nam</div></div>
     </div>
@@ -945,26 +957,23 @@ const WINDOWS = {
       <h2>Vị thần của <span>những quyết định</span></h2>
       <ol class="orc-steps">
         <li>Nhắm mắt, nghĩ thật rõ điều bạn mong muốn hoặc đang phân vân.</li>
-        <li>Nói thầm nó ra, hoặc viết vào đây nếu muốn.</li>
+        <li>Nói thầm nó ra trong đầu.</li>
         <li>Chạm vào cuốn sách để nghe lời phán.</li>
       </ol>
-      <textarea id="orcQ" rows="2" maxlength="160" placeholder="Điều mình đang băn khoăn là… (không bắt buộc)"></textarea>
       <div class="orc-book" id="orcBook" role="button" tabindex="0" aria-label="Mở sách để nhận câu trả lời">
-        <div class="orc-page"><div><small id="orcAsk"></small><p id="orcText" aria-live="polite"></p></div></div>
+        <div class="orc-page"><div><p id="orcText" aria-live="polite"></p></div></div>
         <div class="orc-cover"><i>✦</i><b>VỊ THẦN</b><small>của những<br>quyết định</small><em>chạm để mở</em></div>
       </div>
       <div class="orc-actions"><button class="btn" type="button" id="orcAgain" hidden>Hỏi điều khác ✦</button></div>
       <p class="orc-note">Chỉ để vui và tham khảo thôi nha, quyết định cuối cùng vẫn là của bạn ♡</p>
     </div>`,
     onOpen: w => {
-      const book = w.querySelector('#orcBook'), text = w.querySelector('#orcText'), ask = w.querySelector('#orcAsk');
-      const q = w.querySelector('#orcQ'), again = w.querySelector('#orcAgain');
+      const book = w.querySelector('#orcBook'), text = w.querySelector('#orcText'), again = w.querySelector('#orcAgain');
       const stars = w.querySelector('.orc-stars');
       stars.innerHTML = Array.from({length: 28}, () =>
         `<i style="left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${(Math.random()*3).toFixed(2)}s;font-size:${6 + Math.random()*8}px">✦</i>`).join('');
       const recent = [];
       let busy = false, typer;
-      const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
       const pick = () => {
         let i; do { i = Math.floor(Math.random() * ORACLE.length); } while (recent.includes(i) && recent.length < ORACLE.length);
         recent.push(i); if (recent.length > 8) recent.shift();
@@ -984,8 +993,7 @@ const WINDOWS = {
         if (busy) return;
         if (book.classList.contains('open')) return reset();
         busy = true;
-        const answer = pick(), question = q.value.trim();
-        ask.innerHTML = question ? `“${esc(question)}”` : '';
+        const answer = pick();
         text.textContent = '';
         book.classList.add('shake');
         setTimeout(() => {
@@ -998,7 +1006,7 @@ const WINDOWS = {
           }, 45);
         }, 650);
       };
-      const reset = () => { clearInterval(typer); busy = false; book.classList.remove('open'); again.hidden = true; q.value = ''; q.focus({preventScroll: true}); };
+      const reset = () => { clearInterval(typer); busy = false; book.classList.remove('open'); again.hidden = true; book.focus({preventScroll: true}); };
       book.onclick = reveal;
       book.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal(); } };
       again.onclick = reset;
@@ -1463,9 +1471,80 @@ DOCK.forEach(d => {
     l.style.color = ease > .55 ? (l.classList.contains('o') ? 'var(--ink)' : 'var(--brand)') : '';
   });
   const reset = () => letters.forEach(l => { l.style.transform = l.style.marginInline = l.style.color = ''; });
-  let hovering = false;
-  big.addEventListener('pointermove', e => { hovering = true; wave(e.clientX); });
-  big.addEventListener('pointerleave', () => { hovering = false; reset(); });
+  let hovering = false, drag = null;
+  big.addEventListener('pointermove', e => { hovering = true; if (!drag) wave(e.clientX); });
+  big.addEventListener('pointerleave', () => { hovering = false; if (!drag) reset(); });
+
+  // Nắm kéo thả từng chữ để xếp lại thứ tự (dấu chấm luôn đứng cuối). Xếp lại đúng "portfolio" thì cả chữ nhảy mừng.
+  const dotw = letters[letters.length - 1];
+  const tiles = () => [...big.querySelectorAll('.ltr:not(.dotw)')];
+  const word = () => tiles().map(l => l.textContent).join('');
+  let shuffled = false;
+  // FLIP: chữ nào bị đổi chỗ thì trượt mượt từ vị trí cũ sang vị trí mới
+  const flip = (els, before) => els.forEach(l => {
+    const dx = before.get(l) - l.getBoundingClientRect().left;
+    if (!dx) return;
+    l.style.transition = 'none'; l.style.transform = `translateX(${dx}px)`;
+    l.offsetWidth;
+    l.style.transition = ''; l.style.transform = '';
+  });
+  const place = e => {
+    const r = big.getBoundingClientRect(), fs = parseFloat(getComputedStyle(big).fontSize);
+    const x = Math.min(r.right - 20, Math.max(r.left + 20, e.clientX));      // giữ chữ trong khuôn khổ của từ
+    const y = Math.min(fs * .3, Math.max(-fs * .45, e.clientY - drag.y0));
+    const nat = drag.el.offsetLeft + drag.el.offsetWidth / 2;
+    const cx = x - r.left - drag.grab;
+    drag.el.style.transform = `translate(${cx - nat}px,${y}px) scale(1.18) rotate(${Math.max(-12, Math.min(12, (e.clientX - drag.px) * .6))}deg)`;
+    drag.px = e.clientX;
+    // vị trí mới = số chữ còn lại có tâm nằm bên trái con trỏ
+    const others = tiles().filter(l => l !== drag.el);
+    let idx = others.findIndex(l => cx < l.offsetLeft + l.offsetWidth / 2);
+    if (idx < 0) idx = others.length;
+    if (idx === tiles().indexOf(drag.el)) return;
+    const before = new Map(others.map(l => [l, l.getBoundingClientRect().left]));
+    big.insertBefore(drag.el, others[idx] || dotw);
+    flip(others, before);
+    const nat2 = drag.el.offsetLeft + drag.el.offsetWidth / 2;
+    drag.el.style.transform = drag.el.style.transform.replace(/translate\([^,]+,/, `translate(${cx - nat2}px,`);
+  };
+  big.addEventListener('pointerdown', e => {
+    const el = e.target.closest('.ltr');
+    if (!el || el === dotw || e.button > 0) return;
+    e.preventDefault();
+    big.classList.remove('intro');
+    letters.forEach(l => { l.style.transform = l.style.marginInline = l.style.color = ''; l.classList.remove('hop'); });
+    const r = big.getBoundingClientRect();
+    drag = { el, y0: e.clientY, px: e.clientX, grab: e.clientX - r.left - (el.offsetLeft + el.offsetWidth / 2) };
+    big.setPointerCapture(e.pointerId);
+    big.classList.add('dragging'); el.classList.add('held');
+    place(e);
+  });
+  big.addEventListener('pointermove', e => { if (drag) place(e); });
+  const drop = () => {
+    if (!drag) return;
+    const el = drag.el; drag = null;
+    big.classList.remove('dragging'); el.classList.remove('held');
+    el.style.transition = 'transform .35s cubic-bezier(.3,1.5,.5,1)'; el.style.transform = '';
+    setTimeout(() => { el.style.transition = ''; }, 360);
+    const w = word();
+    big.setAttribute('aria-label', w + '.');
+    if (w !== 'portfolio') { shuffled = true; return; }
+    if (!shuffled) return;
+    shuffled = false;
+    setTimeout(() => letters.forEach((l, i) => { l.style.setProperty('--i', i); l.classList.remove('hop'); l.offsetWidth; l.classList.add('hop'); }), 200);
+  };
+  big.addEventListener('pointerup', drop);
+  big.addEventListener('pointercancel', drop);
+  big.addEventListener('animationend', e => e.target.classList.remove('hop'));
+  // nhấp đúp để trả về chữ "portfolio" ban đầu
+  big.addEventListener('dblclick', () => {
+    const order = letters.slice(0, -1), before = new Map(order.map(l => [l, l.getBoundingClientRect().left]));
+    order.forEach(l => big.insertBefore(l, dotw));
+    flip(order, before);
+    shuffled = false;
+    big.setAttribute('aria-label', 'portfolio.');
+  });
+  big.title = 'Nắm kéo thả từng chữ để xếp lại · nhấp đúp để về như cũ';
 
   // Lúc mới vào trang: các chữ lần lượt bật lên (CSS .intro), xong thì một "làn sóng" quét qua từ trái sang phải
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
