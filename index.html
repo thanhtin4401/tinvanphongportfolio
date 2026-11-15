@@ -226,6 +226,17 @@
     display:flex;flex-direction:column;overflow:hidden;z-index:50;animation:pop .22s cubic-bezier(.2,.9,.3,1.2);
   }
   .window.wide{width:min(860px,94vw)}
+  /* open me ♡: clip giới thiệu */
+  .intro-player{position:relative;margin:4px 0 18px;border-radius:14px;overflow:hidden;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);background:#000;aspect-ratio:16/9}
+  .intro-player video{display:block;width:100%;height:100%;object-fit:contain;background:#000}
+  .intro-tag{position:absolute;left:12px;top:12px;z-index:2;font-size:11px;font-weight:900;letter-spacing:.6px;padding:4px 10px;border-radius:99px;background:#ff5c8a;color:#fff;border:2px solid var(--ink);pointer-events:none;transition:opacity .3s}
+  .intro-play{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:0;background:rgba(20,20,43,.18);cursor:pointer;color:var(--ink)}
+  .intro-play span{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;padding-left:6px;font-size:30px;color:#fff;background:#ff5c8a;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);animation:introPulse 1.8s ease-in-out infinite}
+  .intro-play b{background:#fff;border:2px solid var(--ink);border-radius:99px;padding:5px 14px;font-size:13px;box-shadow:3px 3px 0 var(--ink)}
+  .intro-play:hover span{transform:scale(1.08)}
+  .love-win.playing .intro-play,.love-win.playing .intro-tag{opacity:0;pointer-events:none}
+  @keyframes introPulse{50%{box-shadow:4px 4px 0 var(--ink),0 0 0 12px rgba(255,92,138,.25)}}
+  @media (prefers-reduced-motion:reduce){.intro-play span{animation:none}}
   @keyframes pop{from{opacity:0;transform:scale(.92)}}
   .titlebar{height:36px;flex:none;display:flex;align-items:center;gap:8px;padding:0 12px;position:relative;background:#f4f4fb;border-bottom:1px solid #e6e6f3;cursor:grab}
   .titlebar .t{position:absolute;left:0;right:0;text-align:center;font-weight:600;pointer-events:none}
@@ -1034,9 +1045,28 @@ const WINDOWS = {
   trash:{title:"Don't Look", html:`
     <h2>Ơ kìa 🙈</h2><p>Bạn vừa mở thùng rác của mình. Ở đây là những bản nháp thread không dám đăng, 47 file “final_final_v3” và mấy mẫu in 3D in hỏng.</p>${ph('Ảnh một mẫu in hỏng cho vui')}`},
 
-  love:{title:'open me ♡', html:`<h2>Cảm ơn bạn đã ghé <span class="blue">♡</span></h2>
+  love:{title:'open me ♡', wide:true, cls:'love-win', html:`
+    <div class="intro-player">
+      <span class="intro-tag">▶ CLIP GIỚI THIỆU · 1 PHÚT</span>
+      <video id="introVideo" src="assets/intro/tin-intro.mp4" poster="assets/intro/poster.jpg" controls playsinline preload="metadata"></video>
+      <button class="intro-play" type="button" aria-label="Phát clip giới thiệu"><span>▶</span><b>Bấm xem Tín giới thiệu nè</b></button>
+    </div>
+    <h2>Cảm ơn bạn đã ghé <span class="blue">♡</span></h2>
     <p>Chúc bạn một ngày đi làm thật nhẹ nhàng và qua deadline êm ru!</p>
-    <div class="btn-row"><a class="btn" href="${ME.threads}" target="_blank">Follow @tin.tr_20s</a><a class="btn yellow" href="#" onclick="openWin('shop');return false">Ghé shop 9TO5</a><a class="btn ghost" href="#" onclick="openWin('coffee');return false">Mời mình ly cà phê ☕</a></div>`},
+    <div class="btn-row"><a class="btn" href="${ME.threads}" target="_blank">Follow @tin.tr_20s</a><a class="btn yellow" href="#" onclick="openWin('shop');return false">Ghé shop 9TO5</a><a class="btn ghost" href="#" onclick="openWin('coffee');return false">Mời mình ly cà phê ☕</a></div>`,
+    // mở cửa sổ là phát clip (có tiếng, vì người xem vừa bấm); nhạc nền tạm dừng, xem xong / đóng thì nhạc chạy lại
+    onOpen: w => {
+      const v = w.querySelector('#introVideo'), btn = w.querySelector('.intro-play');
+      let musicWasOn = false;
+      const start = () => { musicWasOn = window.tvpMusic?.pause() || musicWasOn; v.play().catch(() => w.classList.remove('playing')); };
+      const back = () => { if (musicWasOn) { window.tvpMusic?.resume(); musicWasOn = false; } };
+      v.addEventListener('play', () => { w.classList.add('playing'); musicWasOn = window.tvpMusic?.pause() || musicWasOn; });
+      v.addEventListener('pause', back);   // tạm dừng giữa chừng: giữ thanh điều khiển của video, không che lại
+      v.addEventListener('ended', () => { w.classList.remove('playing'); back(); });
+      btn.onclick = start;
+      w.querySelectorAll('.c, .m').forEach(b => b.addEventListener('click', () => { v.pause(); back(); }, true));
+      start();
+    }},
 };
 
 /* Vị thần của những quyết định - các lời phán (tự viết theo tinh thần cuốn sách, không chép từ sách).
@@ -2067,6 +2097,11 @@ const MARKET = {
     });
   };
   const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(s);
+  // cho clip giới thiệu tạm dừng nhạc nền rồi bật lại (không đổi lựa chọn bật/tắt đã lưu của người xem)
+  window.tvpMusic = {
+    pause: () => { const was = wantOn; wantOn = false; if (ready) player.pauseVideo(); show(false); return was; },
+    resume: () => { wantOn = true; play(); },
+  };
 
   const play = () => { if (ready) { player.unMute(); player.setVolume(MUSIC.volume); player.playVideo(); } };
   // xem player có đang phát / đang tải để phát không (dựa vào trạng thái thật, không chỉ biến cờ)
