@@ -3,3 +3,8 @@ portfolio-standalone.html
 .claude/
 Thumbs.db
 .DS_Store
+
+# File trung gian của clip (tạo lại bằng promo/render.py, promo/audio.py)
+promo/voice/
+promo/tin-portfolio-intro.mp4
+promo/stills/

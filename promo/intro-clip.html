@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tín Văn Phòng · Intro clip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<!--
+  Clip giới thiệu portfolio (1920×1080, ~52 giây).
+  - Mở file này trong trình duyệt để xem trước (tự chạy, bấm Space để dừng/chạy, ← → để tua).
+  - Xuất MP4: python promo/render.py
+  Mọi chuyển động đều bám theo một mốc thời gian chung, nên seek(t) vẽ đúng khung hình ở giây t.
+-->
+<style>
+  :root{
+    --brand:#0000F4; --ink:#14142b; --muted:#6b6b80; --bg:#f7f7ff; --grid:#e4e4f7;
+    --yellow:#f6d23a; --shop:#f2b705; --purple:#3b1d8f; --otw:#3c6a35;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#0d0a2e;overflow:hidden}
+  body{font-family:"Be Vietnam Pro",system-ui,sans-serif;color:var(--ink)}
+  #stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;
+    background-color:var(--bg);
+    background-image:linear-gradient(var(--grid) 2px,transparent 2px),linear-gradient(90deg,var(--grid) 2px,transparent 2px);
+    background-size:44px 44px}
+  .abs{position:absolute}
+  .scene{position:absolute;inset:0;opacity:0}
+  .serif{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400}
+
+  /* ---------- trời đêm ---------- */
+  #night{position:absolute;inset:0;opacity:0;background:radial-gradient(120% 90% at 70% 0%,#2a1d7a 0%,#141045 55%,#0b0926 100%)}
+  #night i{position:absolute;color:#f6d23a;font-style:normal;animation:twinkle 2.4s ease-in-out infinite}
+
+  /* ---------- menu bar ---------- */
+  .menubar{position:absolute;inset:0 0 auto 0;height:56px;z-index:50;display:flex;align-items:center;gap:40px;padding:0 34px;font-size:24px;
+    background:rgba(255,255,255,.72);border-bottom:2px solid rgba(0,0,244,.10)}
+  .menubar .logo{color:#fff;background:var(--brand);font-weight:900;font-size:19px;padding:3px 9px;border-radius:6px;letter-spacing:1px}
+  .menubar b{font-weight:800}
+  .menubar .right{margin-left:auto;display:flex;align-items:center;gap:26px;color:#444;font-variant-numeric:tabular-nums}
+  .menubar .right .otw-pill{background:var(--otw);color:#fff;font-weight:800;font-size:18px;padding:4px 14px;border-radius:99px;letter-spacing:.5px}
+  #menuNight{position:absolute;inset:0;background:#120e3a;opacity:0}
+  .menubar > *{position:relative}
+  .menubar.dark,.menubar.dark .right{color:#ece8ff}
+
+  /* ---------- phụ đề kiểu bong bóng chat ---------- */
+  #sub{position:absolute;left:50%;bottom:44px;z-index:60;display:flex;align-items:center;gap:20px;max-width:1500px;
+    padding:16px 34px 16px 16px;background:#fff;border:4px solid var(--ink);border-radius:99px;box-shadow:7px 7px 0 var(--ink);
+    transform:translateX(-50%);opacity:0;white-space:nowrap}
+  #sub img{width:64px;height:64px;border-radius:50%;object-fit:cover;flex:none;border:3px solid var(--otw)}
+  #sub span{font-size:36px;font-weight:700;letter-spacing:-.2px}
+  #sub span b{color:var(--brand)}
+
+  /* ---------- con trỏ ---------- */
+  #cursor{position:absolute;left:0;top:0;z-index:70;width:54px;height:54px;opacity:0;pointer-events:none;filter:drop-shadow(0 6px 8px rgba(0,0,0,.25))}
+  #cursor .ring{position:absolute;left:-26px;top:-26px;width:52px;height:52px;border-radius:50%;border:4px solid var(--brand);opacity:0}
+
+  /* ---------- keyframes dùng chung ---------- */
+  @keyframes up{from{opacity:0;transform:translateY(40px)}}
+  @keyframes fade{from{opacity:0}}
+  @keyframes pop{0%{opacity:0;transform:scale(.4) rotate(var(--r0,-8deg))}60%{opacity:1;transform:scale(1.06) rotate(var(--r,0deg))}100%{transform:scale(1) rotate(var(--r,0deg))}}
+  @keyframes ltrIn{0%{opacity:0;transform:translateY(.5em) rotate(-10deg) scale(.55);filter:blur(10px)}60%{opacity:1;filter:blur(0)}}
+  @keyframes oIn{0%{opacity:0;transform:translateY(.5em) rotate(-200deg) scale(.4);filter:blur(10px)}60%{opacity:1;filter:blur(0)}}
+  @keyframes dotIn{0%{opacity:0;transform:translateY(-1.6em)}55%{opacity:1;transform:translateY(.06em)}75%{transform:translateY(-.12em)}}
+  @keyframes bob{50%{transform:translateY(-.08em)}}
+  @keyframes floaty{50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
+  @keyframes twinkle{50%{opacity:.25;transform:scale(.7)}}
+  @keyframes slideL{from{opacity:0;transform:translateX(-120px) rotate(var(--r,0deg))}}
+  @keyframes slideR{from{opacity:0;transform:translateX(120px) rotate(var(--r,0deg))}}
+  @keyframes drop{0%{opacity:0;transform:translateY(-260px) rotate(var(--r0,12deg))}65%{opacity:1;transform:translateY(10px) rotate(var(--r,0deg))}100%{transform:translateY(0) rotate(var(--r,0deg))}}
+  @keyframes winOpen{0%{opacity:0;transform:scale(.25);filter:blur(6px)}70%{opacity:1;transform:scale(1.02);filter:blur(0)}100%{transform:scale(1)}}
+  @keyframes strike{from{transform:scaleX(0)}}
+  @keyframes check{0%{transform:scale(0)}70%{transform:scale(1.3)}100%{transform:scale(1)}}
+  @keyframes ping{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.6);opacity:0}}
+  @keyframes steam{0%{opacity:0;transform:translateY(6px)}50%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}
+  @keyframes heart{0%{opacity:0;transform:translate(0,0) scale(.4)}15%{opacity:1;transform:translate(calc(var(--dx)*.2),-40px) scale(1.1)}100%{opacity:0;transform:translate(var(--dx),-420px) scale(.8) rotate(var(--rr))}}
+  @keyframes bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-34px)}55%{transform:translateY(0)}72%{transform:translateY(-10px)}}
+  @keyframes shake{20%,60%{transform:rotate(-5deg)}40%,80%{transform:rotate(5deg)}}
+
+  /* ================= CẢNH 1 · welcome ================= */
+  .hero{position:absolute;left:0;right:0;top:250px;text-align:center}
+  .hero .welcome{font-size:54px;letter-spacing:1px;color:#333;animation:up .7s ease-out .2s both}
+  .big{font-family:"Instrument Serif",serif;font-style:italic;white-space:nowrap;line-height:.95;display:inline-block}
+  .big .ltr{display:inline-block;transform-origin:50% 90%}
+  .big .o{color:var(--brand)}
+  .big .dot{display:inline-block;width:.13em;height:.13em;border-radius:50%;background:var(--brand);margin-left:.04em;animation:bob 2.4s ease-in-out infinite}
+  .hero .big{font-size:330px;margin-top:6px}
+  .hero .big .ltr{animation:ltrIn .75s cubic-bezier(.2,1.5,.4,1) both;animation-delay:calc(.55s + var(--k) * 90ms)}
+  .hero .big .ltr.o{animation-name:oIn;animation-duration:.95s}
+  .hero .big .ltr.dotw{animation:dotIn .7s cubic-bezier(.3,1.6,.5,1) both;animation-delay:1.55s}
+  .hero .sub{font-size:40px;color:var(--muted);margin-top:22px;animation:up .7s ease-out 2.3s both}
+  .hero .sub b{color:var(--ink)}
+  .sticky{position:absolute;padding:26px 30px;background:#fff09c;box-shadow:0 14px 30px rgba(0,0,0,.12);font-size:25px;line-height:1.55}
+  .sticky h4{margin:0 0 8px;font-size:26px}
+  .sticky ul{margin:0;padding-left:30px}
+  .sticky .done{text-decoration:line-through;color:#8a8a6a}
+  .polaroid{position:absolute;background:#fff;padding:14px 14px 58px;box-shadow:0 18px 36px rgba(0,0,0,.16)}
+  .polaroid img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+  .polaroid span{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-family:"Instrument Serif",serif;font-style:italic;font-size:30px;color:#333}
+  .polaroid .tape{position:absolute;top:-16px;left:50%;width:100px;height:34px;transform:translateX(-50%) rotate(-3deg);background:rgba(246,210,58,.78)}
+
+  /* ================= CẢNH 2 · mình là Tín ================= */
+  .ava{position:absolute;border-radius:50%;overflow:hidden;background:#fff;border:10px solid #fff;box-shadow:0 20px 50px rgba(0,0,40,.18)}
+  .ava img{width:100%;height:100%;object-fit:cover;display:block}
+  .ava::after{content:"";position:absolute;inset:0;border-radius:50%;
+    background:conic-gradient(transparent 0 100deg,#43703b 140deg,#3c6a35 265deg,transparent 305deg);
+    -webkit-mask:radial-gradient(circle closest-side,transparent 63%,#000 65%);mask:radial-gradient(circle closest-side,transparent 63%,#000 65%)}
+  .ava svg{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+  .ava text{fill:#fff;font:900 10.5px/1 "Be Vietnam Pro",sans-serif;letter-spacing:.6px}
+  .chip{display:inline-block;font-size:30px;font-weight:700;padding:10px 24px;border-radius:99px;background:var(--ink);color:#fff;margin:0 12px 14px 0}
+  .chip.blue{background:var(--brand)}
+  .chip.ghost{background:#fff;color:var(--ink);border:3px solid var(--ink)}
+  .hl{background:var(--yellow);padding:0 .15em;border-radius:.12em}
+
+  /* ================= CẢNH 3 · ban ngày ================= */
+  .label{position:absolute;font-size:40px;font-weight:900;letter-spacing:3px;padding:10px 30px;border-radius:99px;border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);background:var(--yellow)}
+  .win{position:absolute;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 30px 70px rgba(20,20,60,.25);border:2px solid #e6e6f3}
+  .win .tb{height:62px;display:flex;align-items:center;gap:14px;padding:0 24px;background:#f4f4fb;border-bottom:2px solid #e6e6f3;position:relative;font-size:24px;font-weight:600}
+  .win .tb i{width:20px;height:20px;border-radius:50%;display:block}
+  .win .tb .t{position:absolute;left:0;right:0;text-align:center;pointer-events:none}
+  .win .tb .tag{position:absolute;right:20px;font-size:17px;font-weight:800;padding:4px 14px;border-radius:99px;background:var(--ink);color:#fff;letter-spacing:.5px}
+  .code{background:#16162e;color:#e6e6ff;font:500 34px/1.62 "JetBrains Mono",monospace;padding:30px 40px;height:calc(100% - 62px);white-space:pre}
+  .code .k{color:#c4b5fd}.code .s{color:#fde68a}.code .n{color:#7dd3fc}.code .c{color:#7a7aa8;font-style:italic}.code .p{color:#f9a8d4}
+  .code .caret{display:inline-block;width:3px;height:1.1em;background:#fde68a;vertical-align:-.2em;margin-left:2px}
+  .todo{position:absolute;padding:34px 40px;background:#fff09c;box-shadow:0 20px 40px rgba(0,0,0,.14);font-size:32px;line-height:1.5}
+  .todo h4{margin:0 0 14px;font-size:34px}
+  .todo li{list-style:none;display:flex;align-items:center;gap:18px;margin:10px 0;position:relative}
+  .todo .box{width:40px;height:40px;border:4px solid var(--ink);border-radius:10px;flex:none;position:relative;background:#fff}
+  .todo .box::after{content:"✓";position:absolute;inset:-10px 0 0 4px;font-size:40px;font-weight:900;color:var(--brand);transform:scale(0);animation:check .35s ease-out var(--t) both}
+  .todo .txt{position:relative}
+  .todo .txt::after{content:"";position:absolute;left:-4px;right:-4px;top:52%;height:4px;background:var(--ink);transform-origin:left;transform:scaleX(0);animation:strike .3s ease-out var(--t) both}
+  .mug{position:absolute;display:flex;align-items:center;gap:20px;font-size:40px;font-weight:900}
+
+  /* ================= CẢNH 4 · ban đêm ================= */
+  .tcard{position:absolute;background:#fff;border-radius:28px;padding:30px 34px;box-shadow:0 30px 80px rgba(0,0,0,.45);color:var(--ink)}
+  .tcard .who{display:flex;align-items:center;gap:16px;font-size:28px}
+  .tcard .who img{width:62px;height:62px;border-radius:50%;object-fit:cover}
+  .tcard .who span{color:var(--muted);font-weight:400}
+  .tcard p{font-size:31px;line-height:1.45;margin:16px 0 18px;min-height:2.9em}
+  .tcard .pic{width:100%;height:330px;object-fit:cover;border-radius:18px;display:block}
+  .tcard .acts{display:flex;gap:44px;margin-top:20px;font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}
+  .tcard .acts .like{color:#ff3b6b}
+  .stat{position:absolute;background:rgba(255,255,255,.08);border:2px solid rgba(246,210,58,.45);border-radius:26px;padding:26px 36px;color:#fff;width:440px}
+  .stat b{display:block;font-size:84px;line-height:1;color:var(--yellow);font-variant-numeric:tabular-nums}
+  .stat small{font-size:28px;color:#cfc8f5}
+  .hrt{position:absolute;font-size:52px;opacity:0;animation:heart 2.6s ease-out var(--t) both}
+
+  /* ================= CẢNH 5 · desktop ================= */
+  .zone{position:absolute;border:4px dashed rgba(20,20,43,.25);border-radius:30px;background:rgba(255,255,255,.55);padding:56px 26px 22px}
+  .zone .zt{position:absolute;top:-26px;left:26px;font-size:22px;font-weight:900;letter-spacing:1px;padding:8px 22px;border-radius:99px;background:var(--c);color:var(--on,#fff);white-space:nowrap}
+  .zone .zs{font-size:21px;color:var(--muted);margin:-30px 0 14px}
+  .icons{display:flex;gap:26px}
+  .icon{display:flex;flex-direction:column;align-items:center;gap:10px;width:120px;text-align:center;font-size:21px;line-height:1.25}
+  .icon svg{filter:drop-shadow(0 6px 8px rgba(0,0,0,.12))}
+  .icon.sel .lbl{background:var(--ink);color:#fff;border-radius:6px;padding:0 6px}
+  .mini-thread{background:#fff;border-radius:18px;padding:16px 18px;font-size:20px;box-shadow:0 6px 16px rgba(0,0,0,.06)}
+  .mini-thread img{width:100%;height:150px;object-fit:cover;border-radius:12px;margin-top:10px}
+  .dock{position:absolute;left:50%;bottom:150px;transform:translateX(-50%);display:flex;gap:20px;padding:16px 22px;border-radius:32px;background:rgba(255,255,255,.75);border:2px solid #e6e6f3;box-shadow:0 20px 50px rgba(20,20,60,.15)}
+  .dock .app{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;color:#fff;font-size:40px;animation:bounce .8s ease-out var(--t) both}
+  .dock .app svg{width:46px;height:46px}
+  .profile-cover{height:250px;background:url(../assets/me/stage.jpg) center 35%/cover}
+  .profile{display:flex;gap:30px;align-items:center;padding:0 44px;margin-top:-80px}
+  .profile h2{margin:80px 0 4px;font-size:40px;white-space:nowrap}
+  .profile .role{color:var(--muted);font-size:24px;line-height:1.45}
+  .tags{padding:16px 44px 0}
+  .tags span{display:inline-block;font-size:20px;font-weight:700;padding:6px 16px;border-radius:99px;background:#ececf3;margin:0 8px 10px 0}
+  .tl{list-style:none;margin:8px 44px;padding:0}
+  .tl li{padding:10px 0 10px 30px;border-left:3px solid #e2e2ec;position:relative;font-size:24px}
+  .tl li::before{content:"";position:absolute;left:-10px;top:20px;width:17px;height:17px;border-radius:50%;background:var(--ink)}
+  .tl li small{display:block;color:var(--muted);font-size:19px}
+  .win h3{margin:18px 44px 0;font-size:28px}
+
+
+  /* ================= CẢNH 5b · tiện ích ================= */
+  .wdg{position:absolute;top:220px;width:780px;height:560px;border-radius:30px;background:#fff;border:4px solid var(--ink);box-shadow:10px 10px 0 var(--ink);padding:62px 40px 30px}
+  .wdg.gold{border-color:#d9a400;box-shadow:10px 10px 0 #d9a400}
+  .wdg .wt{position:absolute;top:-28px;left:30px;font-size:26px;font-weight:900;letter-spacing:1px;padding:8px 24px;border-radius:99px;background:#f6d23a;border:4px solid var(--ink)}
+  .wdg .wsub{font-size:24px;color:var(--muted);margin-bottom:14px}
+  .gp{width:100%;border-collapse:collapse;font-size:30px;font-variant-numeric:tabular-nums}
+  .gp th{text-align:left;font-size:21px;color:var(--muted);font-weight:700;padding:6px 0;border-bottom:2px solid #eee}
+  .gp td{padding:14px 0;border-bottom:2px solid #f2f2f2;font-weight:600}
+  .gp td + td,.gp th + th{text-align:right;width:150px}
+  .gp td:last-child{font-weight:800}
+  .spark{display:block;width:100%;height:90px;margin-top:22px}
+  .wfoot{display:flex;justify-content:space-between;font-size:22px;color:var(--muted);margin-top:6px}
+  .vnum{display:flex;align-items:baseline;gap:22px}
+  .vnum b{font-size:96px;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-1px}
+  .vnum span{font-size:30px;font-weight:800;color:#16a34a;white-space:nowrap}
+  .tabs{display:flex;gap:10px;margin:18px 0 10px}
+  .tabs span{font-size:21px;font-weight:700;padding:6px 18px;border-radius:99px;background:#f0f0f6;color:var(--muted)}
+  .tabs .on{background:var(--ink);color:#fff}
+  .vchart{display:block;width:100%;height:230px}
+  .more{display:inline-block;font-size:32px;font-weight:800;padding:14px 34px;border-radius:99px;border:4px dashed var(--brand);color:var(--brand);background:#fff}
+
+  /* ================= CẢNH 6 · đồ chơi ================= */
+  .card{position:absolute;top:210px;width:520px;height:600px;border-radius:34px;background:#fff;border:4px solid var(--ink);box-shadow:10px 10px 0 var(--ink);overflow:hidden}
+  .card .cap{position:absolute;left:0;right:0;bottom:0;padding:24px;text-align:center;font-size:32px;font-weight:800;border-top:4px solid var(--ink);background:#fff}
+  .card .cap small{display:block;font-size:22px;font-weight:500;color:var(--muted)}
+  .card.purple{background:radial-gradient(120% 80% at 50% 0%,#3b1d8f 0%,#1b1250 60%,#0d0a2e 100%)}
+  .book{position:absolute;left:50%;top:70px;width:220px;height:270px;margin-left:-110px;perspective:1200px}
+  .book::before{content:"";position:absolute;inset:-36px;border-radius:50%;background:radial-gradient(circle,rgba(246,210,58,.4),transparent 65%)}
+  .book .page{position:absolute;inset:0;border-radius:6px 16px 16px 6px;background:linear-gradient(90deg,#efe6cf,#fffaf0 12%,#fffaf0);display:grid;place-items:center;padding:24px;text-align:center;color:#2a1a5e;font-family:"Instrument Serif",serif;font-style:italic;font-size:34px;line-height:1.15}
+  .book .cover{position:absolute;inset:0;transform-origin:left center;backface-visibility:hidden;border-radius:6px 16px 16px 6px;border-left:14px solid #160e46;background:radial-gradient(circle at 50% 35%,#5b34c4,#2a1670 70%);color:#f6d23a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 14px 30px rgba(0,0,0,.5)}
+  .book .cover i{font-style:normal;font-size:44px}
+  .book .cover b{letter-spacing:5px;font-size:24px}
+  .book .cover small{font-family:"Instrument Serif",serif;font-style:italic;font-size:24px;line-height:1.1;color:#fde68a;text-align:center}
+  .cup{position:absolute;left:50%;top:80px;margin-left:-130px}
+  .cup .st path{animation:steam 1.6s ease-in-out infinite}
+  .cup .st path:nth-child(2){animation-delay:.3s}.cup .st path:nth-child(3){animation-delay:.6s}
+
+  /* ================= CẢNH 7 · outro ================= */
+  .url{display:inline-block;font-size:40px;font-weight:800;color:#fff;background:var(--brand);padding:14px 36px;border-radius:99px;box-shadow:7px 7px 0 var(--ink);border:4px solid var(--ink)}
+  .handles{font-size:30px;color:var(--muted);margin-top:30px}
+  .handles b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="night" aria-hidden="true"></div>
+
+  <!-- menu bar giống portfolio -->
+  <div class="menubar" id="menubar">
+    <div id="menuNight"></div>
+    <span class="logo">TVP</span><b>Thành Tín</b><span>Công việc</span><span>Booking</span><span>Shop 9TO5</span><span>Contact</span>
+    <div class="right"><span class="otw-pill">#OPENTOWORK</span><span id="clockDay">Th 6, 13 thg 11</span><b id="clock">08:59</b></div>
+  </div>
+
+  <!-- ============ CẢNH 1 ============ -->
+  <section class="scene" id="s1">
+    <div class="sticky" style="left:90px;top:105px;width:400px;--r:-3deg;transform:rotate(-3deg);animation:slideL .8s cubic-bezier(.2,1.2,.4,1) 2.7s both">
+      <h4>To do:</h4>
+      <ul><li>Viết 1 thread mỗi ngày</li><li class="done">Sống sót qua deadline</li><li class="done">Ngủ đủ 8 tiếng</li><li><b>Build portfolio ✿</b></li></ul>
+    </div>
+    <div class="polaroid" style="right:130px;top:140px;width:290px;--r:5deg;--r0:20deg;animation:drop .9s cubic-bezier(.3,1.2,.5,1) 3.1s both"><i class="tape"></i><img src="../assets/me/selfie.jpg" alt=""><span>hi, it's Tín!</span></div>
+    <div class="hero">
+      <div class="welcome">welcome to my</div>
+      <div class="big" id="heroWord"></div>
+      <div class="sub">Ban ngày <b>viết code</b>, ban đêm <b>viết caption</b></div>
+    </div>
+  </section>
+
+  <!-- ============ CẢNH 2 ============ -->
+  <section class="scene" id="s2">
+    <div class="ava" style="left:250px;top:250px;width:470px;height:470px;--r0:-20deg;animation:pop .9s cubic-bezier(.3,1.4,.5,1) 6.3s both">
+      <img src="../assets/me/avatar.jpg" alt="">
+      <svg viewBox="0 0 100 100"><path id="arcA" d="M8.6 33.4 A44 44 0 1 0 93.3 57.6" fill="none"/><text><textPath href="#arcA" startOffset="9%">#OPENTOWORK</textPath></text></svg>
+    </div>
+    <div class="abs" style="left:830px;top:215px;width:1000px">
+      <div style="font-size:52px;color:var(--muted);animation:up .6s ease-out 6.7s both">Hi 👋 mình là</div>
+      <div class="serif" style="font-size:220px;line-height:1;color:var(--brand);margin:6px 0 10px -10px;animation:up .7s cubic-bezier(.2,1.3,.4,1) 7.0s both">Thành Tín</div>
+      <div style="font-size:34px;font-weight:600;margin-bottom:34px;animation:up .6s ease-out 7.5s both">Tin Tran-Luong-Thanh · <span class="hl">Gen Z văn phòng</span></div>
+      <div>
+        <span class="chip" style="animation:pop .5s ease-out 7.9s both;--r0:0deg">Associate Engineer · ELCA</span>
+        <span class="chip blue" style="animation:pop .5s ease-out 8.15s both;--r0:0deg">Software Engineer</span>
+        <span class="chip" style="animation:pop .5s ease-out 8.4s both;--r0:0deg">Product Owner</span>
+        <span class="chip ghost" style="animation:pop .5s ease-out 8.65s both;--r0:0deg">📍 TP. Hồ Chí Minh</span>
+      </div>
+    </div>
+    <div class="polaroid" style="left:90px;top:640px;width:230px;--r:-7deg;--r0:-25deg;animation:drop .9s cubic-bezier(.3,1.2,.5,1) 9.2s both"><i class="tape"></i><img src="../assets/me/summit.jpg" alt=""><span>lên đỉnh!</span></div>
+    <div class="polaroid" style="right:110px;top:660px;width:230px;--r:-4deg;--r0:20deg;animation:drop .9s cubic-bezier(.3,1.2,.5,1) 9.8s both"><i class="tape"></i><img src="../assets/me/opera.jpg" alt=""><span>đi chơi xíu</span></div>
+  </section>
+
+  <!-- ============ CẢNH 3 ============ -->
+  <section class="scene" id="s3">
+    <div class="label" style="left:120px;top:110px;animation:pop .5s ease-out 13.2s both;--r0:-10deg;--r:-2deg">☀ BAN NGÀY</div>
+    <div class="win" style="left:120px;top:220px;width:1080px;height:620px;animation:winOpen .6s cubic-bezier(.2,1.1,.3,1) 13.5s both">
+      <div class="tb"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="t">tin.js — đang code</span><span class="tag">CÔNG VIỆC</span></div>
+      <div class="code" id="code"></div>
+    </div>
+    <div class="todo" style="left:1290px;top:190px;width:520px;--r:3deg;transform:rotate(3deg);animation:slideR .7s cubic-bezier(.2,1.2,.4,1) 14.0s both">
+      <h4>Hôm nay:</h4>
+      <ul style="padding:0;margin:0">
+        <li><span class="box" style="--t:15.2s"></span><span class="txt" style="--t:15.3s">Daily standup</span></li>
+        <li><span class="box" style="--t:16.1s"></span><span class="txt" style="--t:16.2s">Fix bug đăng nhập</span></li>
+        <li><span class="box" style="--t:17.0s"></span><span class="txt" style="--t:17.1s">Họp với khách</span></li>
+        <li><span class="box" style="--t:18.3s"></span><span class="txt" style="--t:18.4s"><b>Sống sót qua deadline</b></span></li>
+      </ul>
+    </div>
+    <div class="mug" style="left:1340px;top:690px;animation:up .5s ease-out 14.6s both">
+      <svg width="110" height="118" viewBox="0 0 86 92"><g class="st" stroke="#9a9ab8" stroke-width="3" fill="none" stroke-linecap="round"><path d="M28 22c-4-5 4-8 0-14" style="animation:steam 1.6s ease-in-out infinite"/><path d="M40 22c-4-5 4-8 0-14" style="animation:steam 1.6s ease-in-out .3s infinite"/><path d="M52 22c-4-5 4-8 0-14" style="animation:steam 1.6s ease-in-out .6s infinite"/></g><path d="M66 44h5a9 9 0 0 1 0 18h-6" fill="none" stroke="#14142b" stroke-width="4"/><path d="M14 30h54l-5 46a8 8 0 0 1-8 7H27a8 8 0 0 1-8-7z" fill="#0000F4" stroke="#14142b" stroke-width="4" stroke-linejoin="round"/><circle cx="32" cy="52" r="3" fill="#fff"/><circle cx="50" cy="52" r="3" fill="#fff"/><path d="M35 61q6 6 12 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+      <span>cà phê × <span id="coffee" style="color:var(--brand)">1</span></span>
+    </div>
+  </section>
+
+  <!-- ============ CẢNH 4 ============ -->
+  <section class="scene" id="s4">
+    <div class="label" style="left:120px;top:110px;background:#c4b5fd;animation:pop .5s ease-out 21.4s both;--r0:10deg;--r:2deg">☾ BAN ĐÊM</div>
+    <div class="tcard" style="left:120px;top:220px;width:900px;animation:up .7s cubic-bezier(.2,1.2,.4,1) 21.7s both">
+      <div class="who"><img src="../assets/me/avatar.jpg" alt=""><b>tin.tr_20s</b><span>· Threads</span></div>
+      <p id="caption"></p>
+      <img class="pic" src="../assets/threads/Dfq19URAYsF.jpg" alt="" style="animation:fade .6s ease-out 24.2s both">
+      <div class="acts"><span class="like">♥ <span id="likes">0</span></span><span>💬 <span id="replies">0</span></span><span>↻ <span id="reposts">0</span></span></div>
+    </div>
+    <div class="stat" style="left:1240px;top:300px;animation:slideR .7s cubic-bezier(.2,1.2,.4,1) 23.0s both"><b id="views">0</b><small>lượt xem / 90 ngày</small></div>
+    <div class="stat" style="left:1240px;top:520px;animation:slideR .7s cubic-bezier(.2,1.2,.4,1) 23.4s both"><b id="viewers">0</b><small>người xem trên Threads</small></div>
+    <div class="abs serif" style="left:1260px;top:740px;font-size:46px;color:#fde68a;animation:fade .6s ease-out 25.4s both">viết linh tinh nhưng thật tình ♡</div>
+    <div id="hearts"></div>
+    <div class="abs" style="right:150px;top:110px;font-size:120px;--r:-10deg;animation:floaty 4s ease-in-out infinite,fade 1s ease-out 21.2s both">🌙</div>
+  </section>
+
+  <!-- ============ CẢNH 5 ============ -->
+  <section class="scene" id="s5">
+    <div class="zone" id="z1" style="--c:var(--ink);left:110px;top:150px;width:470px;height:280px;animation:pop .55s ease-out 28.6s both;--r0:0deg">
+      <span class="zt">💼 CÔNG VIỆC CHUYÊN MÔN</span><div class="zs">Profile đi làm</div>
+      <div class="icons">
+        <div class="icon" id="folderWork"><svg width="96" height="78" viewBox="0 0 48 39"><path d="M2 6a4 4 0 0 1 4-4h12l4 5h20a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#5d5d78"/><path d="M2 13h44v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#73738f"/></svg><span class="lbl">Hồ sơ công việc</span></div>
+        <div class="icon"><svg width="70" height="86" viewBox="0 0 35 43"><path d="M3 1h21l10 10v29a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z" fill="#fff" stroke="#d8d8e6" stroke-width="1.6"/><path d="M24 1v10h10" fill="#eee" stroke="#d8d8e6" stroke-width="1.6"/><rect x="5" y="20" width="18" height="9" rx="2" fill="#e5322d"/><text x="14" y="27" font-size="6.5" font-weight="900" fill="#fff" text-anchor="middle" font-family="sans-serif">PDF</text></svg><span class="lbl">Resume.pdf</span></div>
+      </div>
+    </div>
+    <div class="zone" id="z2" style="--c:var(--brand);left:110px;top:500px;width:470px;height:300px;animation:pop .55s ease-out 28.85s both;--r0:0deg">
+      <span class="zt">📣 BOOKING BRAND</span><div class="zs">Dành cho nhãn hàng</div>
+      <div class="icons">
+        <div class="icon"><svg width="96" height="78" viewBox="0 0 48 39"><path d="M2 6a4 4 0 0 1 4-4h12l4 5h20a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#3b3bdb"/><path d="M2 13h44v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#5a5aff"/></svg><span class="lbl">Tín Văn Phòng</span></div>
+        <div class="icon"><svg width="96" height="78" viewBox="0 0 48 39"><path d="M2 6a4 4 0 0 1 4-4h12l4 5h20a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#3b3bdb"/><path d="M2 13h44v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#5a5aff"/></svg><span class="lbl">Bảng giá booking</span></div>
+        <div class="icon"><svg width="96" height="78" viewBox="0 0 48 39"><path d="M2 6a4 4 0 0 1 4-4h12l4 5h20a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#3b3bdb"/><path d="M2 13h44v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#5a5aff"/></svg><span class="lbl">Đối tác</span></div>
+      </div>
+    </div>
+    <div class="zone" id="z3" style="--c:var(--shop);--on:var(--ink);left:1450px;top:150px;width:360px;height:280px;animation:pop .55s ease-out 29.1s both;--r0:0deg">
+      <span class="zt">🛍 SHOP 9TO5</span><div class="zs">Đồ decor bàn làm việc</div>
+      <div class="icons">
+        <div class="icon"><svg width="96" height="78" viewBox="0 0 48 39"><path d="M2 6a4 4 0 0 1 4-4h12l4 5h20a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#d9a400"/><path d="M2 13h44v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#f2b705"/></svg><span class="lbl">Cửa hàng</span></div>
+        <div class="icon"><svg width="96" height="78" viewBox="0 0 48 39"><path d="M2 6a4 4 0 0 1 4-4h12l4 5h20a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#d9a400"/><path d="M2 13h44v20a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#f2b705"/></svg><span class="lbl">Đèn decor</span></div>
+      </div>
+    </div>
+    <div class="zone" id="z4" style="--c:#101010;left:1450px;top:500px;width:360px;height:300px;padding-top:50px;animation:pop .55s ease-out 29.35s both;--r0:0deg">
+      <span class="zt">🧵 THREADS GẦN ĐÂY</span>
+      <div class="mini-thread"><b>tin.tr_20s</b> · Rất thích ngồi mấy quán cafe có đào thế này nha 🫶<img src="../assets/threads/DftOtbmAXNe.jpg" alt=""></div>
+    </div>
+    <div class="abs" style="left:0;right:0;top:330px;text-align:center;animation:fade .6s ease-out 28.4s both">
+      <div class="big" style="font-size:190px;opacity:.9">portfoli<span class="o">o</span><span class="dot"></span></div>
+      <div style="font-size:30px;line-height:1.4;color:var(--muted);margin:14px auto 0;max-width:760px;height:90px"><span id="deskTag">một cái “desktop” văn phòng —<br>bấm vào đâu cũng ra một góc của Tín</span></div>
+    </div>
+    <div class="dock">
+      <div class="app" style="background:#14142b;--t:29.7s">💼</div>
+      <div class="app" style="background:#0000F4;--t:29.8s">📣</div>
+      <div class="app" style="background:#f2b705;--t:29.9s">🛍</div>
+      <div class="app" style="background:#ff7a3d;--t:30.0s">📷</div>
+      <div class="app" style="background:#3b1d8f;--t:30.1s">✦</div>
+      <div class="app" style="background:#7a4a2a;--t:30.2s">☕</div>
+      <div class="app" style="background:#a78bfa;--t:30.3s">✉</div>
+    </div>
+  </section>
+
+  <!-- ============ CẢNH 5b · tiện ích ============ -->
+  <section class="scene" id="s5b">
+    <div class="abs" style="left:0;right:0;top:92px;text-align:center;font-size:58px;font-weight:900;animation:up .6s ease-out 38.2s both">Xem nhanh <span class="serif" style="font-size:78px;color:var(--brand)">giá vàng &amp; VN-Index</span> 📈</div>
+    <div class="wdg gold" style="left:150px;animation:pop .6s cubic-bezier(.3,1.4,.5,1) 38.5s both;--r0:-5deg">
+      <span class="wt">🪙 GIÁ VÀNG NHẪN</span>
+      <div class="wsub">Triệu đồng / lượng · so với hôm qua</div>
+      <table class="gp">
+        <tr><th>Loại</th><th>Mua vào</th><th>Bán ra</th></tr>
+        <tr style="animation:up .45s ease-out 39.7s both"><td>Nhẫn SJC 9999</td><td>133,3</td><td>137,3</td></tr>
+        <tr style="animation:up .45s ease-out 39.95s both"><td>Nhẫn tròn Bảo Tín</td><td>133,8</td><td>137,8</td></tr>
+        <tr style="animation:up .45s ease-out 40.2s both"><td>Nhẫn trơn PNJ 999.9</td><td>132,7</td><td>136,9</td></tr>
+      </table>
+      <svg class="spark" viewBox="0 0 600 90" preserveAspectRatio="none"><path id="goldLine" d="M0 20 L90 26 L180 18 L270 34 L360 40 L450 52 L520 58 L600 70" fill="none" stroke="#e5322d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="wfoot"><span>Nhẫn SJC bán ra · 7 ngày</span><b style="color:#e5322d">▼ 3,5 tr</b></div>
+    </div>
+    <div class="wdg vni" style="left:990px;animation:pop .6s cubic-bezier(.3,1.4,.5,1) 38.8s both;--r0:5deg">
+      <span class="wt" style="background:var(--ink);color:#fff">📈 VN-INDEX</span>
+      <div class="wsub">Chỉ số chứng khoán Việt Nam</div>
+      <div class="vnum"><b id="vni">0</b><span id="vchg">+0,18 (+0,01%)</span></div>
+      <div class="tabs"><span>3 tháng</span><span class="on">6 tháng</span><span>1 năm</span></div>
+      <svg class="vchart" viewBox="0 0 680 230" preserveAspectRatio="none">
+        <defs><linearGradient id="vg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#16a34a" stop-opacity=".28"/><stop offset="1" stop-color="#16a34a" stop-opacity="0"/></linearGradient></defs>
+        <path id="vArea" d="M0 190 L40 175 L80 182 L120 160 L160 166 L200 140 L240 150 L280 120 L320 128 L360 104 L400 112 L440 86 L480 96 L520 70 L560 78 L600 52 L640 60 L680 40 L680 230 L0 230 Z" fill="url(#vg)"/>
+        <path id="vLine" d="M0 190 L40 175 L80 182 L120 160 L160 166 L200 140 L240 150 L280 120 L320 128 L360 104 L400 112 L440 86 L480 96 L520 70 L560 78 L600 52 L640 60 L680 40" fill="none" stroke="#16a34a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="abs" style="left:0;right:0;top:806px;text-align:center;animation:pop .55s cubic-bezier(.3,1.4,.5,1) 43.8s both;--r0:0deg">
+      <span class="more">＋ sắp có thêm nhiều thứ hay ho nữa ✦</span>
+    </div>
+  </section>
+
+  <!-- ============ CẢNH 6 ============ -->
+  <section class="scene" id="s6">
+    <div class="abs" style="left:0;right:0;top:95px;text-align:center;font-size:60px;font-weight:900;animation:up .6s ease-out 46.9s both">Vài món <span class="serif" style="font-size:80px;color:var(--brand)">đồ chơi nhỏ</span> ✦</div>
+    <div class="card" style="left:120px;animation:pop .6s cubic-bezier(.3,1.4,.5,1) 47.2s both;--r0:-6deg">
+      <div class="abs" style="left:0;right:0;top:150px;text-align:center"><div class="big" id="toyWord" style="font-size:132px"></div></div>
+      <div class="abs" style="left:0;right:0;top:360px;text-align:center;font-size:24px;color:var(--muted)">nắm từng chữ kéo qua lại<br>như xếp chữ vậy đó</div>
+      <div class="cap">Kéo thả chữ<small>“portfolio.” trên trang chủ</small></div>
+    </div>
+    <div class="card purple" style="left:700px;animation:pop .6s cubic-bezier(.3,1.4,.5,1) 47.45s both;--r0:6deg">
+      <div class="book" id="book"><div class="page" id="oracleText"></div><div class="cover" id="bookCover"><i>✦</i><b>VỊ THẦN</b><small>của những<br>quyết định</small></div></div>
+      <div class="abs" style="left:0;right:0;top:390px;text-align:center;font-size:24px;color:#cfc8f5">nghĩ điều đang phân vân<br>rồi chạm vào sách</div>
+      <div class="cap">Vị thần quyết định<small>chỉ để vui thôi nha ♡</small></div>
+    </div>
+    <div class="card" style="left:1280px;background:#fff8e6;animation:pop .6s cubic-bezier(.3,1.4,.5,1) 47.7s both;--r0:-6deg">
+      <svg class="cup" id="cup" width="260" height="278" viewBox="0 0 86 92"><g class="st" stroke="#9a9ab8" stroke-width="3" fill="none" stroke-linecap="round"><path d="M28 22c-4-5 4-8 0-14"/><path d="M40 22c-4-5 4-8 0-14"/><path d="M52 22c-4-5 4-8 0-14"/></g><path d="M66 44h5a9 9 0 0 1 0 18h-6" fill="none" stroke="#14142b" stroke-width="4"/><path d="M14 30h54l-5 46a8 8 0 0 1-8 7H27a8 8 0 0 1-8-7z" fill="#0000F4" stroke="#14142b" stroke-width="4" stroke-linejoin="round"/><circle cx="32" cy="52" r="3" fill="#fff"/><circle cx="50" cy="52" r="3" fill="#fff"/><path d="M35 61q6 6 12 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="27" cy="59" r="3.5" fill="#ff8fb1" opacity=".8"/><circle cx="55" cy="59" r="3.5" fill="#ff8fb1" opacity=".8"/></svg>
+      <div class="abs" style="left:0;right:0;top:390px;text-align:center;font-size:24px;color:var(--muted)">thấy vui thì mời mình<br>một ly cho tỉnh deadline</div>
+      <div class="cap">Buy me a coffee<small>MoMo · VietQR</small></div>
+      <div id="cupHearts"></div>
+    </div>
+  </section>
+
+  <!-- ============ CẢNH 7 ============ -->
+  <section class="scene" id="s7">
+    <div class="ava" style="left:835px;top:110px;width:250px;height:250px;border-width:8px;--r0:-20deg;animation:pop .8s cubic-bezier(.3,1.4,.5,1) 55.0s both">
+      <img src="../assets/me/avatar.jpg" alt=""><svg viewBox="0 0 100 100"><path id="arcC" d="M8.6 33.4 A44 44 0 1 0 93.3 57.6" fill="none"/><text><textPath href="#arcC" startOffset="9%">#OPENTOWORK</textPath></text></svg>
+    </div>
+    <div class="abs" style="left:0;right:0;top:370px;text-align:center">
+      <div class="serif" style="font-size:96px;line-height:1;animation:up .6s ease-out 55.4s both">ghé chơi nha ✿</div>
+      <div class="big" id="outroWord" style="font-size:150px;margin-top:4px"></div>
+      <div style="margin-top:26px;animation:pop .6s cubic-bezier(.3,1.4,.5,1) 56.7s both;--r0:0deg"><span class="url">thanhtin4401.github.io/tinvanphongportfolio</span></div>
+      <div style="font-size:26px;color:var(--muted);margin-top:18px;animation:fade .6s ease-out 55.8s both">tạm thời dùng tên miền free của GitHub · có tên miền riêng sẽ đổi sau nha 😆</div>
+      <div class="handles" style="margin-top:16px;animation:fade .6s ease-out 60.4s both">Threads <b>@tin.tr_20s</b> · LinkedIn <b>/in/thanhtin</b> · <b style="color:var(--otw)">#OpenToWork</b></div>
+    </div>
+    <div class="polaroid" style="left:140px;top:300px;width:250px;--r:-8deg;--r0:-25deg;animation:drop .9s cubic-bezier(.3,1.2,.5,1) 55.9s both"><i class="tape"></i><img src="../assets/me/selfie.jpg" alt=""><span>hi, it's Tín!</span></div>
+    <div class="polaroid" style="right:140px;top:280px;width:250px;--r:7deg;--r0:25deg;animation:drop .9s cubic-bezier(.3,1.2,.5,1) 56.2s both"><i class="tape"></i><img src="../assets/me/mountain.jpg" alt=""><span>hẹn gặp nha</span></div>
+  </section>
+
+  <div id="sub"><img src="../assets/me/avatar.jpg" alt=""><span id="subText"></span></div>
+  <svg id="cursor" viewBox="0 0 24 24"><g><path d="M4 2l15 11-6.5 1.2L16 21l-3 1.4-3.6-6.8L4 20z" fill="#fff" stroke="#14142b" stroke-width="1.6" stroke-linejoin="round"/></g></svg>
+  <div id="ring" class="abs" style="width:70px;height:70px;border-radius:50%;border:5px solid var(--brand);opacity:0;z-index:69;pointer-events:none"></div>
+</div>
+
+<script>
+const DURATION = 65.5;
+const $ = s => document.querySelector(s);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = p => p < .5 ? 2 * p * p : 1 - (-2 * p + 2) ** 2 / 2;
+const back = p => { const c = 1.7; return 1 + (c + 1) * (p - 1) ** 3 + c * (p - 1) ** 2; };
+const lerp = (a, b, p) => a + (b - a) * p;
+
+/* ---------- chữ "portfolio." ---------- */
+const wordHTML = () => [...'portfolio'].map((c, i) => `<span class="ltr${i === 8 ? ' o' : ''}" style="--k:${i}">${c}</span>`).join('')
+  + '<span class="ltr dotw" style="--k:9"><span class="dot"></span></span>';
+$('#heroWord').innerHTML = wordHTML();
+$('#toyWord').innerHTML = wordHTML();
+$('#outroWord').innerHTML = wordHTML();
+document.querySelectorAll('#outroWord .ltr').forEach((l, i) => l.style.animation = `ltrIn .7s cubic-bezier(.2,1.5,.4,1) ${55.8 + i * .07}s both`);
+
+/* ---------- cảnh: [id, vào, ra] ---------- */
+const SCENES = [['s1', 0, 6.0], ['s2', 6.0, 12.9], ['s3', 12.9, 20.9], ['s4', 20.9, 28.1], ['s5', 28.1, 38.0], ['s5b', 38.0, 46.6], ['s6', 46.6, 54.6], ['s7', 54.6, 99]];
+const FADE = .45;
+
+/* ---------- phụ đề ---------- */
+const SUBS = [
+  [0.7, 5.6, 'Hello cả nhà! Tín đây 👋 Mình vừa làm xong <b>portfolio</b> riêng nè'],
+  [6.3, 12.6, 'Mình là <b>Thành Tín</b> — dân IT văn phòng hệ Gen Z, làm ở Sài Gòn'],
+  [13.2, 20.6, 'Ban ngày: viết code, fix bug, họp hành… và <b>sống sót qua deadline</b> ☕'],
+  [21.2, 27.8, 'Ban đêm: lên Threads <b>viết caption</b> — có bài được tận 49,7K tim 🥹'],
+  [28.4, 32.0, 'Mình gom hết vào một chỗ, làm giống <b>cái desktop văn phòng</b>'],
+  [32.1, 37.6, 'Có <b>công việc chuyên môn</b>, <b>shop đồ decor</b>, và <b>booking</b> cho các brand'],
+  [38.3, 42.8, 'Xem luôn <b>giá vàng</b> và <b>VN-Index</b> ngay trên desktop'],
+  [42.9, 46.3, 'Mình sẽ cập nhật thêm <b>nhiều thứ hay ho</b> nữa nha ✦'],
+  [46.9, 54.3, 'Có cả đồ chơi nhỏ: <b>kéo chữ</b>, <b>hỏi vị thần</b>, mời mình <b>ly cà phê</b>'],
+  [54.9, 60.1, 'Web đang ở tạm <b>tên miền free của GitHub</b> — có tiền mua domain sẽ đổi 😆'],
+  [60.2, 65.4, 'Team bạn đang cần người? Mình đang <b style="color:#3c6a35">#OpenToWork</b> 💚'],
+];
+
+/* ---------- đoạn code gõ ở cảnh 3 ---------- */
+const CODE = [
+  ['<span class="k">const</span> <span class="n">tin</span> = {', 'const tin = {'],
+  ['  role: <span class="s">"Software Engineer"</span>,', '  role: "Software Engineer",'],
+  ['  company: <span class="s">"ELCA Vietnam"</span>,', '  company: "ELCA Vietnam",'],
+  ['  coffee: <span class="p">3</span>, <span class="c">// ly mỗi ngày</span>', '  coffee: 3, // ly mỗi ngày'],
+  ['  bugsFixed: <span class="p">Infinity</span>,', '  bugsFixed: Infinity,'],
+  ['  mood: deadline ? <span class="s">"😵"</span> : <span class="s">"😎"</span>,', '  mood: deadline ? "😵" : "😎",'],
+  ['};', '};'],
+];
+const CODE_START = 14.0, CODE_CPS = 34;
+// cắt HTML có tô màu theo số ký tự hiển thị
+const cutHTML = (html, n) => {
+  let out = '', shown = 0, i = 0;
+  while (i < html.length && shown < n) {
+    if (html[i] === '<') { const j = html.indexOf('>', i); out += html.slice(i, j + 1); i = j + 1; continue; }
+    const cp = html.codePointAt(i), ch = String.fromCodePoint(cp);
+    out += ch; i += ch.length; shown++;
+  }
+  // đóng các thẻ span còn mở
+  const open = (out.match(/<span/g) || []).length - (out.match(/<\/span>/g) || []).length;
+  return out + '</span>'.repeat(Math.max(0, open));
+};
+const CAPTION = 'Thanks Microsoft đã cho tôi một buổi sáng thứ Sáu tuyệt vời! No Outlook, no Teams, just YouTube và TikTok. 🥹';
+const ORACLE = 'Cứ làm đi, sai thì sửa.';
+
+/* ---------- tim bay ---------- */
+const heartsHTML = (n, x0, y0, w, t0, span, set) => Array.from({length: n}, (_, i) => {
+  const r = (k => (Math.sin(i * 12.9898 + k) * 43758.5453) % 1)(set), rr = Math.abs(r);
+  return `<span class="hrt" style="left:${x0 + (i * 97 % w)}px;top:${y0}px;--t:${(t0 + i * span / n).toFixed(2)}s;--dx:${Math.round((rr - .5) * 260)}px;--rr:${Math.round((rr - .5) * 60)}deg">${['💜','💛','♥','💙','🩷'][i % 5]}</span>`;
+}).join('');
+$('#hearts').innerHTML = heartsHTML(16, 160, 900, 760, 24.6, 3.2, 1);
+$('#cupHearts').innerHTML = heartsHTML(12, 90, 330, 340, 51.7, 2.2, 7);
+
+/* ---------- sao đêm ---------- */
+$('#night').innerHTML = Array.from({length: 46}, (_, i) =>
+  `<i style="left:${(i * 37.7) % 100}%;top:${(i * 53.3) % 100}%;font-size:${10 + (i * 7) % 18}px;animation-delay:${(i * .37) % 2.4}s">✦</i>`).join('');
+
+/* ---------- vị trí con trỏ ---------- */
+let CURSOR = [];
+const buildCursor = () => {
+  // toạ độ bố cục (bỏ qua transform/animation) tính từ góc stage
+  const at = el => {
+    let x = el.offsetWidth / 2, y = el.offsetHeight / 2;
+    for (let e = el; e && e.id !== 'stage'; e = e.offsetParent) { x += e.offsetLeft; y += e.offsetTop; }
+    return [x, y];
+  };
+  const p = at(document.querySelectorAll('#toyWord .ltr')[0]);
+  const f = at(document.querySelectorAll('#toyWord .ltr')[4]);
+  const book = [960, 415], cup = [1540, 429], folder = at($('#folderWork'));
+  // [thời điểm, x, y, nhấn chuột?, hiện?]
+  CURSOR = [
+    [3.2, 1500, 900, 0, 0], [3.5, 1450, 860, 0, 1], [4.6, 1210, 560, 0, 1], [5.6, 1180, 540, 0, 1], [5.9, 1180, 540, 0, 0],
+    [29.4, 980, 820, 0, 0], [29.7, 980, 820, 0, 1], [31.9, folder[0] + 6, folder[1] - 10, 0, 1], [32.15, folder[0] + 6, folder[1] - 10, 1, 1], [32.3, folder[0] + 6, folder[1] - 10, 0, 1],
+    [33.0, 1545, 270, 0, 1], [33.15, 1545, 270, 1, 1], [33.3, 1545, 270, 0, 1],
+    [34.55, 350, 620, 0, 1], [34.7, 350, 620, 1, 1], [34.85, 350, 620, 0, 1], [37.2, 420, 700, 0, 1], [37.6, 420, 700, 0, 0],
+    [47.3, 700, 900, 0, 0], [47.7, p[0], p[1] + 20, 0, 1], [47.95, p[0], p[1] + 20, 1, 1],
+    [49.05, f[0] + 20, p[1] + 10, 1, 1], [49.2, f[0] + 20, p[1] + 10, 0, 1],
+    [49.7, book[0] + 20, book[1], 0, 1], [49.85, book[0] + 20, book[1], 1, 1], [50.0, book[0] + 20, book[1], 0, 1],
+    [51.5, cup[0] + 10, cup[1] + 30, 0, 1], [51.65, cup[0] + 10, cup[1] + 30, 1, 1], [51.8, cup[0] + 10, cup[1] + 30, 0, 1],
+    [54.0, cup[0] + 120, cup[1] + 220, 0, 1], [54.3, cup[0] + 120, cup[1] + 220, 0, 0],
+  ];
+};
+const cursorAt = t => {
+  if (!CURSOR.length || t <= CURSOR[0][0]) return null;
+  for (let i = 0; i < CURSOR.length - 1; i++) {
+    const a = CURSOR[i], b = CURSOR[i + 1];
+    if (t >= a[0] && t < b[0]) {
+      const p = ease(seg(t, a[0], b[0]));
+      const vis = a[4] && b[4] ? 1 : a[4] ? 1 - seg(t, a[0], b[0]) : b[4] ? seg(t, a[0], b[0]) : 0;
+      return {x: lerp(a[1], b[1], p), y: lerp(a[2], b[2], p), down: a[3], vis};
+    }
+  }
+  return null;
+};
+
+/* ---------- vẽ khung hình ở giây t ---------- */
+let anims = [];
+const fmtK = v => v >= 1000 ? (v / 1000).toFixed(1).replace('.', ',') + 'K' : String(Math.round(v));
+function seek(t) {
+  // 1) mọi CSS animation chạy theo cùng một đồng hồ
+  anims = document.getAnimations();
+  anims.forEach(a => { a.pause(); a.currentTime = t * 1000; });
+
+  // 2) cảnh nào đang hiện
+  SCENES.forEach(([id, a, b]) => {
+    const el = document.getElementById(id);
+    const vin = a === 0 ? 1 : seg(t, a, a + FADE), vout = 1 - seg(t, b - FADE, b);
+    const v = Math.min(vin, vout);
+    el.style.opacity = v;
+    el.style.visibility = v > 0 ? 'visible' : 'hidden';
+    el.style.transform = `scale(${lerp(1.04, 1, ease(vin)) * lerp(.97, 1, ease(vout))})`;
+  });
+
+  // 3) ngày → đêm
+  const night = Math.min(seg(t, 20.6, 21.6), 1 - seg(t, 27.7, 28.5));
+  $('#night').style.opacity = night;
+  $('#menuNight').style.opacity = night * .92;
+  $('#menubar').classList.toggle('dark', night > .5);
+
+  // 4) đồng hồ trên menu bar: kể chuyện theo giờ trong ngày
+  let mins;
+  if (t < 12.9) mins = 8 * 60 + 59;
+  else if (t < 20.6) mins = Math.round(lerp(9 * 60, 17 * 60 + 30, seg(t, 13.5, 20.2)));
+  else if (t < 28.1) mins = Math.round(lerp(22 * 60 + 30, 23 * 60 + 47, seg(t, 21, 27)));
+  else mins = 20 * 60 + 15;
+  $('#clock').textContent = String(Math.floor(mins / 60)).padStart(2, '0') + ':' + String(mins % 60).padStart(2, '0');
+
+  // 5) gõ code
+  let budget = Math.max(0, (t - CODE_START) * CODE_CPS), html = '';
+  for (const [h, plain] of CODE) {
+    const n = [...plain].length;
+    if (budget <= 0) break;
+    html += (budget >= n ? h : cutHTML(h, Math.floor(budget))) + '\n';
+    budget -= n + 4;   // nghỉ một nhịp cuối mỗi dòng
+  }
+  const blink = Math.floor(t * 2) % 2 ? '' : '<span class="caret"></span>';
+  $('#code').innerHTML = html.replace(/\n$/, '') + blink;
+  $('#coffee').textContent = t < 16.2 ? 1 : t < 18.5 ? 2 : 3;
+
+  // 6) caption Threads gõ dần + số đếm
+  const capN = Math.floor(Math.max(0, t - 22.2) * 26);
+  const capChars = [...CAPTION];
+  $('#caption').innerHTML = capChars.slice(0, capN).join('') + (capN < capChars.length && t > 22 ? '<span style="color:#0000F4">|</span>' : '');
+  const cnt = ease(seg(t, 24.4, 26.6));
+  $('#likes').textContent = fmtK(49700 * cnt);
+  $('#replies').textContent = Math.round(332 * cnt);
+  $('#reposts').textContent = fmtK(1700 * cnt);
+  const cv = ease(seg(t, 23.4, 25.6));
+  $('#views').textContent = (11 * cv).toFixed(cv < 1 ? 1 : 0).replace('.', ',') + 'M';
+  $('#viewers').textContent = (2.8 * ease(seg(t, 23.8, 26))).toFixed(1).replace('.', ',') + 'M';
+
+  // 7) cảnh 6: kéo chữ "p" ra sau chữ "f"
+  const toy = [...document.querySelectorAll('#toyWord .ltr')];
+  if (toy.length && toy[0].offsetWidth) {
+    const w = toy.map(l => l.offsetWidth), x = toy.map(l => l.offsetLeft);
+    const pw = w[0], mv = ease(seg(t, 47.95, 49.05));
+    const lift = seg(t, 47.8, 48.0) * (1 - seg(t, 49.05, 49.3));
+    const target = x[4] + w[4] - pw;        // chỗ trống sau chữ "f"
+    toy[0].style.transform = `translate(${(target - x[0]) * mv}px,${-26 * lift}px) scale(${1 + .18 * lift}) rotate(${-8 * lift * Math.sin(mv * Math.PI)}deg)`;
+    toy[0].style.color = lift > .2 ? 'var(--brand)' : '';
+    toy[0].style.position = 'relative'; toy[0].style.zIndex = 2;
+    // "o r t f" trượt sang trái nhường chỗ (lần lượt khi chữ p đi ngang qua)
+    for (let i = 1; i <= 4; i++) {
+      const pass = ease(seg(mv, (i - 1) / 4 - .05, i / 4 + .05));
+      toy[i].style.transform = `translateX(${-pw * pass}px)`;
+    }
+  }
+
+  // 8) cảnh 6: mở sách vị thần + chữ hiện dần
+  const open = ease(seg(t, 49.9, 50.8));
+  $('#bookCover').style.transform = `rotateY(${-168 * open}deg)`;
+  const shake = seg(t, 49.85, 49.9) > 0 && t < 50.0;
+  $('#book').style.transform = shake ? 'rotate(-3deg)' : '';
+  $('#oracleText').textContent = [...ORACLE].slice(0, Math.floor(Math.max(0, t - 50.6) * 20)).join('');
+  $('#cup').style.transform = t > 51.65 && t < 52.1 ? `scale(${1 + .12 * Math.sin(seg(t, 51.65, 52.1) * Math.PI)}) rotate(-4deg)` : '';
+
+  // 9) phụ đề
+  const s = SUBS.find(([a, b]) => t >= a - .01 && t < b);
+  const sub = $('#sub');
+  if (s) {
+    if ($('#subText').dataset.k !== String(s[0])) { $('#subText').innerHTML = s[2]; $('#subText').dataset.k = s[0]; }
+    const p = Math.min(seg(t, s[0], s[0] + .35), 1 - seg(t, s[1] - .3, s[1]));
+    sub.style.opacity = p;
+    sub.style.transform = `translateX(-50%) translateY(${(1 - back(clamp(p))) * 40}px)`;
+  } else sub.style.opacity = 0;
+
+  // 10) con trỏ
+  const c = cursorAt(t), cur = $('#cursor'), ring = $('#ring');
+  if (c) {
+    cur.style.opacity = c.vis;
+    cur.style.transform = `translate(${c.x - 8}px,${c.y - 4}px) scale(${c.down ? .86 : 1})`;
+    ring.style.opacity = c.down ? .8 * c.vis : 0;
+    ring.style.transform = `translate(${c.x - 35}px,${c.y - 35}px) scale(${c.down ? 1 : .5})`;
+  } else { cur.style.opacity = 0; ring.style.opacity = 0; }
+  // folder được chọn trước khi mở
+  $('#folderWork').classList.toggle('sel', t > 32.15 && t < 33.15);
+  // cảnh 5: zone nào được nhắc tới thì nổi lên, các zone khác mờ đi
+  const ZH = [['z1', 32.15, 33.15], ['z3', 33.15, 34.7], ['z2', 34.7, 37.9]];
+  const focus = ZH.find(([, a, b]) => t >= a && t < b);
+  ['z1', 'z2', 'z3', 'z4'].forEach(id => {
+    const el = document.getElementById(id), on = focus && focus[0] === id;
+    el.style.scale = on ? 1.07 : 1;
+    el.style.filter = focus && !on ? 'opacity(.4) grayscale(.4)' : '';
+    el.style.borderStyle = on ? 'solid' : '';
+    el.style.borderColor = on ? 'var(--c)' : '';
+    el.style.boxShadow = on ? '0 0 0 10px color-mix(in srgb, var(--c) 18%, transparent), 0 24px 50px rgba(20,20,60,.18)' : '';
+    el.style.zIndex = on ? 3 : '';
+  });
+  const tags = {z1: '💼 <b>Công việc chuyên môn</b><br>CV, kinh nghiệm, kỹ năng', z3: '🛍 <b>Shop 9TO5</b><br>đồ decor cho bàn làm việc', z2: '📣 <b>Booking brand</b><br>nhãn hàng cần review thì ới Tín'};
+  const tagHTML = focus ? tags[focus[0]] : 'một cái “desktop” văn phòng —<br>bấm vào đâu cũng ra một góc của Tín';
+  const dt = $('#deskTag');
+  if (dt.dataset.k !== tagHTML) { dt.innerHTML = tagHTML; dt.dataset.k = tagHTML; }
+  dt.style.color = focus ? 'var(--ink)' : '';
+  dt.style.display = 'inline-block';
+  dt.style.transform = focus ? `scale(${1 + .15 * (1 - seg(t, focus[1], focus[1] + .25))})` : '';
+
+  // cảnh 5b: số VN-Index + vẽ biểu đồ
+  const vp = ease(seg(t, 40.3, 41.7));
+  $('#vni').textContent = (1734.93 * vp).toLocaleString('vi-VN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  $('#vchg').style.opacity = seg(t, 41.4, 41.8);
+  const draw = (id, a, b) => { const el = document.getElementById(id), L = el.getTotalLength(); el.style.strokeDasharray = L; el.style.strokeDashoffset = L * (1 - ease(seg(t, a, b))); };
+  draw('vLine', 40.4, 42.0);
+  $('#vArea').style.opacity = seg(t, 41.4, 42.2);
+  draw('goldLine', 40.4, 41.6);
+}
+window.seek = seek;
+window.DURATION = DURATION;
+
+/* ---------- xem trước trong trình duyệt ---------- */
+const fit = () => { const s = Math.min(innerWidth / 1920, innerHeight / 1080); const st = $('#stage'); st.style.transform = `scale(${s})`; st.style.left = (innerWidth - 1920 * s) / 2 + 'px'; st.style.top = (innerHeight - 1080 * s) / 2 + 'px'; };
+const RENDER = new URLSearchParams(location.search).has('render');
+window.ready = (async () => {
+  await document.fonts.ready;
+  await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
+  if (!RENDER) fit();
+  buildCursor();
+  seek(0);
+  return true;
+})();
+if (!RENDER) {
+  addEventListener('resize', () => { fit(); buildCursor(); });
+  let t = 0, playing = true, last = performance.now();
+  addEventListener('keydown', e => {
+    if (e.code === 'Space') { playing = !playing; e.preventDefault(); }
+    if (e.key === 'ArrowRight') t = Math.min(DURATION, t + 3);
+    if (e.key === 'ArrowLeft') t = Math.max(0, t - 3);
+  });
+  window.ready.then(() => {
+    const loop = now => {
+      if (playing) t += (now - last) / 1000;
+      last = now;
+      if (t > DURATION + 1) t = 0;
+      seek(t);
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  });
+}
+</script>
+</body>
+</html>
