@@ -8,7 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230000F4'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial Black,Arial,sans-serif' font-weight='900' font-size='25' fill='%23fff' letter-spacing='-1'%3ETVP%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,600&display=swap" rel="stylesheet">
 <style>
   :root{
     --brand:#0000F4;
@@ -80,28 +80,8 @@
   @keyframes eq{0%,100%{height:3px}50%{height:11px}}
   #ytWrap{position:fixed;left:-9999px;top:0;width:200px;height:113px;overflow:hidden;pointer-events:none}
 
-  /* ---------- Widget Threads ---------- */
-  .tw{position:absolute;right:24px;width:258px;z-index:4;border-radius:16px;background:#fff;border:2px solid #14142b;box-shadow:4px 4px 0 #14142b;display:flex;flex-direction:column;padding:30px 0 0;animation:zoneIn .7s cubic-bezier(.2,.9,.3,1.25) .25s backwards}
-  .tw .tw-title{position:absolute;top:-13px;left:14px;background:#000;color:#fff;font-weight:800;font-size:11.5px;letter-spacing:.6px;padding:4px 11px;border-radius:99px;text-transform:uppercase;text-decoration:none;box-shadow:0 3px 8px rgba(0,0,0,.12)}
-  .tw .tw-head{position:absolute;top:10px;left:14px;right:12px;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
-  .tw .live{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:live 1.8s infinite}
-  @keyframes live{70%{box-shadow:0 0 0 6px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
-  .tw-viewport{flex:1;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding:0 10px;-webkit-mask-image:linear-gradient(transparent,#000 14px,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(transparent,#000 14px,#000 calc(100% - 22px),transparent)}
-  .tw-viewport::-webkit-scrollbar{display:none}
-  .tw-track{display:flex;flex-direction:column}
-  .tw-img{margin:0 0 7px;border-radius:9px;overflow:hidden;background:#eee}
-  .tw-img img{width:100%;height:auto;max-height:190px;object-fit:cover;display:block}
-  .tw-post{display:block;margin-bottom:8px;text-decoration:none;color:var(--ink);background:#fafafa;border:1px solid #ececf2;border-radius:12px;padding:10px 11px;transition:background .15s,border-color .15s}
-  .tw-post:hover{background:#fff;border-color:#14142b}
-  .tw-post .who{display:flex;align-items:center;gap:6px;font-size:12px}
-  .tw-post .who img{width:22px;height:22px;border-radius:50%;object-fit:cover}
-  .tw-post .who b{font-weight:700}
-  .tw-post .who span{color:var(--muted);margin-left:auto;font-size:11px}
-  .tw-post p{margin:6px 0 7px;font-size:12.5px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
-  .tw-post .meta{display:flex;gap:12px;font-size:11px;color:var(--muted)}
-
   /* ---------- Widget thị trường: giá vàng nhẫn & VN-Index ---------- */
-  .mw{position:absolute;left:24px;width:258px;z-index:4;border-radius:16px;background:#fff;border:2px solid var(--c);box-shadow:4px 4px 0 var(--c);padding:30px 12px 9px;animation:zoneIn .7s cubic-bezier(.2,.9,.3,1.25) backwards;font-variant-numeric:tabular-nums}
+  .mw{position:absolute;width:258px;z-index:4;border-radius:16px;background:#fff;border:2px solid var(--c);box-shadow:4px 4px 0 var(--c);padding:30px 12px 9px;animation:zoneIn .7s cubic-bezier(.2,.9,.3,1.25) backwards;font-variant-numeric:tabular-nums}
   .mw.gold{--c:#c99700;animation-delay:.3s}
   .mw.stock{--c:#14142b;animation-delay:.4s}
   .mw .mw-title{position:absolute;top:-13px;left:14px;background:var(--c);color:#fff;font-weight:800;font-size:11.5px;letter-spacing:.6px;padding:4px 11px;border-radius:99px;text-transform:uppercase;text-decoration:none;box-shadow:0 3px 8px rgba(0,0,0,.12)}
@@ -131,11 +111,30 @@
   .mw.compact .mspark,.mw.compact .mspark + .mw-foot{display:none}
   .mw.gold.tight .gp tr:nth-child(n+3){display:none}   /* màn hình rất thấp: chỉ giữ dòng Nhẫn SJC */
 
+  /* nút đóng widget đang đặt trên màn hình (đưa về lại tab Widget) */
+  .mw .mw-x{position:absolute;top:-11px;right:-11px;width:24px;height:24px;border-radius:50%;border:2px solid #fff;background:var(--ink);color:#fff;font-size:14px;line-height:1;cursor:pointer;display:none;place-items:center;padding:0;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+  .mw.placed:hover .mw-x,.mw.placed:focus-within .mw-x{display:grid}
+  .mw{cursor:grab;touch-action:none}
+  .mw.dragging{cursor:grabbing;transform:rotate(-1.5deg) scale(1.03);box-shadow:0 22px 46px rgba(0,0,80,.22);transition:none}
+
+  /* ---------- Tab Widget trên header ---------- */
+  .menubar a.on{color:var(--brand);font-weight:700}
+  .wpanel{position:fixed;top:36px;z-index:1100;width:min(600px,calc(100vw - 20px));padding:16px 18px 18px;border-radius:18px;background:rgba(255,255,255,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(0,0,244,.10);box-shadow:var(--shadow);animation:calIn .18s ease-out;transform-origin:top left}
+  .wpanel[hidden]{display:none}
+  .wpanel h4{margin:0;font-size:15px}
+  .wpanel .whint{margin:2px 0 18px;font-size:12px;color:var(--muted)}
+  .wslots{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:24px 18px;justify-items:center}
+  .wslot{width:258px;min-height:150px;display:flex}
+  .wslot .mw{position:relative;animation:none}
+  .wslot .wph{flex:1;display:grid;place-items:center;text-align:center;gap:6px;border:2px dashed #d6d6ea;border-radius:16px;padding:16px;color:var(--muted);font-size:12px}
+  .wslot .wph b{display:block;color:var(--ink);font-size:13px}
+  .wslot .wph button{border:0;background:var(--brand-tint);color:var(--brand);font-weight:700;font-size:12px;border-radius:99px;padding:5px 12px;cursor:pointer}
+
   /* ---------- Desktop ---------- */
   #desktop{position:absolute;inset:30px 0 0 0}
   .hero{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
   .hero .welcome{font-size:clamp(18px,2vw,24px);letter-spacing:.5px;color:#333}
-  .hero .big{font-family:"Instrument Serif",serif;font-style:italic;white-space:nowrap;font-size:clamp(78px,11.5vw,180px);line-height:.95;margin-top:6px}
+  .hero .big{font-weight:800;letter-spacing:-.055em;white-space:nowrap;font-size:clamp(70px,10.5vw,164px);line-height:.95;margin-top:6px}
   .hero .big .o{color:var(--brand)}
   .hero .big .dot{display:inline-block;width:.13em;height:.13em;border-radius:50%;background:var(--brand);margin-left:.04em;animation:bob 2.4s ease-in-out infinite}
   .hero .sub{margin-top:12px;font-size:13px;color:var(--muted)}
@@ -163,15 +162,6 @@
   @keyframes dotIn{0%{opacity:0;transform:translateY(-1.6em)}55%{opacity:1;transform:translateY(.06em)}75%{transform:translateY(-.12em)}}
   @media (prefers-reduced-motion:reduce){.hero .welcome,.hero .sub{animation:none}}
 
-  .sticky{
-    position:absolute;left:28px;top:30px;width:226px;padding:16px;background:#fff09c;box-shadow:0 8px 18px rgba(0,0,0,.10);
-    transform:rotate(-1.2deg);cursor:grab;z-index:6;font-size:12.5px;line-height:1.65;
-  }
-  .sticky h4{margin:0 0 6px;font-size:12.5px}
-  .sticky ul{list-style:none;margin:0;padding:0}
-  .sticky li{cursor:pointer}
-  .sticky li.done{text-decoration:line-through;color:#8a8a6a}
-
   /* ---------- 3 khu ---------- */
   .zone{
     position:absolute;width:258px;padding:36px 10px 10px;border-radius:16px;z-index:4;
@@ -182,9 +172,9 @@
   .zone:hover{transform:translateY(-5px);background:color-mix(in srgb,var(--soft) 85%,#fff);box-shadow:0 14px 34px color-mix(in srgb,var(--c) 22%,transparent)}
   @keyframes zoneIn{from{opacity:0;transform:translateY(24px) scale(.94)}}
   /* kéo group đi bất cứ đâu */
-  .zone,.tw,.mw{cursor:grab;touch-action:none}
-  .zone.dragging,.tw.dragging,.mw.dragging{cursor:grabbing;transform:rotate(-1.5deg) scale(1.03);box-shadow:0 22px 46px rgba(0,0,80,.22);transition:none}
-  .zone.dragging .icon,.tw.dragging .tw-post{pointer-events:none}
+  .zone{cursor:grab;touch-action:none}
+  .zone.dragging{cursor:grabbing;transform:rotate(-1.5deg) scale(1.03);box-shadow:0 22px 46px rgba(0,0,80,.22);transition:none}
+  .zone.dragging .icon{pointer-events:none}
   /* viền nét đứt chạy vòng quanh */
   .zone .ants{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
   .zone .ants rect{x:1px;y:1px;width:calc(100% - 2px);height:calc(100% - 2px);rx:16px;fill:none;stroke:var(--c);stroke-opacity:.55;stroke-width:2;stroke-dasharray:7 6;animation:ants 1.2s linear infinite}
@@ -209,9 +199,9 @@
   }
   .zone .zdesc{position:absolute;top:17px;left:14px;right:12px;font-size:11px;color:var(--muted)}
   .zone .zgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:6px}
-  .zone.work{--c:var(--work);--soft:var(--work-soft);left:24px;top:270px}
-  .zone.book{--c:var(--book);--soft:var(--book-soft);right:24px;top:28px}
-  .zone.shop{--c:var(--shop);--soft:var(--shop-soft);--on:var(--ink);right:24px;bottom:96px}
+  .zone.work{--c:var(--work);--soft:var(--work-soft);right:16px;top:322px}
+  .zone.book{--c:var(--book);--soft:var(--book-soft);right:16px;top:16px}
+  .zone.shop{--c:var(--shop);--soft:var(--shop-soft);--on:var(--ink);right:16px;top:502px}
 
   .icon{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:10px;cursor:pointer;text-align:center;font-size:12px;line-height:1.3}
   .icon:hover{background:rgba(255,255,255,.7)}
@@ -373,7 +363,7 @@
   }
   @media (prefers-reduced-motion:reduce){.polaroid{animation:none}}
   .polaroid img{display:block;width:100%;aspect-ratio:1;object-fit:cover;pointer-events:none}
-  .polaroid span{position:absolute;left:0;right:0;bottom:7px;text-align:center;font-family:"Instrument Serif",serif;font-style:italic;font-size:16px;color:#333}
+  .polaroid span{position:absolute;left:0;right:0;bottom:7px;text-align:center;font-style:italic;font-weight:600;font-size:12.5px;color:#333}
   .polaroid .tape{position:absolute;top:-10px;left:50%;width:56px;height:20px;transform:translateX(-50%) rotate(-3deg);background:rgba(246,210,58,.75)}
   /* ảnh bìa trong cửa sổ */
   .cover{margin:-22px -24px 0;height:190px;background-size:cover;background-position:center;position:relative}
@@ -381,7 +371,7 @@
   .cover + .profile .avatar{border:4px solid #fff;width:88px;height:88px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
   .cover + .profile > div:last-child{padding-top:40px}
   /* ---------- Vị thần của những quyết định ---------- */
-  .oracle-sticker{position:absolute;left:calc(50% - 70px);bottom:100px;z-index:5;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:rotate(5deg);transition:transform .2s;touch-action:none}
+  .oracle-sticker{position:absolute;right:180px;top:740px;z-index:5;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:rotate(5deg);transition:transform .2s;touch-action:none}
   .oracle-sticker svg{animation:orcFloat 3.2s ease-in-out infinite;filter:drop-shadow(0 6px 10px rgba(59,29,143,.35))}
   .oracle-sticker .glint{animation:orcTwinkle 1.6s ease-in-out infinite}
   .oracle-sticker .bubble{display:inline-block;background:#3b1d8f;color:#f6d23a;border:2px solid var(--ink);border-radius:99px;padding:3px 10px;font-weight:800;font-size:12px;margin-bottom:4px;box-shadow:2px 2px 0 var(--ink)}
@@ -396,17 +386,17 @@
   .orc-stars{position:absolute;inset:0;pointer-events:none}
   .orc-stars i{position:absolute;color:#f6d23a;font-style:normal;opacity:.2;animation:orcTwinkle 2.6s ease-in-out infinite}
   .orc h2{position:relative;color:#fff!important;font-size:21px!important;margin:0 0 8px!important}
-  .orc h2 span{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;color:#f6d23a;font-size:26px}
+  .orc h2 span{font-weight:800;color:#f6d23a}
   .orc-steps{position:relative;text-align:left;margin:0 0 18px;padding-left:20px;font-size:12.5px;line-height:1.55;color:#cfc8f5}
   .orc-book{position:relative;width:190px;height:230px;margin:0 auto;perspective:1000px;cursor:pointer;outline:none}
   .orc-book::before{content:"";position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(circle,rgba(246,210,58,.35),transparent 65%);animation:orcGlow 2.4s ease-in-out infinite;pointer-events:none}
   .orc-book:focus-visible .orc-cover{box-shadow:0 0 0 3px #f6d23a}
   .orc-page{position:absolute;inset:0;border-radius:4px 12px 12px 4px;background:linear-gradient(90deg,#efe6cf,#fffaf0 12%,#fffaf0);box-shadow:inset 6px 0 10px rgba(0,0,0,.12),0 10px 30px rgba(0,0,0,.45);display:grid;place-items:center;padding:20px 18px;color:#2a1a5e}
-  .orc-page p{margin:0;font-family:"Instrument Serif",serif;font-style:italic;font-size:24px;line-height:1.2;min-height:1.2em}
+  .orc-page p{margin:0;font-weight:700;font-size:19px;line-height:1.3;letter-spacing:-.01em;min-height:1.2em}
   .orc-cover{position:absolute;inset:0;transform-origin:left center;transition:transform 1.05s cubic-bezier(.6,.05,.25,1);transform-style:preserve-3d;backface-visibility:hidden;border-radius:4px 12px 12px 4px;border-left:12px solid #160e46;background:radial-gradient(circle at 50% 35%,#5b34c4,#2a1670 70%);box-shadow:0 12px 30px rgba(0,0,0,.5);color:#f6d23a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
   .orc-cover i{font-style:normal;font-size:34px;animation:orcTwinkle 2s ease-in-out infinite}
   .orc-cover b{letter-spacing:4px;font-size:18px}
-  .orc-cover small{font-family:"Instrument Serif",serif;font-style:italic;font-size:17px;line-height:1.1;color:#fde68a}
+  .orc-cover small{font-weight:600;font-size:13.5px;line-height:1.1;color:#fde68a}
   .orc-cover em{margin-top:14px;font-style:normal;font-size:10.5px;letter-spacing:1px;color:#c4b5fd;text-transform:uppercase}
   .orc-book.open .orc-cover{transform:rotateY(-168deg)}
   .orc-book.open::before{animation:none;opacity:.5}
@@ -461,7 +451,7 @@
   .lightbox img{max-width:94vw;max-height:84vh;border-radius:8px}
   .lightbox p{color:#fff;text-align:center;margin:10px 0 0;font-weight:600}
   /* buy me a coffee */
-  .coffee-sticker{position:absolute;left:calc(50% + 120px);bottom:110px;z-index:5;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:rotate(-4deg);transition:transform .2s}
+  .coffee-sticker{position:absolute;right:28px;top:722px;z-index:5;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:rotate(-4deg);transition:transform .2s}
   .coffee-sticker:hover{transform:rotate(2deg) scale(1.06)}
   .coffee-sticker{touch-action:none}
   .coffee-sticker.dragging{cursor:grabbing;transform:rotate(8deg) scale(1.12);transition:none;filter:drop-shadow(0 14px 18px rgba(0,0,80,.25))}
@@ -524,6 +514,7 @@
   .dock .app{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;cursor:pointer;color:#fff;font-weight:800;font-size:13px;position:relative;transition:transform .18s ease;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08)}
   .dock .app:hover{transform:translateY(-8px) scale(1.12)}
   .dock .app svg{width:22px;height:22px}
+  a.app{text-decoration:none}
   .dock .app .tip{position:absolute;bottom:62px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#fff;color:var(--ink);font-weight:500;font-size:12px;padding:3px 9px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.1);opacity:0;pointer-events:none;transition:opacity .15s}
   .dock .app:hover .tip,.dock .app .tip.always{opacity:1}
   .dock .sep{width:1px;height:40px;background:#dcdcf3;margin:0 2px;align-self:center}
@@ -533,15 +524,14 @@
 
   /* ---------- Màn hình nhỏ: xếp dọc ---------- */
   @media (max-width:1100px), (max-height:640px){
-    .sticky,.polaroid,.coffee-sticker,.oracle-sticker{display:none}
+    .polaroid,.coffee-sticker,.oracle-sticker{display:none}
     #desktop{overflow:auto;padding:24px 16px 110px}
     .hero{position:static;transform:none;margin:10px 0 28px}
     .zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:26px;max-width:900px;margin:0 auto}
     .zone{position:relative;inset:auto!important;width:auto}
     .zone .zgrid{grid-template-columns:repeat(3,1fr)}
-    .zone,.tw,.mw{cursor:auto;touch-action:auto}
-    .tw{position:relative;inset:auto!important;width:auto;height:340px!important}
-    .mw{position:relative;inset:auto!important;width:auto}
+    .zone{cursor:auto;touch-action:auto}
+    .mw{cursor:auto;touch-action:auto}
     /* cửa sổ mở ngay giữa màn hình đang xem (không phụ thuộc vị trí cuộn), nền phía sau mờ tối */
     .window,.window.wide{position:fixed;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;transform:translate(-50%,-50%);width:min(94vw,600px);max-height:calc(100dvh - 150px);animation:popM .24s cubic-bezier(.2,.9,.3,1.2)}
     .window.wide{width:min(94vw,860px)}
@@ -570,6 +560,14 @@
     .goods{grid-template-columns:repeat(2,1fr);gap:8px}
     .gallery{grid-template-columns:repeat(2,1fr)}
   }
+  @media (max-width:480px){
+    .dock .app{width:33px;height:33px;border-radius:9px}
+    .dock .app svg{width:16px;height:16px}
+    .dock .app span:not(.tip){font-size:14px!important}
+    .dock{gap:4px;padding:5px 6px}
+    .dock .sep{margin:0;height:28px}
+    .dock .app .tip{bottom:44px}
+  }
 </style>
 </head>
 <body>
@@ -580,7 +578,7 @@
   <a class="hide-m" data-open="work">Công việc</a>
   <a data-open="booking">Booking</a>
   <a data-open="shop">Shop 9TO5</a>
-  <a class="hide-m" data-open="contact">Contact</a>
+  <a id="wBtn" role="button" aria-haspopup="dialog" aria-expanded="false">Widget</a>
   <div class="right">
     <svg class="st" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 9a15 15 0 0 1 20 0"/><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
     <svg class="st" viewBox="0 0 30 14" style="width:26px"><rect x="1" y="1" width="24" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="3" width="16" height="8" rx="1.5" fill="currentColor"/><rect x="26" y="5" width="2" height="4" rx="1" fill="currentColor"/></svg>
@@ -591,30 +589,23 @@
     <button type="button" id="clock" aria-haspopup="dialog"></button>
   </div>
 </header>
+<div class="wpanel" id="wPanel" role="dialog" aria-label="Widget" hidden>
+  <h4>Widget</h4>
+  <p class="whint">Nắm kéo widget ra màn hình để dùng · bấm vào widget để xem biểu đồ</p>
+  <div class="wslots" id="wSlots"></div>
+</div>
 <div id="ytWrap" aria-hidden="true"><div id="ytPlayer"></div></div>
 
 <main id="desktop">
-  <div class="sticky" id="sticky">
-    <h4>To do:</h4>
-    <ul>
-      <li>Viết 1 thread mỗi ngày</li>
-      <li class="done">Sống sót qua deadline</li>
-      <li>In thêm mẫu đèn decor mới</li>
-      <li>Trả lời tin nhắn khách 9TO5</li>
-      <li class="done">Ngủ đủ 8 tiếng</li>
-      <li>Build portfolio của riêng mình ✿</li>
-    </ul>
-  </div>
-
   <div class="hero">
     <div class="welcome">welcome to my</div>
     <div class="big" id="bigWord" aria-label="portfolio.">portfoli<span class="o">o</span><span class="dot"></span></div>
     <div class="sub">Ban ngày <b>viết code</b>, ban đêm <b>viết caption</b></div>
   </div>
 
-  <div class="polaroid" data-photo="2" style="left:300px;top:70px;width:150px;transform:rotate(5deg)"><i class="tape"></i><img src="assets/me/selfie.jpg" alt="Thành Tín"><span>hi, it's Tín!</span></div>
-  <div class="polaroid" data-photo="5" style="right:310px;top:40px;width:150px;transform:rotate(-4deg)"><i class="tape"></i><img src="assets/me/desk.jpg" alt="Góc làm việc của Tín"><span>góc làm việc</span></div>
-  <div class="polaroid" data-photo="6" style="left:350px;bottom:110px;width:140px;transform:rotate(-6deg)"><i class="tape"></i><img src="assets/me/summit.jpg" alt="Tín trên đỉnh núi"><span>lên đỉnh!</span></div>
+  <div class="polaroid" data-photo="2" style="left:calc(50% - 260px);top:90px;width:150px;transform:rotate(5deg)"><i class="tape"></i><img src="assets/me/selfie.jpg" alt="Thành Tín"><span>hi, it's Tín!</span></div>
+  <div class="polaroid" data-photo="5" style="left:calc(50% - 540px);top:140px;width:150px;transform:rotate(-4deg)"><i class="tape"></i><img src="assets/me/desk.jpg" alt="Góc làm việc của Tín"><span>góc làm việc</span></div>
+  <div class="polaroid" data-photo="6" style="left:calc(50% - 225px);top:calc(42% + 170px);width:140px;transform:rotate(-6deg)"><i class="tape"></i><img src="assets/me/summit.jpg" alt="Tín trên đỉnh núi"><span>lên đỉnh!</span></div>
 
   <div class="oracle-sticker" data-open="oracle" title="Vị thần của những quyết định">
     <div class="bubble">hỏi vị thần ✦</div>
@@ -668,18 +659,6 @@ const CONTACTS = [
 
 /* Nhạc nền (YouTube) - đổi id / giây bắt đầu tại đây */
 const MUSIC = {id:'VnHCqpVAcm4', start:1185, volume:35, title:'Khu vườn trên mây'};
-
-/* Threads gần đây - thêm bài mới lên ĐẦU danh sách */
-const THREADS = {
-  followers: '7,8K',
-  posts: [
-    {url:'https://www.threads.com/@tin.tr_20s/post/DftOtbmAXNe', date:'2026-11-14T11:00', img:'assets/threads/DftOtbmAXNe.jpg', text:'Rất thích ngồi mấy quán cafe có đào thế này nha 🫶.', likes:98},
-    {url:'https://www.threads.com/@tin.tr_20s/post/DfrdliLAdJB', date:'2026-11-13T15:00', img:'assets/threads/DfrdliLAdJB.jpg', text:'Outlook thì vẫn chưa fix được, Claude sập server. Giờ làm việc kiểu gì đây… tạm biệt đồng nghiệp dùng Zalo với Gmail 😭', likes:315, replies:4, reposts:4},
-    {url:'https://www.threads.com/@tin.tr_20s/post/Dfq19URAYsF', date:'2026-11-13T10:00', img:'assets/threads/Dfq19URAYsF.jpg', text:'Thanks Microsoft đã cho tôi một buổi sáng thứ Sáu tuyệt vời! No Outlook, no Teams, just YouTube và TikTok. 🥹', likes:49700, replies:332, reposts:1700},
-    {url:'https://www.threads.com/@tin.tr_20s/post/Dfq6wK0gQa1', date:'2026-11-13T12:00', text:'Like vừa vừa thoi HR cty tao thấy bây ơi chết tao :v', likes:1600, replies:6, reposts:1},
-    {url:'https://www.threads.com/@tin.tr_20s/post/DfqrkLNgWJu', date:'2026-11-13T09:00', img:'assets/threads/DfqrkLNgWJu.jpg', text:'10k follow tôi có GA quà á nha bà con chứ thấy dừng ở 7k follow này gần 1 năm rồi á.', likes:4, replies:1},
-  ],
-};
 
 /* =====================================================================
    B. SẢN PHẨM 9TO5 (lấy từ linkbio) - sửa / thêm tại đây
@@ -1188,9 +1167,9 @@ const DOCK = [
   {id:'creator', color:'#0000F4', tip:'Booking brand', svg:'<path d="M4 10v4h3l6 4V6L7 10z" fill="#fff"/><path d="M16 9a4 4 0 0 1 0 6" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>'},
   {id:'shop',    color:'#f2b705', tip:'Shop 9TO5', svg:'<path d="M5 8h14l-1.2 11H6.2z" fill="#fff"/><path d="M9 10V7a3 3 0 0 1 6 0v3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>'},
   {id:'photos',  color:'#ff8a3d', tip:'Ảnh của Tín', svg:'<rect x="3" y="6" width="18" height="13" rx="2.5" fill="#fff"/><circle cx="12" cy="12.5" r="3.3" fill="#ff8a3d"/><rect x="8" y="4" width="8" height="3" rx="1" fill="#fff"/>'},
-  {id:'oracle',  color:'#3b1d8f', tip:'Vị thần quyết định', svg:'<path d="M6 4h11a2 2 0 0 1 2 2v14H8a2 2 0 0 1-2-2z" fill="#fff"/><path d="M12.5 8l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z" fill="#3b1d8f"/>'},
-  {id:'coffee',  color:'#8b5a3c', tip:'Buy me a coffee', svg:'<path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" fill="#fff"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 3.5c-1 1.2 1 2 0 3.2M11.5 3.5c-1 1.2 1 2 0 3.2" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>'},
-  {id:'contact', color:'#9b8cff', tip:'Contact', svg:'<rect x="3" y="6" width="18" height="12" rx="2" fill="#fff"/><path d="M4 7l8 6 8-6" fill="none" stroke="#9b8cff" stroke-width="1.8"/>'},
+  'sep',
+  // mạng xã hội: bấm là mở thẳng link (lấy từ CONTACTS ở trên)
+  ...CONTACTS.map(c => ({link:c.href, color:c.bg || c.color, tip:c.name === 'Email' ? ME.email : c.name + ' · ' + c.handle.replace(/^linkedin\.com\/in\//, ''), icon:c.icon, label:c.name})),
   'sep',
   {id:'love',    color:'#ff5c8a', tip:'open me', always:true, svg:'<path d="M12 19s-7-4.3-7-9.5A3.5 3.5 0 0 1 12 7a3.5 3.5 0 0 1 7 2.5C19 14.7 12 19 12 19z" fill="#fff"/>'},
 ];
@@ -1389,7 +1368,7 @@ ZONES.forEach(zn => {
     box.querySelector('.zgrid').appendChild(el);
   });
   zonesEl.appendChild(box);
-  draggable(box, box, {enabled: () => !stacked.matches});
+  draggable(box, box, {enabled: () => !stacked.matches, onDrag: () => box.dataset.moved = 1});
 });
 
 // lần lượt "gọi" từng khu để người xem chú ý
@@ -1404,10 +1383,51 @@ ZONES.forEach(zn => {
   }, 2600);
 })();
 
-draggable($("#sticky"));
 // sticker "buy me a coffee": kéo đi đâu cũng được, bấm (không kéo) thì mở cửa sổ mời cà phê
-draggable($(".coffee-sticker"));
-draggable($(".oracle-sticker"));
+draggable($(".coffee-sticker"), undefined, {onDrag: () => $(".coffee-sticker").dataset.moved = 1});
+draggable($(".oracle-sticker"), undefined, {onDrag: () => $(".oracle-sticker").dataset.moved = 1});
+
+// Bố cục lúc mới vào: 3 khu xếp dọc bên phải (Booking, Công việc, Shop), 2 sticker ngay dưới khu Shop,
+// 3 ảnh polaroid quanh chữ "portfolio.". Màn hình thấp: khu Công việc sang góc trái dưới, sticker theo sau;
+// ảnh nào không còn chỗ (sẽ đè lên chữ, khu, sticker hay dock) thì tạm ẩn. Thứ gì người xem đã tự kéo thì để yên.
+const deskLayout = () => {
+  if (stacked.matches) return;
+  const desk = $('#desktop'), W = desk.clientWidth, H = desk.clientHeight, floor = H - 84;   // chừa chỗ cho dock
+  const box = el => ({l: el.offsetLeft, t: el.offsetTop, r: el.offsetLeft + el.offsetWidth, b: el.offsetTop + el.offsetHeight});
+  const set = (el, x, y) => { if (!el.dataset.moved) Object.assign(el.style, {left: x + 'px', top: y + 'px', right: 'auto', bottom: 'auto'}); };
+  const [book, work, shop] = ['book', 'work', 'shop'].map(id => zonesEl.querySelector('.zone.' + id));
+  const oracle = $('.oracle-sticker'), coffee = $('.coffee-sticker');
+  const colX = W - 16 - book.offsetWidth;
+  const col = [book, work, shop];
+  const tall = 16 + col.reduce((n, el) => n + el.offsetHeight + 30, 0) <= floor;
+  let y = 16;
+  (tall ? col : [book, shop]).forEach(el => { set(el, colX, y); y += el.offsetHeight + 30; });
+  if (!tall) set(work, 24, floor - work.offsetHeight);
+  if (y + 150 <= floor) {                                    // sticker dưới khu Shop
+    set(oracle, W - 180 - oracle.offsetWidth, y);
+    set(coffee, W - 28 - coffee.offsetWidth, y - 18);
+  } else {                                                   // không đủ chỗ: góc trái phía dưới (cạnh khu Công việc nếu nó ở đó)
+    const wb = box(work), x0 = wb.l < W / 2 ? wb.r + 30 : 40;
+    set(oracle, x0, floor - oracle.offsetHeight - 6);
+    set(coffee, x0 + 140, floor - coffee.offsetHeight - 16);
+  }
+  // ảnh polaroid canh theo chữ ở giữa
+  const d = desk.getBoundingClientRect(), hr = $('.hero').getBoundingClientRect(), dk = $('.dock').getBoundingClientRect();
+  const hero = {l: hr.left - d.left, t: hr.top - d.top, r: hr.right - d.left, b: hr.bottom - d.top}, cx = (hero.l + hero.r) / 2;
+  const taken = [hero, box(book), box(work), box(shop), box(oracle), box(coffee),
+    {l: dk.left - d.left, t: dk.top - d.top - 30, r: dk.right - d.left, b: H}];
+  const hit = (a, b) => a.l < b.r + 6 && b.l < a.r + 6 && a.t < b.b + 6 && b.t < a.b + 6;
+  const pic = n => document.querySelector(`.polaroid[data-photo="${n}"]`);
+  [[pic(5), () => [cx - 540, 135]], [pic(2), el => [cx - 260, hero.t - 16 - el.offsetHeight]], [pic(6), () => [cx - 225, hero.b + 37]]].forEach(([el, at]) => {
+    el.style.display = '';
+    if (el.dataset.moved) { taken.push(box(el)); return; }
+    const [x, y0] = at(el), r = {l: x, t: y0, r: x + el.offsetWidth, b: y0 + el.offsetHeight};
+    const ok = r.l >= 4 && r.t >= 4 && r.r <= W - 4 && r.b <= floor && !taken.some(t => hit(r, t));
+    if (!ok) { el.style.display = 'none'; return; }
+    set(el, x, y0); taken.push(r);
+  });
+};
+deskLayout(); addEventListener('resize', deskLayout); document.fonts?.ready.then(deskLayout);
 document.querySelectorAll('.polaroid').forEach(pl => {
   // mỗi ảnh đung đưa một nhịp khác nhau cho tự nhiên
   pl.style.setProperty('--sw', (4.5 + Math.random() * 3).toFixed(2) + 's');
@@ -1415,9 +1435,8 @@ document.querySelectorAll('.polaroid').forEach(pl => {
   let sx, sy;
   pl.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
   pl.addEventListener('pointerup', e => { if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) < 5) lightbox(+pl.dataset.photo); });
-  draggable(pl);
+  draggable(pl, pl, {onDrag: () => pl.dataset.moved = 1});
 });
-$('#sticky').querySelectorAll('li').forEach(li => li.addEventListener('click', () => li.classList.toggle('done')));
 
 // windows
 const opened = {};
@@ -1476,10 +1495,13 @@ addEventListener('keydown', e => {
 const dock = $('#dock');
 DOCK.forEach(d => {
   if (d === 'sep') { dock.insertAdjacentHTML('beforeend','<div class="sep"></div>'); return; }
-  const b = document.createElement('div');
+  const b = document.createElement(d.link ? 'a' : 'div');
   b.className = 'app'; b.style.background = d.color;
-  b.innerHTML = (d.svg ? `<svg viewBox="0 0 24 24">${d.svg}</svg>` : d.text) + `<span class="tip ${d.always?'always':''}">${d.tip}</span>`;
-  b.onclick = () => openWin(d.id);
+  b.innerHTML = (d.icon || (d.svg ? `<svg viewBox="0 0 24 24">${d.svg}</svg>` : d.text)) + `<span class="tip ${d.always?'always':''}">${d.tip}</span>`;
+  if (d.link) {
+    b.href = d.link; b.setAttribute('aria-label', d.label);
+    if (!d.link.startsWith('mailto:')) { b.target = '_blank'; b.rel = 'noopener'; }
+  } else b.onclick = () => openWin(d.id);
   dock.appendChild(b);
 });
 
@@ -1606,72 +1628,6 @@ addEventListener('pointermove', e => {
   s.style.left = e.clientX + 6 + 'px'; s.style.top = e.clientY + 6 + 'px'; s.style.opacity = .5 + Math.random()*.4;
   document.body.appendChild(s); setTimeout(() => s.remove(), 800);
 });
-
-// ---------- Widget Threads: nằm giữa khu Booking và Shop ----------
-(() => {
-  const ago = iso => {
-    const h = Math.max(1, Math.round((Date.now() - new Date(iso)) / 36e5));
-    if (h < 24) return h + ' giờ';
-    const d = Math.round(h / 24);
-    return d < 7 ? d + ' ngày' : new Date(iso).toLocaleDateString('vi-VN', {day:'numeric', month:'numeric'});
-  };
-  const num = n => n >= 1000 ? (n / 1000).toLocaleString('vi-VN', {maximumFractionDigits:1}) + 'K' : String(n);
-  const card = p => `<a class="tw-post" href="${p.url}" target="_blank" rel="noopener">
-      <div class="who"><img src="assets/me/avatar.jpg" alt=""><b>tin.tr_20s</b><span>${ago(p.date)}</span></div>
-      <p>${p.text}</p>
-      ${p.img ? `<div class="tw-img"><img src="${p.img}" alt="" loading="lazy" onerror="this.parentNode.remove()"></div>` : ''}
-      <div class="meta"><span>♡ ${num(p.likes)}</span>${p.replies ? `<span>💬 ${num(p.replies)}</span>` : ''}${p.reposts ? `<span>↻ ${num(p.reposts)}</span>` : ''}</div>
-    </a>`;
-  const tw = document.createElement('section');
-  tw.className = 'tw'; tw.id = 'threads';
-  const list = THREADS.posts.map(card).join('');
-  tw.innerHTML = `<a class="tw-title" href="${ME.threads}" target="_blank" rel="noopener">🧵 Threads gần đây</a>
-    <div class="tw-head"><i class="live"></i>@tin.tr_20s · ${THREADS.followers} người theo dõi</div>
-    <div class="tw-viewport"><div class="tw-track"><div class="tw-copy">${list}</div><div class="tw-copy" aria-hidden="true">${list}</div></div></div>`;
-  tw.querySelectorAll('[aria-hidden] a').forEach(a => a.tabIndex = -1);
-
-  // Tự cuộn chậm; hover (hoặc chạm) thì dừng để người xem tự cuộn bằng chuột / ngón tay,
-  // rời chuột thì chạy tiếp từ chỗ đang đọc. Danh sách được nhân đôi để cuộn vòng liền mạch.
-  const vp = tw.querySelector('.tw-viewport'), copy = tw.querySelector('.tw-copy');
-  const SPEED = 22;                       // px mỗi giây
-  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let pos = 0, last = 0, hold = false, touchTimer;
-  const wrap = () => {                    // giữ vị trí trong bản sao đầu để vòng lặp không bị giật
-    const h = copy.offsetHeight; if (!h) return;
-    if (vp.scrollTop >= h) vp.scrollTop -= h;
-    else if (vp.scrollTop <= 0 && hold) vp.scrollTop += h;
-    pos = vp.scrollTop;
-  };
-  vp.addEventListener('scroll', () => { if (hold) wrap(); }, {passive: true});
-  tw.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') hold = true; });
-  tw.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { hold = false; pos = vp.scrollTop; } });
-  vp.addEventListener('touchstart', () => { hold = true; clearTimeout(touchTimer); }, {passive: true});
-  vp.addEventListener('touchend', () => { clearTimeout(touchTimer); touchTimer = setTimeout(() => { hold = false; pos = vp.scrollTop; }, 2500); }, {passive: true});
-  const step = t => {
-    const dt = last ? Math.min(.05, (t - last) / 1000) : 0; last = t;
-    if (!hold && !still && !tw.classList.contains('dragging')) {
-      pos += SPEED * dt;
-      if (pos >= copy.offsetHeight) pos -= copy.offsetHeight;
-      vp.scrollTop = pos;
-    }
-    requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-  zonesEl.insertBefore(tw, zonesEl.querySelector('.zone.shop'));
-
-  let moved = false;  // người xem đã tự kéo widget thì không tự xếp lại nữa
-  draggable(tw, tw, {enabled: () => !stacked.matches, onDrag: () => moved = true});
-  const place = () => {
-    if (stacked.matches) { tw.style.display = ''; return; }
-    if (moved) return;
-    const book = zonesEl.querySelector('.zone.book'), shop = zonesEl.querySelector('.zone.shop');
-    const top = book.offsetTop + book.offsetHeight + 32;
-    const h = shop.offsetTop - 34 - top;
-    tw.style.top = top + 'px'; tw.style.height = h + 'px';
-    tw.style.display = h < 150 ? 'none' : '';
-  };
-  place(); addEventListener('resize', place); document.fonts?.ready.then(place);
-})();
 
 // ---------- Biểu đồ giá vàng & chứng khoán ----------
 // Thư viện Lightweight Charts (TradingView, mã nguồn mở) chỉ tải khi người xem mở biểu đồ lần đầu.
@@ -1941,13 +1897,12 @@ const MARKET = {
   const make = (kind, title, href) => {
     const el = document.createElement('section');
     el.className = 'mw ' + kind;
-    el.innerHTML = `<a class="mw-title" href="${href}" target="_blank" rel="noopener">${title}</a><span class="mw-more">📊 Biểu đồ</span><div class="mw-sub"></div><div class="mw-body"><div class="msg">Đang tải…</div></div>`;
-    zonesEl.appendChild(el);
-    draggable(el, el, {enabled: () => !stacked.matches, onDrag: () => el.dataset.moved = '1'});
+    el.dataset.kind = kind; el.dataset.name = title.replace(/^\S+\s/, '');
+    el.innerHTML = `<a class="mw-title" href="${href}" target="_blank" rel="noopener">${title}</a><span class="mw-more">📊 Biểu đồ</span><button class="mw-x" type="button" title="Cất vào tab Widget" aria-label="Cất widget">×</button><div class="mw-sub"></div><div class="mw-body"><div class="msg">Đang tải…</div></div>`;
     // bấm vào widget (không phải kéo) -> mở cửa sổ biểu đồ 3 tháng / 6 tháng / 1 năm
     el.title = 'Bấm để xem biểu đồ';
     el.addEventListener('click', e => {
-      if (e.target.closest('a, button')) return;
+      if (e.target.closest('a, button') || el.dataset.justDragged) return;
       if (kind === 'stock') stockChartSymbol = 'VNINDEX';
       openWin(kind === 'gold' ? 'goldchart' : 'stockchart');
     });
@@ -1998,7 +1953,6 @@ const MARKET = {
         ${rows.map(r => `<tr><td>${r.name}</td><td><b>${tr(r.buy)}</b>${chg(r.db)}</td><td style="padding-left:10px"><b>${tr(r.sell)}</b>${chg(r.ds)}</td></tr>`).join('')}
       </table>${chart}
       <div class="mw-foot"><span>${when ? '🕘 ' + when : ''}</span><span>vang.today · PNJ</span></div>`;
-    layout();
   };
 
   /* ----- VN-Index ----- */
@@ -2032,37 +1986,101 @@ const MARKET = {
         ${spark(vals, prev, COLOR[c])}
         <div class="mw-foot"><span>Cao <b>${pts(hi)}</b> · Thấp <b>${pts(lo)}</b></span><span>${lastAt}</span></div>
         <div class="mw-foot" style="margin-top:2px"><span>Tham chiếu ${pts(prev)}</span><span>Nguồn: VNDirect</span></div>`;
-      layout();
     } catch (e) {
       fail(stock, loadStock);
     }
     stockTimer = setTimeout(loadStock, session().state === 'on' ? MARKET.stockLive : MARKET.stockIdle);
   };
 
-  // xếp 2 widget dưới khu Công việc chuyên môn (trừ khi người xem đã tự kéo đi)
-  function layout(){
-    if (stacked.matches) return;
-    const work = zonesEl.querySelector('.zone.work');
-    let top = parseFloat(getComputedStyle(work).top) || 270;
-    if (work.style.top) top = 270;                                     // khu đã bị kéo -> dùng vị trí gốc
-    top += work.offsetHeight + 28;
-    const room = $('#desktop').clientHeight - 10;
-    // màn hình thấp: lần lượt ẩn biểu đồ của từng widget cho vừa
-    gold.classList.remove('compact', 'tight'); stock.classList.remove('compact');
-    const bottom = () => top + gold.offsetHeight + 28 + stock.offsetHeight;
-    [() => gold.classList.add('compact'), () => stock.classList.add('compact'), () => gold.classList.add('tight')]
-      .forEach(shrink => { if (bottom() > room) shrink(); });
-    [gold, stock].forEach(el => {
-      if (!el.dataset.moved) { el.style.top = top + 'px'; el.style.left = ''; }
-      top += el.offsetHeight + 28;
+  /* ----- Tab Widget: widget nằm trong bảng, nắm kéo ra màn hình để dùng ----- */
+  const btn = $('#wBtn'), panel = $('#wPanel'), slots = $('#wSlots'), desk = $('#desktop');
+  const ALL = [gold, stock];
+  const KEY = 'tvp-widgets';                         // vị trí widget đã kéo ra (chỉ lưu trên máy người xem)
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
+  const save = () => {
+    const pos = {};
+    ALL.forEach(el => { if (el.classList.contains('placed')) pos[el.dataset.kind] = {x: el.offsetLeft, y: el.offsetTop}; });
+    try { localStorage.setItem(KEY, JSON.stringify(pos)); } catch (e) {}
+  };
+  // dữ liệu chỉ bắt đầu tải khi có người mở tab Widget hoặc đã có widget trên màn hình
+  let started = false;
+  const start = () => {
+    if (started) return; started = true;
+    loadGold(); setInterval(loadGold, MARKET.goldEvery);
+    loadStock();
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) loadStock(); });
+  };
+
+  const slotOf = el => slots.querySelector(`[data-slot="${el.dataset.kind}"]`);
+  ALL.forEach(el => {
+    const slot = document.createElement('div');
+    slot.className = 'wslot'; slot.dataset.slot = el.dataset.kind;
+    slot.appendChild(el); slots.appendChild(slot);
+    el.addEventListener('dragstart', e => e.preventDefault());
+  });
+  // đưa widget về lại tab Widget
+  const stow = el => {
+    el.classList.remove('placed', 'dragging');
+    el.removeAttribute('style');
+    slotOf(el).replaceChildren(el);
+  };
+  // đặt widget ra màn hình tại toạ độ (so với desktop)
+  const place = (el, x, y) => {
+    const slot = slotOf(el);
+    zonesEl.appendChild(el);
+    el.classList.add('placed');
+    el.style.left = x + 'px'; el.style.top = Math.max(0, y) + 'px'; el.style.zIndex = ++z;
+    slot.innerHTML = `<div class="wph"><div><b>${el.dataset.name}</b>đang ở trên màn hình</div><button type="button">Cất lại vào đây</button></div>`;
+    slot.querySelector('button').onclick = () => { stow(el); save(); };
+  };
+  ALL.forEach(el => {
+    el.querySelector('.mw-x').addEventListener('click', e => { e.stopPropagation(); stow(el); save(); });
+    el.addEventListener('pointerdown', e => {
+      if (e.button !== 0 || e.target.closest('.mw-x') || stacked.matches) return;
+      const sx = e.clientX, sy = e.clientY;
+      let dragging = false, ox, oy;
+      const move = ev => {
+        if (!dragging) {
+          if (Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) < 5) return;
+          dragging = true;
+          const r = el.getBoundingClientRect(), d = desk.getBoundingClientRect();
+          ox = sx - r.left; oy = sy - r.top;
+          if (!el.classList.contains('placed')) { place(el, r.left - d.left, r.top - d.top); closePanel(); }
+          el.style.zIndex = ++z; el.classList.add('dragging');
+        }
+        const d = desk.getBoundingClientRect();
+        el.style.left = Math.min(d.width - 60, Math.max(-el.offsetWidth + 60, ev.clientX - d.left - ox)) + 'px';
+        el.style.top = Math.min(d.height - 40, Math.max(0, ev.clientY - d.top - oy)) + 'px';
+      };
+      const up = () => {
+        removeEventListener('pointermove', move); removeEventListener('pointerup', up); removeEventListener('pointercancel', up);
+        if (!dragging) return;
+        el.classList.remove('dragging');
+        el.dataset.justDragged = '1'; setTimeout(() => delete el.dataset.justDragged, 0);   // nhả chuột không mở biểu đồ
+        save();
+      };
+      addEventListener('pointermove', move); addEventListener('pointerup', up); addEventListener('pointercancel', up);
     });
-  }
-  addEventListener('resize', layout);
-  document.fonts?.ready.then(layout);
-  layout();
-  loadGold(); setInterval(loadGold, MARKET.goldEvery);
-  loadStock();
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) loadStock(); });
+  });
+
+  // mở / đóng bảng Widget
+  const openPanel = () => {
+    start();
+    const r = btn.getBoundingClientRect();
+    panel.style.left = Math.max(10, Math.min(r.left - 14, innerWidth - panel.offsetWidth - 10)) + 'px';
+    panel.hidden = false; btn.classList.add('on'); btn.setAttribute('aria-expanded', 'true');
+    panel.style.left = Math.max(10, Math.min(r.left - 14, innerWidth - panel.offsetWidth - 10)) + 'px';
+  };
+  function closePanel(){ panel.hidden = true; btn.classList.remove('on'); btn.setAttribute('aria-expanded', 'false'); }
+  btn.addEventListener('click', e => { e.stopPropagation(); panel.hidden ? openPanel() : closePanel(); });
+  document.addEventListener('pointerdown', e => { if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) closePanel(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) closePanel(); });
+  // màn hình nhỏ (các khu xếp dọc): widget chỉ dùng trong bảng
+  stacked.addEventListener('change', () => { if (stacked.matches) ALL.forEach(el => el.classList.contains('placed') && stow(el)); });
+
+  // khôi phục widget người xem đã kéo ra lần trước
+  const saved = load();
+  if (!stacked.matches) ALL.forEach(el => { const p = saved[el.dataset.kind]; if (p) { place(el, p.x, p.y); start(); } });
 })();
 
 // ---------- Nhạc nền: bật sau lần chạm đầu tiên (trình duyệt chặn tự phát có tiếng) ----------
