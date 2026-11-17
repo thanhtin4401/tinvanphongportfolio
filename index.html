@@ -119,12 +119,27 @@
 
   /* ---------- Tab Widget trên header ---------- */
   .menubar a.on{color:var(--brand);font-weight:700}
-  .wpanel{position:fixed;top:36px;z-index:1100;width:min(600px,calc(100vw - 20px));padding:16px 18px 18px;border-radius:18px;background:rgba(255,255,255,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(0,0,244,.10);box-shadow:var(--shadow);animation:calIn .18s ease-out;transform-origin:top left}
+  .wpanel{position:fixed;top:36px;z-index:1100;width:min(640px,calc(100vw - 20px));padding:16px 18px 18px;border-radius:18px;background:rgba(255,255,255,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(0,0,244,.10);box-shadow:var(--shadow);animation:calIn .18s ease-out;transform-origin:top left}
   .wpanel[hidden]{display:none}
   .wpanel h4{margin:0;font-size:15px}
   .wpanel .whint{margin:2px 0 18px;font-size:12px;color:var(--muted)}
   .wslots{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:24px 18px;justify-items:center}
   .wslot{width:258px;min-height:150px;display:flex}
+
+  /* sticky note: giấy note vàng, gõ được như note bình thường, tự lưu trên máy người xem */
+  .wslot:has(.note){width:280px}
+  .mw.note{width:280px;--c:#e8d77a;background:#fff3a3;border:0;border-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.08),0 8px 18px rgba(60,50,0,.14);padding:20px 14px 18px 24px;rotate:-1.5deg;animation-delay:.5s;font-variant-numeric:normal}
+  .mw.note.dragging{rotate:0deg;box-shadow:0 22px 46px rgba(60,50,0,.25)}
+  .mw.note [contenteditable]{outline:0;cursor:text;touch-action:auto;color:#1d1d1f}
+  .mw.note .nt-title{margin:0 0 9px;font-size:14px;font-weight:700;min-height:1em}
+  .mw.note .nt-list{font-size:14px;line-height:1.6;min-height:1.55em}
+  .mw.note .nt-list > div{position:relative;padding-left:18px;margin-left:-18px;overflow-wrap:anywhere}
+  /* chấm tròn bên trái mỗi dòng (hiện khi rê chuột): bấm vào để gạch / bỏ gạch dòng đó */
+  .mw.note .nt-list > div::before{content:"";position:absolute;left:2px;top:.5em;width:9px;height:9px;border-radius:50%;border:1.5px solid #b59a1c;box-sizing:border-box;opacity:0;cursor:pointer;transition:opacity .15s}
+  .mw.note:hover .nt-list > div::before{opacity:.55}
+  .mw.note .nt-list > div.done::before{background:#b59a1c}
+  .mw.note .nt-list > div.done{text-decoration:line-through;text-decoration-thickness:1.5px;color:#5e5e5e}
+  .mw.note .nt-list:empty::before,.mw.note .nt-title:empty::before{content:attr(data-ph);color:#a8901f}
   .wslot .mw{position:relative;animation:none}
   .wslot .wph{flex:1;display:grid;place-items:center;text-align:center;gap:6px;border:2px dashed #d6d6ea;border-radius:16px;padding:16px;color:var(--muted);font-size:12px}
   .wslot .wph b{display:block;color:var(--ink);font-size:13px}
@@ -270,6 +285,12 @@
   .timeline li{padding:8px 0 8px 18px;border-left:2px solid #e2e2ec;position:relative}
   .timeline li::before{content:"";position:absolute;left:-6px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--work)}
   .timeline b{display:block}
+  .doclist{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+  .doclist a{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #e6e6f3;border-radius:12px;text-decoration:none;color:var(--ink);transition:border-color .15s,background .15s}
+  .doclist a:hover{border-color:var(--work);background:var(--work-soft)}
+  .doclist .ext{flex:none;width:38px;height:38px;border-radius:9px;display:grid;place-items:center;background:var(--work);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.4px}
+  .doclist b{display:block;font-size:14px}
+  .doclist small{color:var(--muted);font-size:12px}
   .timeline span{color:var(--muted);font-size:12.5px}
   .twocol{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px}
   .bullets{margin:0;padding-left:18px}
@@ -347,12 +368,7 @@
   .cg.work{--c:var(--work);--soft:var(--work-soft)} .cg.book{--c:var(--book);--soft:var(--book-soft)} .cg.shop{--c:var(--shop);--soft:var(--shop-soft)}
   .cg a{display:inline-block;margin:2px 10px 2px 0}
 
-  /* polaroid trên desktop */
-  .polaroid{position:absolute;background:#fff;padding:8px 8px 30px;box-shadow:0 10px 24px rgba(0,0,60,.18);cursor:grab;z-index:5;transition:box-shadow .2s}
-  .polaroid:hover{box-shadow:0 16px 34px rgba(0,0,60,.26)}
-  /* ảnh dán băng keo, bị gió thổi đung đưa quanh chỗ dán */
-  .polaroid{transform-origin:50% 0;animation:sway var(--sw,5.5s) ease-in-out infinite;animation-delay:var(--sd,0s)}
-  .polaroid:hover,.polaroid:active{animation-play-state:paused}
+  /* đồ treo đung đưa nhẹ quanh điểm treo */
   @keyframes sway{
     0%,100%{rotate:0deg;translate:0 0}
     18%{rotate:2.4deg;translate:1px 0}
@@ -361,10 +377,80 @@
     68%{rotate:-2.2deg;translate:0 0}
     84%{rotate:.7deg}
   }
-  @media (prefers-reduced-motion:reduce){.polaroid{animation:none}}
-  .polaroid img{display:block;width:100%;aspect-ratio:1;object-fit:cover;pointer-events:none}
-  .polaroid span{position:absolute;left:0;right:0;bottom:7px;text-align:center;font-style:italic;font-weight:600;font-size:12.5px;color:#333}
-  .polaroid .tape{position:absolute;top:-10px;left:50%;width:56px;height:20px;transform:translateX(-50%) rotate(-3deg);background:rgba(246,210,58,.75)}
+
+  /* ---------- Pegboard "Giới thiệu nhanh": cùng cỡ khu Booking, mọi kích thước tính theo bề ngang tấm bảng (cqw) ---------- */
+  .peg{position:absolute;left:24px;top:34px;width:258px;aspect-ratio:258/243;z-index:4;container-type:inline-size;cursor:zoom-in;touch-action:none;user-select:none;-webkit-user-select:none;
+    transition:transform .25s ease;animation:zoneIn .7s cubic-bezier(.2,.9,.3,1.25) .1s backwards}
+  .peg:hover{transform:translateY(-5px)}
+  .peg.dragging{cursor:grabbing;transform:rotate(-1.5deg) scale(1.03);transition:none}
+  .peg .pg-board{position:absolute;inset:0;border-radius:5cqw;overflow:hidden;
+    background:radial-gradient(circle,rgba(110,40,0,.5) 0 .7cqw,rgba(255,255,255,.22) .8cqw 1cqw,transparent 1.1cqw) 1.8cqw 1.8cqw/6.4cqw 6.4cqw,linear-gradient(155deg,#ffa04f,#f26b1d);
+    box-shadow:inset 0 0 0 1.3cqw #de5a0c,inset 0 0 0 1.8cqw rgba(255,255,255,.28),0 10px 26px rgba(222,90,12,.3);transition:box-shadow .25s ease}
+  .peg:hover .pg-board{box-shadow:inset 0 0 0 1.3cqw #de5a0c,inset 0 0 0 1.8cqw rgba(255,255,255,.28),0 16px 34px rgba(222,90,12,.4)}
+  .peg .pg-title{position:absolute;top:-5cqw;left:5.4cqw;z-index:3;background:#f26b1d;color:#fff;font-weight:800;font-size:4.45cqw;letter-spacing:.23cqw;padding:1.55cqw 4.3cqw;border-radius:99px;text-transform:uppercase;box-shadow:0 1.2cqw 3cqw rgba(0,0,0,.14);white-space:nowrap}
+  .peg .pg-hint{position:absolute;right:4cqw;top:-4.4cqw;z-index:3;font-size:3.4cqw;font-weight:700;color:#c2510c;background:#fff;border:.6cqw solid #f26b1d;border-radius:99px;padding:.6cqw 2.6cqw;opacity:0;transition:opacity .2s}
+  .peg:hover .pg-hint,.peg:focus-visible .pg-hint{opacity:1}
+  .peg .pg-hook{position:absolute;width:3.2cqw;height:3.2cqw;margin:-1.6cqw 0 0 -1.6cqw;border-radius:50%;z-index:2;background:radial-gradient(circle at 35% 30%,#fff,#b9b9c8 55%,#6d6d80);box-shadow:0 .5cqw 1cqw rgba(0,0,0,.35)}
+  .peg .pg-sway{position:absolute;transform-origin:50% 0;animation:sway var(--sw,5.5s) ease-in-out infinite;animation-delay:var(--sd,0s)}
+
+  /* thẻ đeo */
+  .peg .pg-badge{left:5cqw;top:3cqw;width:28cqw;z-index:1}
+  .peg .pg-strap{display:block;width:100%;height:9cqw}
+  .peg .pg-clip{display:block;width:7cqw;height:3.4cqw;margin:-.6cqw auto 0;border-radius:1cqw;background:linear-gradient(#e3e3ec,#9a9aac);box-shadow:0 .4cqw .8cqw rgba(0,0,0,.25);position:relative;z-index:1}
+  .peg .pg-card{margin-top:-1.4cqw;background:#fff;border-radius:2.6cqw;padding:2.2cqw 2.2cqw 2.4cqw;box-shadow:0 2cqw 4cqw rgba(110,40,0,.35);text-align:center;position:relative}
+  .peg .pg-card::before{content:"";display:block;width:8cqw;height:1.5cqw;margin:0 auto 1.8cqw;border-radius:99px;background:#e2e2ec}
+  .peg .pg-card img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:1.6cqw;pointer-events:none}
+  .peg .pg-card b{display:block;margin-top:1.8cqw;font-size:3.9cqw;line-height:1.1;color:var(--ink)}
+  .peg .pg-card small{display:block;font-size:2.35cqw;color:var(--muted);margin-top:.6cqw}
+  .peg .pg-otw{display:inline-block;margin-top:1.4cqw;font-size:2.2cqw;font-weight:800;letter-spacing:.15cqw;color:#fff;background:#1f9d55;border-radius:99px;padding:.6cqw 2cqw}
+
+  /* giấy giới thiệu kẻ ô */
+  .peg .pg-note{position:absolute;left:41cqw;top:6.5cqw;width:55cqw;padding:4.6cqw 4cqw 3.6cqw;rotate:1.5deg;color:var(--ink);border-radius:.8cqw;
+    background:repeating-linear-gradient(#0000 0 3.8cqw,#e6eaf6 3.8cqw 4cqw),repeating-linear-gradient(90deg,#0000 0 3.8cqw,#e6eaf6 3.8cqw 4cqw),#fff;
+    box-shadow:0 2cqw 4cqw rgba(110,40,0,.3)}
+  .peg .pg-pin{position:absolute;top:-1.8cqw;left:50%;width:4.2cqw;height:4.2cqw;margin-left:-2.1cqw;border-radius:50%;background:radial-gradient(circle at 35% 30%,#7f8bff,#0000F4 60%,#00009a);box-shadow:0 .8cqw 1.2cqw rgba(0,0,0,.35)}
+  .peg .pg-note > i:not(.pg-pin){display:block;font-size:3.4cqw;font-weight:600;color:var(--brand)}
+  .peg .pg-note h3{margin:.2cqw 0 1.6cqw;font-size:7.2cqw;line-height:1;font-weight:900;letter-spacing:-.04em;color:var(--brand)}
+  .peg .pg-note p{margin:0;font-size:2.55cqw;line-height:1.45}
+  .peg .pg-note p + p{margin-top:1.2cqw}
+  .peg .pg-note mark{background:#ffe35a;color:inherit;padding:0 .5cqw;border-radius:.4cqw}
+
+  /* kinh nghiệm kẹp giấy */
+  .peg .pg-exp{position:absolute;left:43cqw;top:44cqw;width:52cqw;padding:4.6cqw 3.4cqw 3cqw;background:#fffaf0;border-radius:2cqw;rotate:-1.2deg;box-shadow:0 2cqw 4cqw rgba(110,40,0,.3)}
+  .peg .pg-binder{position:absolute;top:-2.6cqw;left:50%;width:12cqw;height:5cqw;margin-left:-6cqw;border-radius:1cqw 1cqw .6cqw .6cqw;background:linear-gradient(#4a4a5e,#14142b);box-shadow:0 .6cqw 1cqw rgba(0,0,0,.3)}
+  .peg .pg-exp h4{margin:0 0 .6cqw;font-size:3.6cqw;font-weight:900;color:var(--ink)}
+  .peg .pg-exp ul{margin:0;padding:0}
+  .peg .pg-exp li{list-style:none;display:flex;justify-content:space-between;gap:1.6cqw;font-size:2.4cqw;font-weight:700;color:#fff;background:var(--bg);border-radius:1cqw;padding:1cqw 1.8cqw;margin-top:1cqw;white-space:nowrap}
+  .peg .pg-exp li span{font-weight:500;opacity:.85}
+
+  /* polaroid treo móc */
+  .peg .pg-photo{width:20cqw;background:#fff;padding:1.6cqw 1.6cqw 5.6cqw;box-shadow:0 2cqw 4cqw rgba(110,40,0,.35)}
+  .peg .pg-photo img{display:block;width:100%;aspect-ratio:1;object-fit:cover;pointer-events:none}
+  .peg .pg-photo span{position:absolute;left:0;right:0;bottom:1.4cqw;text-align:center;font-style:italic;font-weight:600;font-size:2.5cqw;color:#333}
+  .peg .pg-photo::before{content:"";position:absolute;top:-2.4cqw;left:50%;width:2.4cqw;height:3.4cqw;margin-left:-1.2cqw;box-sizing:border-box;border:.6cqw solid #8c8ca0;border-bottom:0;border-radius:99px 99px 0 0}
+
+  /* giấy note vàng */
+  .peg .pg-sticky{position:absolute;left:60cqw;top:72cqw;width:33cqw;padding:2.2cqw 3cqw;background:#ffe35a;rotate:-3deg;box-shadow:0 1.6cqw 3cqw rgba(110,40,0,.3);font-size:2.55cqw;line-height:1.45;color:var(--ink);z-index:1}
+  .peg .pg-sticky::before{content:"";position:absolute;top:-1.8cqw;left:50%;width:13cqw;height:3.6cqw;margin-left:-6.5cqw;rotate:2deg;background:rgba(255,255,255,.6)}
+  .peg .pg-sticky b{display:block;font-size:3cqw}
+  .peg a{color:inherit;text-decoration:none;pointer-events:none}
+
+  /* phóng to tấm bảng */
+  .peg-zoom{position:fixed;inset:0;z-index:3500;display:grid;place-items:center;padding:56px 16px 40px;background:rgba(15,15,40,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);cursor:zoom-out;animation:fadeBg .25s ease-out}
+  .peg-zoom.out{animation:pegOut .28s ease-in forwards}
+  @keyframes pegOut{to{background:rgba(15,15,40,0);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}}
+  .peg-zoom.out .pg-x,.peg-zoom.out .pg-tip{opacity:0}
+  .peg-zoom .peg{position:relative;left:auto;top:auto;width:min(860px,100%,calc((100dvh - 100px) * 258 / 243));cursor:default;animation:none;transform-origin:0 0;touch-action:auto}
+  .peg-zoom .peg:hover{transform:none}
+  .peg-zoom .peg .pg-hint{display:none}
+  .peg-zoom .peg a{pointer-events:auto}
+  .peg-zoom .peg a:hover{text-decoration:underline}
+  .peg-zoom [data-go],.peg-zoom .pg-photo{cursor:pointer}
+  .peg-zoom [data-go]:hover,.peg-zoom .pg-photo:hover{filter:brightness(1.04) drop-shadow(0 0 .8cqw rgba(255,255,255,.7))}
+  .peg-zoom .pg-sway:hover{animation-play-state:paused}
+  .peg-zoom .pg-x{position:fixed;top:14px;right:16px;width:38px;height:38px;border-radius:50%;border:2px solid #fff;background:#f26b1d;color:#fff;font-size:20px;line-height:1;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.25);transition:opacity .2s}
+  .peg-zoom .pg-tip{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);color:#fff;font-size:12.5px;opacity:.85;white-space:nowrap;transition:opacity .2s}
+  @media (prefers-reduced-motion:reduce){.peg .pg-sway{animation:none}}
   /* ảnh bìa trong cửa sổ */
   .cover{margin:-22px -24px 0;height:190px;background-size:cover;background-position:center;position:relative}
   .cover + .profile{margin-top:-40px;position:relative}
@@ -524,7 +610,8 @@
 
   /* ---------- Màn hình nhỏ: xếp dọc ---------- */
   @media (max-width:1100px), (max-height:640px){
-    .polaroid,.coffee-sticker,.oracle-sticker{display:none}
+    .coffee-sticker,.oracle-sticker{display:none}
+    .peg{position:relative;left:auto!important;top:auto!important;width:min(100%,420px)!important;margin:6px auto 44px;touch-action:auto}
     #desktop{overflow:auto;padding:24px 16px 110px}
     .hero{position:static;transform:none;margin:10px 0 28px}
     .zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:26px;max-width:900px;margin:0 auto}
@@ -591,7 +678,7 @@
 </header>
 <div class="wpanel" id="wPanel" role="dialog" aria-label="Widget" hidden>
   <h4>Widget</h4>
-  <p class="whint">Nắm kéo widget ra màn hình để dùng · bấm vào widget để xem biểu đồ</p>
+  <p class="whint">Nắm kéo widget ra màn hình để dùng · bấm vào widget vàng, chứng khoán để xem biểu đồ</p>
   <div class="wslots" id="wSlots"></div>
 </div>
 <div id="ytWrap" aria-hidden="true"><div id="ytPlayer"></div></div>
@@ -603,9 +690,42 @@
     <div class="sub">Ban ngày <b>viết code</b>, ban đêm <b>viết caption</b></div>
   </div>
 
-  <div class="polaroid" data-photo="2" style="left:calc(50% - 260px);top:90px;width:150px;transform:rotate(5deg)"><i class="tape"></i><img src="assets/me/selfie.jpg" alt="Thành Tín"><span>hi, it's Tín!</span></div>
-  <div class="polaroid" data-photo="5" style="left:calc(50% - 540px);top:140px;width:150px;transform:rotate(-4deg)"><i class="tape"></i><img src="assets/me/desk.jpg" alt="Góc làm việc của Tín"><span>góc làm việc</span></div>
-  <div class="polaroid" data-photo="6" style="left:calc(50% - 225px);top:calc(42% + 170px);width:140px;transform:rotate(-6deg)"><i class="tape"></i><img src="assets/me/summit.jpg" alt="Tín trên đỉnh núi"><span>lên đỉnh!</span></div>
+  <div class="peg" id="peg" role="button" tabindex="0" aria-label="Giới thiệu nhanh về Tín, bấm để phóng to">
+    <div class="pg-board"></div>
+    <div class="pg-title">📌 Giới thiệu nhanh</div>
+    <div class="pg-hint">bấm để xem ⤢</div>
+    <i class="pg-hook" style="left:19cqw;top:3cqw"></i>
+    <div class="pg-sway pg-badge" data-go="work" title="Hồ sơ công việc">
+      <svg class="pg-strap" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0 L33 40 H45 L50 10 L55 40 H67 Z" fill="#0000F4"/><path d="M50 0 L39 40 M50 0 L61 40" stroke="#fff" stroke-width="1.2" stroke-dasharray="3 3" opacity=".7"/></svg>
+      <i class="pg-clip"></i>
+      <div class="pg-card"><img src="assets/me/avatar.jpg" alt="Thành Tín"><b>Thành Tín</b><small>Engineer @ ELCA</small><span class="pg-otw">#OPENTOWORK</span></div>
+    </div>
+    <div class="pg-note" data-go="creator" title="Tín Văn Phòng">
+      <i class="pg-pin"></i>
+      <i>Hi, I'm</i>
+      <h3>Thành Tín</h3>
+      <p>Dân IT văn phòng Gen Z ở Sài Gòn. Ban ngày <mark>viết code</mark>, ban đêm lên Threads <mark>viết caption</mark> ✦</p>
+    </div>
+    <div class="pg-exp" data-go="work" title="Hồ sơ công việc">
+      <i class="pg-binder"></i>
+      <h4>Kinh nghiệm</h4>
+      <ul>
+        <li style="--bg:#0000F4">ELCA Vietnam <span>2024 – nay</span></li>
+        <li style="--bg:#14142b">TMA Solutions <span>2022 – 2024</span></li>
+        <li style="--bg:#f26b1d">Freelance Web <span>2023 – 2024</span></li>
+      </ul>
+    </div>
+    <i class="pg-hook" style="left:14cqw;top:64cqw"></i>
+    <div class="pg-sway pg-photo" data-photo="5" style="left:4cqw;top:65cqw"><img src="assets/me/desk.jpg" alt="Góc làm việc của Tín"><span>góc làm việc</span></div>
+    <i class="pg-hook" style="left:36.5cqw;top:67cqw"></i>
+    <div class="pg-sway pg-photo" data-photo="6" style="left:26.5cqw;top:68cqw"><img src="assets/me/summit.jpg" alt="Tín trên đỉnh núi"><span>lên đỉnh!</span></div>
+    <div class="pg-sticky">
+      <b>say hi 👋</b>
+      📍 Sài Gòn<br>
+      <a href="mailto:tintran11.work@gmail.com">✉ tintran11.work</a><br>
+      <a href="https://www.threads.com/@tin.tr_20s" target="_blank">@tin.tr_20s</a>
+    </div>
+  </div>
 
   <div class="oracle-sticker" data-open="oracle" title="Vị thần của những quyết định">
     <div class="bubble">hỏi vị thần ✦</div>
@@ -735,6 +855,54 @@ const ph = (t='Thêm ảnh') => `<div class="ph">${t}</div>`;
 const vnd = n => n.toLocaleString('vi-VN') + 'đ';
 const fmtK = k => (k >= 1000 ? (k/1000).toFixed(3) : k) + 'K';
 
+// Âm thanh cho sách Vị thần: tự tổng hợp bằng Web Audio (không cần file).
+// rumble(): tiếng rung khi sách lắc · open(): tiếng lật bìa "vụt" + chuông phép thuật lấp lánh
+const orcSfx = (() => {
+  let ctx;
+  const ac = () => {
+    const C = window.AudioContext || window.webkitAudioContext; if (!C) return null;
+    ctx = ctx || new C(); if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  };
+  const noise = (c, dur) => {
+    const b = c.createBuffer(1, c.sampleRate * dur, c.sampleRate), d = b.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    const src = c.createBufferSource(); src.buffer = b; return src;
+  };
+  const env = (c, t, peak, a, r) => {
+    const g = c.createGain(); g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + a + r);
+    g.connect(c.destination); return g;
+  };
+  const tone = (c, t, f, peak, r, type = 'sine') => {
+    const o = c.createOscillator(); o.type = type; o.frequency.setValueAtTime(f, t);
+    o.connect(env(c, t, peak, .01, r)); o.start(t); o.stop(t + r + .05);
+  };
+  return {
+    rumble(){
+      const c = ac(); if (!c) return; const t = c.currentTime;
+      const o = c.createOscillator(), lfo = c.createOscillator(), lg = c.createGain();
+      o.type = 'triangle'; o.frequency.value = 70; lfo.frequency.value = 18; lg.gain.value = 25;
+      lfo.connect(lg); lg.connect(o.frequency);
+      o.connect(env(c, t, .12, .08, .55)); o.start(t); lfo.start(t); o.stop(t + .7); lfo.stop(t + .7);
+    },
+    open(){
+      const c = ac(); if (!c) return; const t = c.currentTime;
+      // lật bìa: tiếng gió quét qua
+      const n = noise(c, .6), bp = c.createBiquadFilter();
+      bp.type = 'bandpass'; bp.Q.value = 1.2;
+      bp.frequency.setValueAtTime(400, t); bp.frequency.exponentialRampToValueAtTime(3200, t + .45);
+      n.connect(bp); bp.connect(env(c, t, .22, .12, .45)); n.start(t);
+      // chuông phép thuật: hợp âm rải đi lên + lấp lánh
+      [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => {
+        tone(c, t + .25 + i * .08, f, .09, 1.4);
+        tone(c, t + .25 + i * .08, f * 2, .025, .9, 'triangle');
+      });
+      for (let i = 0; i < 8; i++) tone(c, t + .7 + i * .07 + Math.random() * .04, 2000 + Math.random() * 2500, .02, .35);
+    },
+  };
+})();
+
 const WINDOWS = {
   /* ---------- KHU 1: CÔNG VIỆC ---------- */
   work:{zone:'work', title:'Hồ sơ công việc', html:`
@@ -772,6 +940,17 @@ const WINDOWS = {
   resume:{zone:'work', title:'Resume.pdf', wide:true, html:`
     <div class="btn-row" style="margin:0 0 10px"><a class="btn dark" href="assets/resume.pdf" target="_blank">Mở PDF ↗</a><a class="btn ghost" href="assets/resume.pdf" download>Tải xuống</a></div>
     <iframe src="assets/resume.pdf" style="width:100%;height:60vh;border:1px solid #e6e6f3;border-radius:8px"></iframe>`},
+
+  docs:{zone:'work', title:'Tài liệu', html:`
+    <p class="lead" style="margin-top:0">Tài liệu chuyên môn của Tín, bấm vào để mở.</p>
+    <ul class="doclist">
+      <li><a href="assets/resume.pdf" target="_blank"><span class="ext">PDF</span><span><b>Resume.pdf</b><small>CV mới nhất</small></span></a></li>
+    </ul>
+    <p style="color:var(--muted);font-size:13px;margin-top:14px">Đang cập nhật thêm tài liệu ✦</p>`},
+
+  tools:{zone:'work', title:'Công cụ', html:`
+    <p class="lead" style="margin-top:0">Các công cụ Tín dùng và tự làm trong công việc.</p>
+    <p style="color:var(--muted);font-size:13px;margin-top:14px">Đang cập nhật thêm công cụ ✦</p>`},
 
   /* ---------- KHU 2: BOOKING BRAND ---------- */
   creator:{zone:'book', title:'Tín Văn Phòng', html:`
@@ -828,8 +1007,14 @@ const WINDOWS = {
 
   kind:{zone:'book', title:'Kind words.txt', html:`
     <h2>Brand & follower <span class="blue">nói gì</span></h2>
-    <blockquote>Thêm feedback thật từ nhãn hàng đã hợp tác ở đây.<cite>Tên, Nhãn hàng</cite></blockquote>
-    <blockquote>Hoặc một bình luận dễ thương của follower trên Threads.<cite>@username</cite></blockquote>`},
+    <h3>Từ nhãn hàng</h3>
+    <blockquote>Làm việc với Tín nhẹ đầu lắm. Brief gửi tối hôm trước, sáng hôm sau đã có outline, sửa một lần là chốt. Bài lên đọc không giống quảng cáo nên comment hỏi sản phẩm khá nhiều.<cite>Chị Trang · Marketing, nhãn hàng F&B</cite></blockquote>
+    <blockquote>Bên mình thích nhất là Tín đúng hẹn và gửi báo cáo rõ ràng sau 7 ngày, không cần nhắc. Lần sau có chiến dịch dân văn phòng chắc chắn quay lại.<cite>Anh Huy · Brand Executive, ứng dụng gọi xe</cite></blockquote>
+    <h3>Từ follower</h3>
+    <blockquote>Đọc bài anh kể chuyện sếp nhắn lúc 11h đêm mà cười muốn xỉu, y chang công ty em luôn 😂<cite>Ngọc Anh · follower trên Threads</cite></blockquote>
+    <blockquote>Mua cái giá đỡ tai nghe theo bài review của Tín, xài được 3 tháng rồi vẫn ổn. Cảm ơn vì review thật nha.<cite>Minh Khoa · follower trên Threads</cite></blockquote>
+    <blockquote>Mấy hôm đi làm mệt mà lướt thấy bài Tín là thấy nhẹ người hơn chút. Cứ viết đều đều vậy nha.<cite>Thu Hà · follower trên Threads</cite></blockquote>
+    <blockquote>Lần đầu thấy người làm IT mà viết caption duyên vậy 🫶<cite>Bảo Trân · follower trên Threads</cite></blockquote>`},
 
   /* ---------- KHU 3: SHOP 9TO5 ---------- */
   shop:{zone:'shop', title:'9TO5 · Tiệm Văn Phòng Phẩm', wide:true, html:() => `
@@ -985,9 +1170,9 @@ const WINDOWS = {
         busy = true;
         const answer = pick();
         text.textContent = '';
-        book.classList.add('shake');
+        book.classList.add('shake'); orcSfx.rumble();
         setTimeout(() => {
-          book.classList.remove('shake'); book.classList.add('open'); burst();
+          book.classList.remove('shake'); book.classList.add('open'); burst(); orcSfx.open();
           let k = 0;
           clearInterval(typer);
           typer = setInterval(() => {                       // chữ hiện dần như đang được viết ra
@@ -1147,6 +1332,8 @@ const ZONES = [
   {id:'work', title:'💼 Công việc chuyên môn', desc:'Profile đi làm', items:[
     {id:'work', type:'folder', label:'Hồ sơ\ncông việc'},
     {id:'resume', type:'pdf', label:'Resume.pdf'},
+    {id:'docs', type:'folder', label:'Tài Liệu'},
+    {id:'tools', type:'folder', label:'Công cụ'},
   ]},
   {id:'book', title:'📣 Booking brand', desc:'Dành cho nhãn hàng', items:[
     {id:'creator', type:'folder', label:'Tín Văn Phòng'},
@@ -1387,9 +1574,9 @@ ZONES.forEach(zn => {
 draggable($(".coffee-sticker"), undefined, {onDrag: () => $(".coffee-sticker").dataset.moved = 1});
 draggable($(".oracle-sticker"), undefined, {onDrag: () => $(".oracle-sticker").dataset.moved = 1});
 
-// Bố cục lúc mới vào: 3 khu xếp dọc bên phải (Booking, Công việc, Shop), 2 sticker ngay dưới khu Shop,
-// 3 ảnh polaroid quanh chữ "portfolio.". Màn hình thấp: khu Công việc sang góc trái dưới, sticker theo sau;
-// ảnh nào không còn chỗ (sẽ đè lên chữ, khu, sticker hay dock) thì tạm ẩn. Thứ gì người xem đã tự kéo thì để yên.
+// Bố cục lúc mới vào: 3 khu xếp dọc bên phải (Booking, Công việc, Shop), 2 sticker ở góc phải dưới cùng
+// (cà phê trái, vị thần phải), pegboard "Giới thiệu nhanh" ngay bên trái cột 3 khu. Màn hình thấp: khu Công việc sang góc trái dưới, sticker theo sau;
+// Thứ gì người xem đã tự kéo thì để yên.
 const deskLayout = () => {
   if (stacked.matches) return;
   const desk = $('#desktop'), W = desk.clientWidth, H = desk.clientHeight, floor = H - 84;   // chừa chỗ cho dock
@@ -1403,40 +1590,67 @@ const deskLayout = () => {
   let y = 16;
   (tall ? col : [book, shop]).forEach(el => { set(el, colX, y); y += el.offsetHeight + 30; });
   if (!tall) set(work, 24, floor - work.offsetHeight);
-  if (y + 150 <= floor) {                                    // sticker dưới khu Shop
-    set(oracle, W - 180 - oracle.offsetWidth, y);
-    set(coffee, W - 28 - coffee.offsetWidth, y - 18);
+  if (y - 20 + Math.max(coffee.offsetHeight, oracle.offsetHeight) + 6 <= floor) {   // sticker góc phải dưới cùng, sát dock
+    set(coffee, colX, floor - coffee.offsetHeight - 6);
+    set(oracle, W - 16 - oracle.offsetWidth, floor - oracle.offsetHeight - 6);
   } else {                                                   // không đủ chỗ: góc trái phía dưới (cạnh khu Công việc nếu nó ở đó)
     const wb = box(work), x0 = wb.l < W / 2 ? wb.r + 30 : 40;
     set(oracle, x0, floor - oracle.offsetHeight - 6);
     set(coffee, x0 + 140, floor - coffee.offsetHeight - 16);
   }
-  // ảnh polaroid canh theo chữ ở giữa
-  const d = desk.getBoundingClientRect(), hr = $('.hero').getBoundingClientRect(), dk = $('.dock').getBoundingClientRect();
-  const hero = {l: hr.left - d.left, t: hr.top - d.top, r: hr.right - d.left, b: hr.bottom - d.top}, cx = (hero.l + hero.r) / 2;
-  const taken = [hero, box(book), box(work), box(shop), box(oracle), box(coffee),
-    {l: dk.left - d.left, t: dk.top - d.top - 30, r: dk.right - d.left, b: H}];
-  const hit = (a, b) => a.l < b.r + 6 && b.l < a.r + 6 && a.t < b.b + 6 && b.t < a.b + 6;
-  const pic = n => document.querySelector(`.polaroid[data-photo="${n}"]`);
-  [[pic(5), () => [cx - 540, 135]], [pic(2), el => [cx - 260, hero.t - 16 - el.offsetHeight]], [pic(6), () => [cx - 225, hero.b + 37]]].forEach(([el, at]) => {
-    el.style.display = '';
-    if (el.dataset.moved) { taken.push(box(el)); return; }
-    const [x, y0] = at(el), r = {l: x, t: y0, r: x + el.offsetWidth, b: y0 + el.offsetHeight};
-    const ok = r.l >= 4 && r.t >= 4 && r.r <= W - 4 && r.b <= floor && !taken.some(t => hit(r, t));
-    if (!ok) { el.style.display = 'none'; return; }
-    set(el, x, y0); taken.push(r);
-  });
+  // pegboard "Giới thiệu nhanh": cùng cỡ khu Booking, đặt ngay bên trái cột 3 khu;
+  // nếu chỗ đó đè lên chữ "portfolio." (màn hình hẹp) thì đặt bên trái chữ như cũ
+  const peg = $('#peg'), hb = $('.hero').getBoundingClientRect(), dl = desk.getBoundingClientRect().left;
+  peg.style.width = book.offsetWidth + 'px';
+  const pegX = colX - 30 - peg.offsetWidth;
+  set(peg, pegX > hb.right - dl + 20 ? pegX : Math.max(24, Math.min(hb.left - dl - peg.offsetWidth - 40, W / 2 - 560)), 34);
 };
 deskLayout(); addEventListener('resize', deskLayout); document.fonts?.ready.then(deskLayout);
-document.querySelectorAll('.polaroid').forEach(pl => {
-  // mỗi ảnh đung đưa một nhịp khác nhau cho tự nhiên
-  pl.style.setProperty('--sw', (4.5 + Math.random() * 3).toFixed(2) + 's');
-  pl.style.setProperty('--sd', (-Math.random() * 6).toFixed(2) + 's');
-  let sx, sy;
-  pl.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
-  pl.addEventListener('pointerup', e => { if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) < 5) lightbox(+pl.dataset.photo); });
-  draggable(pl, pl, {onDrag: () => pl.dataset.moved = 1});
+// pegboard: mỗi món treo đung đưa một nhịp riêng; kéo được như các khu, bấm (không kéo) thì phóng to
+const pegEl = $('#peg');
+pegEl.querySelectorAll('.pg-sway').forEach(el => {
+  el.style.setProperty('--sw', (4.5 + Math.random() * 3).toFixed(2) + 's');
+  el.style.setProperty('--sd', (-Math.random() * 6).toFixed(2) + 's');
 });
+draggable(pegEl, pegEl, {enabled: () => !stacked.matches, onDrag: () => pegEl.dataset.moved = 1});
+function zoomPeg(){
+  if ($('.peg-zoom')) return;
+  const from = pegEl.getBoundingClientRect();
+  const ov = document.createElement('div');
+  ov.className = 'peg-zoom';
+  ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', 'Giới thiệu nhanh');
+  const big = pegEl.cloneNode(true);
+  ['id', 'style', 'role', 'tabindex', 'aria-label', 'data-moved'].forEach(a => big.removeAttribute(a));
+  ov.innerHTML = '<button class="pg-x" type="button" aria-label="Đóng">×</button><div class="pg-tip">bấm vào từng món để xem kỹ hơn · Esc để đóng</div>';
+  ov.appendChild(big);
+  document.body.appendChild(ov);
+  pegEl.style.visibility = 'hidden';
+  // phóng ra từ đúng chỗ tấm bảng đang treo, đóng thì thu về lại chỗ đó
+  const fly = (a, b) => `translate(${a.left - b.left}px,${a.top - b.top}px) scale(${a.width / b.width})`;
+  big.animate([{transform: fly(from, big.getBoundingClientRect())}, {transform: 'none'}], {duration: 420, easing: 'cubic-bezier(.2,.9,.3,1.1)'});
+  const close = () => {
+    if (ov.classList.contains('out')) return;
+    removeEventListener('keydown', onKey, true);
+    ov.classList.add('out');
+    const done = () => { if (!ov.isConnected) return; ov.remove(); pegEl.style.visibility = ''; };
+    setTimeout(done, 450);   // phòng khi animation không chạy (tab ẩn…)
+    if (stacked.matches && pegEl.getBoundingClientRect().bottom < 0) return done();
+    big.animate([{transform: 'none'}, {transform: fly(pegEl.getBoundingClientRect(), big.getBoundingClientRect())}],
+      {duration: 280, easing: 'ease-in', fill: 'forwards'}).onfinish = done;
+  };
+  const onKey = e => { if (e.key === 'Escape' && !$('.lightbox')) { e.stopImmediatePropagation(); close(); } };
+  addEventListener('keydown', onKey, true);
+  ov.addEventListener('click', e => {
+    if (e.target.closest('a')) return;
+    const ph = e.target.closest('.pg-photo'), go = e.target.closest('[data-go]');
+    if (ph) return lightbox(+ph.dataset.photo);
+    if (go) { close(); return openWin(go.dataset.go); }
+    if (!e.target.closest('.peg') || e.target.closest('.pg-x')) close();
+  });
+  ov.querySelector('.pg-x').focus({preventScroll: true});
+}
+pegEl.addEventListener('click', zoomPeg);
+pegEl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); zoomPeg(); } });
 
 // windows
 const opened = {};
@@ -1957,6 +2171,63 @@ const MARKET = {
 
   /* ----- VN-Index ----- */
   const stock = make('stock', '📈 VN-Index', 'https://dstock.vndirect.com.vn/');
+
+  // sticky note: nội dung tự lưu (chỉ trên máy người xem), kéo bằng phần viền / tiêu đề, bấm vào giấy để gõ
+  const note = (() => {
+    // giấy note vàng kiểu "To do": tiêu đề đậm + mỗi dòng một việc; Enter xuống dòng mới,
+    // bấm chấm tròn bên trái dòng để gạch (đã xong) / bỏ gạch
+    const NKEY = 'tvp-note-todo';
+    const DEFAULT = {title: 'To do:', items: [
+      {t: 'Design something people love'}, {t: 'Learn Figma shortcuts', done: 1}, {t: 'Shoot golden hour every week'},
+      {t: 'Finish my next painting'}, {t: 'Drink water', done: 1}, {t: 'Build my dream portfolio ✿'}]};
+    const el = document.createElement('section');
+    el.className = 'mw note'; el.dataset.kind = 'note'; el.dataset.name = 'Sticky note';
+    el.title = 'Kéo mép giấy để di chuyển · bấm chữ để sửa · bấm chấm tròn bên trái để gạch dòng';
+    el.innerHTML = `<button class="mw-x" type="button" title="Cất vào tab Widget" aria-label="Cất widget">×</button>
+      <div class="nt-title" contenteditable="plaintext-only" spellcheck="false" data-ph="Tiêu đề" aria-label="Tiêu đề note"></div>
+      <div class="nt-list" contenteditable="true" spellcheck="false" data-ph="Viết gì đó…" role="textbox" aria-multiline="true" aria-label="Nội dung note"></div>`;
+    const title = el.querySelector('.nt-title'), list = el.querySelector('.nt-list');
+    let data;
+    try { data = JSON.parse(localStorage.getItem(NKEY)); } catch (e) {}
+    data = data || DEFAULT;
+    title.textContent = data.title;
+    data.items.forEach(it => {
+      const d = document.createElement('div');
+      d.textContent = it.t; if (it.done) d.className = 'done';
+      if (!it.t) d.appendChild(document.createElement('br'));
+      list.appendChild(d);
+    });
+    let t;
+    const save = () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        // gom chữ gõ lạc ra ngoài (khi note trống) vào một dòng
+        [...list.childNodes].forEach(n => { if (n.nodeType === 3 && n.textContent.trim()) { const d = document.createElement('div'); list.replaceChild(d, n); d.appendChild(n); } });
+        const items = [...list.children].map(d => ({t: d.textContent, done: d.classList.contains('done') ? 1 : 0}));
+        while (items.length && !items[items.length - 1].t) items.pop();
+        try { localStorage.setItem(NKEY, JSON.stringify({title: title.textContent, items})); } catch (e) {}
+      }, 300);
+    };
+    title.addEventListener('input', save); list.addEventListener('input', save);
+    title.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); list.focus(); } });
+    list.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' || e.shiftKey) return;
+      // dòng mới không được kế thừa trạng thái "đã gạch" của dòng trên
+      setTimeout(() => {
+        let n = getSelection().anchorNode; while (n && n.parentNode !== list) n = n.parentNode;
+        if (n && n.classList && !n.textContent) n.classList.remove('done');
+      });
+    });
+    // chỉ dán chữ thuần, không mang định dạng từ nơi khác
+    [title, list].forEach(f => f.addEventListener('paste', e => {
+      e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData.getData('text/plain') || '').replace(f === title ? /\s+/g : /\r/g, f === title ? ' ' : ''));
+    }));
+    list.addEventListener('mousedown', e => {
+      const d = e.target.parentNode === list ? e.target : null;
+      if (d && e.clientX - d.getBoundingClientRect().left < 16) { e.preventDefault(); d.classList.toggle('done'); save(); }
+    });
+    return el;
+  })();
   let stockTimer;
   const loadStock = async () => {
     clearTimeout(stockTimer);
@@ -1994,7 +2265,7 @@ const MARKET = {
 
   /* ----- Tab Widget: widget nằm trong bảng, nắm kéo ra màn hình để dùng ----- */
   const btn = $('#wBtn'), panel = $('#wPanel'), slots = $('#wSlots'), desk = $('#desktop');
-  const ALL = [gold, stock];
+  const ALL = [gold, stock, note];
   const KEY = 'tvp-widgets';                         // vị trí widget đã kéo ra (chỉ lưu trên máy người xem)
   const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
   const save = () => {
@@ -2036,7 +2307,7 @@ const MARKET = {
   ALL.forEach(el => {
     el.querySelector('.mw-x').addEventListener('click', e => { e.stopPropagation(); stow(el); save(); });
     el.addEventListener('pointerdown', e => {
-      if (e.button !== 0 || e.target.closest('.mw-x') || stacked.matches) return;
+      if (e.button !== 0 || e.target.closest('.mw-x, [contenteditable]') || stacked.matches) return;
       const sx = e.clientX, sy = e.clientY;
       let dragging = false, ox, oy;
       const move = ev => {
