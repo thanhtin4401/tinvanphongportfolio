@@ -217,6 +217,7 @@
   .zone.work{--c:var(--work);--soft:var(--work-soft);right:16px;top:322px}
   .zone.book{--c:var(--book);--soft:var(--book-soft);right:16px;top:16px}
   .zone.shop{--c:var(--shop);--soft:var(--shop-soft);--on:var(--ink);right:16px;top:502px}
+  .zone.util{--c:#3b1d8f;--soft:#ece6ff;right:16px;top:680px}
 
   .icon{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:10px;cursor:pointer;text-align:center;font-size:12px;line-height:1.3}
   .icon:hover{background:rgba(255,255,255,.7)}
@@ -457,13 +458,6 @@
   .cover + .profile .avatar{border:4px solid #fff;width:88px;height:88px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
   .cover + .profile > div:last-child{padding-top:40px}
   /* ---------- Vị thần của những quyết định ---------- */
-  .oracle-sticker{position:absolute;right:180px;top:740px;z-index:5;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:rotate(5deg);transition:transform .2s;touch-action:none}
-  .oracle-sticker svg{animation:orcFloat 3.2s ease-in-out infinite;filter:drop-shadow(0 6px 10px rgba(59,29,143,.35))}
-  .oracle-sticker .glint{animation:orcTwinkle 1.6s ease-in-out infinite}
-  .oracle-sticker .bubble{display:inline-block;background:#3b1d8f;color:#f6d23a;border:2px solid var(--ink);border-radius:99px;padding:3px 10px;font-weight:800;font-size:12px;margin-bottom:4px;box-shadow:2px 2px 0 var(--ink)}
-  .oracle-sticker:hover{transform:rotate(-2deg) scale(1.08)}
-  .oracle-sticker.dragging{cursor:grabbing;transform:rotate(-8deg) scale(1.12);transition:none}
-  @keyframes orcFloat{50%{transform:translateY(-6px) rotate(-2deg)}}
   @keyframes orcTwinkle{50%{opacity:.25}}
 
   .window.oracle-win .body{padding:0;background:radial-gradient(120% 80% at 50% 0%,#3b1d8f 0%,#1b1250 55%,#0d0a2e 100%);color:#ece8ff;scrollbar-width:none}
@@ -492,7 +486,7 @@
   .orc-actions{position:relative;min-height:38px;margin-top:16px}
   .orc-actions .btn{background:#f6d23a;color:#1b1250!important}
   .orc-note{position:relative;font-size:11px;color:#a79fd6;margin:8px 0 0}
-  @media (prefers-reduced-motion:reduce){.oracle-sticker svg,.oracle-sticker .glint,.orc-stars i,.orc-book::before,.orc-cover i{animation:none}.orc-cover{transition:none}}
+  @media (prefers-reduced-motion:reduce){.orc-stars i,.orc-book::before,.orc-cover i{animation:none}.orc-cover{transition:none}}
 
   /* ---------- Cửa sổ biểu đồ vàng / chứng khoán ---------- */
   .mw .mw-more{position:absolute;top:9px;right:11px;font-size:10.5px;font-weight:800;color:var(--brand);background:var(--brand-tint);border-radius:99px;padding:1px 7px;pointer-events:none}
@@ -527,6 +521,78 @@
   .quick .chip{padding:3px 10px;font-size:11.5px}
   @media (max-width:760px){.cw-chart{height:250px}.cw-price{text-align:left}}
 
+  /* ---------- Folder Blog cá nhân trên desktop ---------- */
+  .blog-folder{position:absolute;left:60px;top:330px;z-index:4;width:150px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;
+    padding:14px 8px 10px;border-radius:18px;transition:transform .25s ease,background .25s;animation:zoneIn .7s cubic-bezier(.2,.9,.3,1.25) .45s backwards}
+  .blog-folder:hover{transform:translateY(-5px);background:rgba(255,255,255,.6)}
+  .blog-folder:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+  .blog-folder.dragging{cursor:grabbing;transform:rotate(-3deg) scale(1.05);transition:none}
+  .blog-folder .bf-glyph{display:block;filter:drop-shadow(0 8px 12px rgba(0,0,244,.28));transition:transform .2s}
+  .blog-folder .bf-sheets{transition:transform .25s ease}
+  .blog-folder:hover .bf-sheets{transform:translateY(-7px)}
+  .blog-folder .bf-new{position:absolute;top:4px;right:2px;z-index:1;background:var(--yellow);color:var(--ink);font-weight:800;font-size:11px;border:2px solid var(--ink);border-radius:99px;padding:1px 8px;rotate:10deg;box-shadow:2px 2px 0 var(--ink);animation:bfBob 2.4s ease-in-out infinite}
+  @keyframes bfBob{50%{translate:0 -4px}}
+  .blog-folder .bf-label{background:var(--brand);color:#fff;font-weight:800;font-size:13px;padding:3px 12px;border-radius:99px;white-space:nowrap;box-shadow:0 4px 10px rgba(0,0,244,.25)}
+  .blog-folder .bf-count{font-size:11px;color:var(--muted);font-weight:600}
+  @media (prefers-reduced-motion:reduce){.blog-folder,.blog-folder .bf-new{animation:none}}
+
+  /* ---------- Cửa sổ Blog ---------- */
+  .bl-card{display:flex;flex-direction:column;width:100%;text-align:left;font:inherit;color:inherit;padding:0;border:1px solid #e6e6f5;border-radius:14px;overflow:hidden;background:#fff;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
+  .bl-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,244,.12);border-color:var(--brand-soft)}
+  .bl-card:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+  .bl-img{position:relative;aspect-ratio:16/10;background:var(--brand-tint);overflow:hidden}
+  .bl-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+  .bl-card:hover .bl-img img{transform:scale(1.04)}
+  .bl-noimg{height:100%;display:grid;place-items:center;font-size:40px;color:var(--brand)}
+  .bl-play{position:absolute;left:10px;bottom:10px;background:var(--ink);color:#fff;font-size:11px;font-weight:800;border-radius:99px;padding:3px 10px}
+  .bl-info{padding:12px 14px 14px;display:flex;flex-direction:column;gap:7px;flex:1}
+  .bl-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .bl-meta .tag{margin:0;font-size:11px}
+  .bl-date{font-size:11.5px;font-weight:800;color:var(--ink);background:var(--yellow);border-radius:99px;padding:2px 9px}
+  .bl-read{font-size:12px;color:var(--muted)}
+  .bl-card h3{margin:0!important;font-size:16px!important;font-weight:800;line-height:1.35}
+  .bl-card p{margin:0;font-size:13px;color:var(--muted);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .bl-more{margin-top:auto;padding-top:2px;font-size:12.5px;font-weight:800;color:var(--brand)}
+  .bl-new{align-self:flex-start;font-size:10.5px;font-weight:800;color:#fff;background:var(--brand);border-radius:99px;padding:2px 10px;text-transform:uppercase;letter-spacing:.5px}
+  .bl-card.big{flex-direction:row;margin-bottom:16px;border:2px solid var(--brand);box-shadow:5px 5px 0 var(--yellow)}
+  .bl-card.big:hover{box-shadow:7px 8px 0 var(--yellow)}
+  .bl-card.big .bl-img{flex:0 0 52%;aspect-ratio:auto;min-height:230px}
+  .bl-card.big .bl-info{padding:20px 22px;justify-content:center}
+  .bl-card.big h3{font-size:22px!important;font-weight:900;letter-spacing:-.3px}
+  .bl-card.big p{-webkit-line-clamp:3;font-size:14px}
+  .bl-card.big .bl-more{margin-top:6px}
+  .bl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+  .bl-post{max-width:720px;margin:0 auto}
+  .bl-back{padding:6px 12px;font-size:12.5px;margin-bottom:14px}
+  .bl-hero{border-radius:14px;overflow:hidden;aspect-ratio:2/1;margin-bottom:16px;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--yellow)}
+  .bl-hero img{width:100%;height:100%;object-fit:cover;display:block}
+  .bl-post > h2{margin:10px 0 14px!important;font-size:30px}
+  .bl-content{font-size:15px;line-height:1.8}
+  .bl-content p{margin:0 0 14px}
+  .bl-content h3{font-size:18px!important;margin:24px 0 8px!important;font-weight:900}
+  .bl-content h3::before{content:"✦ ";color:var(--brand)}
+  .bl-content figure{margin:18px 0}
+  .bl-content figure img,.bl-content video,.bl-content iframe{display:block;width:100%;border-radius:12px;border:0;background:#000}
+  .bl-content video,.bl-content iframe{aspect-ratio:16/9}
+  .bl-content figcaption{text-align:center;font-size:12.5px;color:var(--muted);margin-top:6px}
+  .bl-content blockquote{font-size:16px;font-weight:700;color:var(--brand)}
+  .bl-gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+  .bl-content .bl-gal img{aspect-ratio:1;object-fit:cover;cursor:zoom-in;background:var(--brand-tint)}
+  .bl-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px;padding-top:16px;border-top:2px dashed var(--brand-soft)}
+  .bl-navcard{text-align:left;font:inherit;border:1px solid #e6e6f5;border-radius:12px;background:#fff;padding:10px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+  .bl-navcard.next{grid-column:2;text-align:right}
+  .bl-navcard small{display:block;color:var(--muted);font-size:11.5px;font-weight:700}
+  .bl-navcard b{font-size:13.5px;color:var(--ink)}
+  .bl-navcard:hover{border-color:var(--brand);background:var(--brand-tint)}
+  @media (max-width:600px){
+    .bl-card.big{flex-direction:column}
+    .bl-card.big .bl-img{min-height:0;aspect-ratio:16/10}
+    .bl-card.big .bl-info{padding:14px 16px 16px}
+    .bl-card.big h3{font-size:19px!important}
+    .bl-nav{grid-template-columns:1fr}
+    .bl-navcard.next{grid-column:auto}
+    .bl-post > h2{font-size:24px}
+  }
   /* album */
   .album{columns:2;column-gap:10px}
   .album figure{margin:0 0 10px;break-inside:avoid;cursor:zoom-in;border-radius:10px;overflow:hidden;position:relative}
@@ -537,11 +603,6 @@
   .lightbox img{max-width:94vw;max-height:84vh;border-radius:8px}
   .lightbox p{color:#fff;text-align:center;margin:10px 0 0;font-weight:600}
   /* buy me a coffee */
-  .coffee-sticker{position:absolute;right:28px;top:722px;z-index:5;cursor:pointer;display:flex;flex-direction:column;align-items:center;transform:rotate(-4deg);transition:transform .2s}
-  .coffee-sticker:hover{transform:rotate(2deg) scale(1.06)}
-  .coffee-sticker{touch-action:none}
-  .coffee-sticker.dragging{cursor:grabbing;transform:rotate(8deg) scale(1.12);transition:none;filter:drop-shadow(0 14px 18px rgba(0,0,80,.25))}
-  .coffee-sticker .bubble{display:inline-block;background:#fff;border:2px solid var(--ink);border-radius:99px;padding:3px 10px;font-weight:800;font-size:12px;margin-bottom:4px;box-shadow:2px 2px 0 var(--ink)}
   .cup .steam path{animation:steam 2.4s ease-in-out infinite;opacity:0}
   .cup .steam path:nth-child(2){animation-delay:.8s}.cup .steam path:nth-child(3){animation-delay:1.6s}
   @keyframes steam{0%{opacity:0;transform:translateY(6px)}40%{opacity:.8}100%{opacity:0;transform:translateY(-10px)}}
@@ -610,9 +671,9 @@
 
   /* ---------- Màn hình nhỏ: xếp dọc ---------- */
   @media (max-width:1100px), (max-height:640px){
-    .coffee-sticker,.oracle-sticker{display:none}
-    .peg{position:relative;left:auto!important;top:auto!important;width:min(100%,420px)!important;margin:6px auto 44px;touch-action:auto}
+      .peg{position:relative;left:auto!important;top:auto!important;width:min(100%,420px)!important;margin:6px auto 44px;touch-action:auto}
     #desktop{overflow:auto;padding:24px 16px 110px}
+    .blog-folder{position:relative;left:auto!important;top:auto!important;margin:-14px auto 34px;touch-action:auto}
     .hero{position:static;transform:none;margin:10px 0 28px}
     .zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:26px;max-width:900px;margin:0 auto}
     .zone{position:relative;inset:auto!important;width:auto}
@@ -665,6 +726,7 @@
   <a class="hide-m" data-open="work">Công việc</a>
   <a data-open="booking">Booking</a>
   <a data-open="shop">Shop 9TO5</a>
+  <a data-open="blog">Blog</a>
   <a id="wBtn" role="button" aria-haspopup="dialog" aria-expanded="false">Widget</a>
   <div class="right">
     <svg class="st" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 9a15 15 0 0 1 20 0"/><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
@@ -727,22 +789,21 @@
     </div>
   </div>
 
-  <div class="oracle-sticker" data-open="oracle" title="Vị thần của những quyết định">
-    <div class="bubble">hỏi vị thần ✦</div>
-    <svg width="78" height="86" viewBox="0 0 78 86" aria-hidden="true">
-      <g class="glint" fill="#f6d23a"><path d="M8 14l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M68 6l1.5 3.5 3.5 1.5-3.5 1.5L68 16l-1.5-3.5L63 11l3.5-1.5z"/><path d="M70 58l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z"/></g>
-      <path d="M16 20h44a4 4 0 0 1 4 4v52a4 4 0 0 1-4 4H16z" fill="#fffaf0" stroke="#14142b" stroke-width="3.5" stroke-linejoin="round"/>
-      <path d="M12 16a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v56a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" fill="#3b1d8f" stroke="#14142b" stroke-width="3.5" stroke-linejoin="round"/>
-      <path d="M19 12v64" stroke="#14142b" stroke-width="3"/>
-      <path d="M39 30l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#f6d23a"/>
-      <circle cx="33" cy="58" r="2.6" fill="#fff"/><circle cx="46" cy="58" r="2.6" fill="#fff"/>
-      <path d="M35.5 64q4 3.5 8 0" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <div class="blog-folder" id="blogFolder" data-open="blog" role="button" tabindex="0" aria-label="Mở Blog cá nhân">
+    <span class="bf-new">mới ✦</span>
+    <svg class="bf-glyph" width="118" height="94" viewBox="0 0 118 94" aria-hidden="true">
+      <defs><linearGradient id="bfGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4d6bff"/><stop offset="1" stop-color="#0000F4"/></linearGradient></defs>
+      <path d="M4 12a6 6 0 0 1 6-6h30l9 9h59a6 6 0 0 1 6 6v8H4z" fill="#00009a"/>
+      <g class="bf-sheets">
+        <rect x="16" y="14" width="74" height="54" rx="4" fill="#fff" transform="rotate(-6 53 41)"/>
+        <g transform="rotate(4 63 37)"><rect x="28" y="8" width="74" height="54" rx="4" fill="#fffbe6"/><path d="M38 20h44M38 28h52M38 36h34" stroke="#c9cbe8" stroke-width="3" stroke-linecap="round"/></g>
+      </g>
+      <rect x="4" y="32" width="110" height="58" rx="6" fill="url(#bfGrad)"/>
+      <path d="M4 38a6 6 0 0 1 6-6h98a6 6 0 0 1 6 6" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2"/>
+      <text x="59" y="70" text-anchor="middle" font-family="Be Vietnam Pro,sans-serif" font-weight="900" font-size="21" letter-spacing="1.5" fill="#fff">BLOG</text>
     </svg>
-  </div>
-
-  <div class="coffee-sticker" data-open="coffee" title="Buy me a coffee">
-    <div class="bubble">buy me a coffee ☕</div>
-    <svg class="cup" width="86" height="92" viewBox="0 0 86 92"><g class="steam" stroke="#9a9ab8" stroke-width="3" fill="none" stroke-linecap="round"><path d="M28 22c-4-5 4-8 0-14"/><path d="M40 22c-4-5 4-8 0-14"/><path d="M52 22c-4-5 4-8 0-14"/></g><path d="M66 44h5a9 9 0 0 1 0 18h-6" fill="none" stroke="#14142b" stroke-width="4"/><path d="M14 30h54l-5 46a8 8 0 0 1-8 7H27a8 8 0 0 1-8-7z" fill="#0000F4" stroke="#14142b" stroke-width="4" stroke-linejoin="round"/><circle cx="32" cy="52" r="3" fill="#fff"/><circle cx="50" cy="52" r="3" fill="#fff"/><path d="M35 61q6 6 12 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="27" cy="59" r="3.5" fill="#ff8fb1" opacity=".8"/><circle cx="55" cy="59" r="3.5" fill="#ff8fb1" opacity=".8"/></svg>
+    <div class="bf-label">Blog cá nhân</div>
+    <div class="bf-count" id="bfCount"></div>
   </div>
 
   <div class="zones" id="zones"></div>
@@ -931,6 +992,13 @@ const WINDOWS = {
       <div><h3>Chứng chỉ</h3><ul class="bullets">
         <li>Responsive Web Design</li><li>Self Promotion Skill</li><li>Digital Networking Strategies</li></ul></div>
     </div>
+    <h3>Tài liệu</h3>
+    <ul class="doclist">
+      <li><a href="assets/resume.pdf" target="_blank"><span class="ext">PDF</span><span><b>Resume.pdf</b><small>CV mới nhất</small></span></a></li>
+    </ul>
+    <h3>Công cụ</h3>
+    <p style="margin:0">Các công cụ Tín dùng và tự làm trong công việc.</p>
+    <p style="color:var(--muted);font-size:13px;margin:4px 0 0">Đang cập nhật thêm ✦</p>
     <div class="btn-row">
       <a class="btn dark" href="#" onclick="openWin('resume');return false">Xem CV</a>
       <a class="btn ghost" href="${ME.linkedin}" target="_blank">LinkedIn ↗</a>
@@ -940,17 +1008,6 @@ const WINDOWS = {
   resume:{zone:'work', title:'Resume.pdf', wide:true, html:`
     <div class="btn-row" style="margin:0 0 10px"><a class="btn dark" href="assets/resume.pdf" target="_blank">Mở PDF ↗</a><a class="btn ghost" href="assets/resume.pdf" download>Tải xuống</a></div>
     <iframe src="assets/resume.pdf" style="width:100%;height:60vh;border:1px solid #e6e6f3;border-radius:8px"></iframe>`},
-
-  docs:{zone:'work', title:'Tài liệu', html:`
-    <p class="lead" style="margin-top:0">Tài liệu chuyên môn của Tín, bấm vào để mở.</p>
-    <ul class="doclist">
-      <li><a href="assets/resume.pdf" target="_blank"><span class="ext">PDF</span><span><b>Resume.pdf</b><small>CV mới nhất</small></span></a></li>
-    </ul>
-    <p style="color:var(--muted);font-size:13px;margin-top:14px">Đang cập nhật thêm tài liệu ✦</p>`},
-
-  tools:{zone:'work', title:'Công cụ', html:`
-    <p class="lead" style="margin-top:0">Các công cụ Tín dùng và tự làm trong công việc.</p>
-    <p style="color:var(--muted);font-size:13px;margin-top:14px">Đang cập nhật thêm công cụ ✦</p>`},
 
   /* ---------- KHU 2: BOOKING BRAND ---------- */
   creator:{zone:'book', title:'Tín Văn Phòng', html:`
@@ -963,9 +1020,11 @@ const WINDOWS = {
     <p>Với mong muốn review các sản phẩm, dịch vụ giúp cuộc sống của mỗi người trở nên dễ dàng, tiện ích, và mình quan tâm tới <b>chất lượng của sản phẩm</b> hơn là lợi nhuận.</p>
     <p><b>TVP</b> là viết tắt của <b class="blue">TÍN VĂN PHÒNG</b>.</p>
     <div class="stats">${RATE.stats.map(([b,s])=>`<div><b>${b}</b><small>${s}</small></div>`).join('')}</div>
+    <h3>Nhãn hàng <span class="blue">đã đồng hành</span></h3>
+    <p style="margin-top:0">Cảm ơn các nhãn hàng đã tin tưởng Tín Văn Phòng ♡</p>
+    <div class="brands">${PARTNERS.map(b=>`<div class="brand" style="background:${b.bg};color:${b.fg||'#fff'}"><div>${b.name}<small>${b.note}</small></div></div>`).join('')}</div>
     <div class="btn-row">
       <a class="btn" href="#" onclick="openWin('booking');return false">Xem bảng giá booking</a>
-      <a class="btn ghost" href="#" onclick="openWin('partners');return false">Đối tác</a>
       <a class="btn ghost" href="${ME.threads}" target="_blank">Threads ↗</a>
       <a class="btn ghost" href="${ME.instagram}" target="_blank">Instagram ↗</a>
     </div>`},
@@ -999,23 +1058,6 @@ const WINDOWS = {
     </form>
     <div class="fine">* Giá tham khảo, có thể thay đổi theo brief thực tế.</div>`, onOpen: initRateCard},
 
-  partners:{zone:'book', title:'Đối tác', html:`
-    <h2><span class="hl">TVP</span> Nhãn hàng <span class="blue">đã đồng hành</span></h2>
-    <p>Cảm ơn các nhãn hàng đã tin tưởng Tín Văn Phòng ♡</p>
-    <div class="brands">${PARTNERS.map(b=>`<div class="brand" style="background:${b.bg};color:${b.fg||'#fff'}"><div>${b.name}<small>${b.note}</small></div></div>`).join('')}</div>
-    <div class="btn-row"><a class="btn" href="#" onclick="openWin('booking');return false">Book Tín Văn Phòng</a></div>`},
-
-  kind:{zone:'book', title:'Kind words.txt', html:`
-    <h2>Brand & follower <span class="blue">nói gì</span></h2>
-    <h3>Từ nhãn hàng</h3>
-    <blockquote>Làm việc với Tín nhẹ đầu lắm. Brief gửi tối hôm trước, sáng hôm sau đã có outline, sửa một lần là chốt. Bài lên đọc không giống quảng cáo nên comment hỏi sản phẩm khá nhiều.<cite>Chị Trang · Marketing, nhãn hàng F&B</cite></blockquote>
-    <blockquote>Bên mình thích nhất là Tín đúng hẹn và gửi báo cáo rõ ràng sau 7 ngày, không cần nhắc. Lần sau có chiến dịch dân văn phòng chắc chắn quay lại.<cite>Anh Huy · Brand Executive, ứng dụng gọi xe</cite></blockquote>
-    <h3>Từ follower</h3>
-    <blockquote>Đọc bài anh kể chuyện sếp nhắn lúc 11h đêm mà cười muốn xỉu, y chang công ty em luôn 😂<cite>Ngọc Anh · follower trên Threads</cite></blockquote>
-    <blockquote>Mua cái giá đỡ tai nghe theo bài review của Tín, xài được 3 tháng rồi vẫn ổn. Cảm ơn vì review thật nha.<cite>Minh Khoa · follower trên Threads</cite></blockquote>
-    <blockquote>Mấy hôm đi làm mệt mà lướt thấy bài Tín là thấy nhẹ người hơn chút. Cứ viết đều đều vậy nha.<cite>Thu Hà · follower trên Threads</cite></blockquote>
-    <blockquote>Lần đầu thấy người làm IT mà viết caption duyên vậy 🫶<cite>Bảo Trân · follower trên Threads</cite></blockquote>`},
-
   /* ---------- KHU 3: SHOP 9TO5 ---------- */
   shop:{zone:'shop', title:'9TO5 · Tiệm Văn Phòng Phẩm', wide:true, html:() => `
     <div class="shop-cover">
@@ -1029,8 +1071,11 @@ const WINDOWS = {
     <div class="btn-row" style="margin-top:16px">
       <a class="btn" href="${ME.shopDM}" target="_blank">Nhắn shop đặt hàng</a>
       <a class="btn ghost" href="${ME.shopIG}" target="_blank">Instagram @ninetofine.office_ ↗</a>
-      <a class="btn ghost" href="#" onclick="openWin('faq');return false">Câu hỏi thường gặp</a>
-    </div>`, onOpen: renderShop},
+      <a class="btn ghost" href="#" onclick="this.closest('.body').querySelector('#shopFaq').scrollIntoView({behavior:'smooth'});return false">Câu hỏi thường gặp ↓</a>
+    </div>
+    <h3 id="shopFaq" style="margin-top:26px">Câu hỏi <span class="blue">thường gặp</span></h3>
+    <p style="color:var(--muted);margin-top:-4px">Mọi thắc mắc về sản phẩm và dịch vụ in 3D</p>
+    <div class="faq">${FAQ.map(([q,a],i)=>`<details ${i?'':'open'}><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>`, onOpen: renderShop},
 
   makerworld:{zone:'shop', title:'In hộ MakerWorld', html:`
     <h2>📦 Nhận in hộ <span class="blue">mẫu MakerWorld</span></h2>
@@ -1038,17 +1083,15 @@ const WINDOWS = {
     <ol><li>Chọn mẫu trên MakerWorld</li><li>Gửi link qua Instagram shop</li><li>Nhận báo giá & thời gian (thường 1–3 ngày)</li><li>Nhận hàng 🎉</li></ol>
     <div class="btn-row"><a class="btn ghost" href="https://makerworld.com/" target="_blank">Mở MakerWorld ↗</a><a class="btn" href="${ME.shopDM}" target="_blank">Gửi link cho shop</a></div>`},
 
-  faq:{zone:'shop', title:'Câu hỏi thường gặp', html:() => `
-    <h2>Câu hỏi <span class="blue">thường gặp</span></h2>
-    <p style="color:var(--muted)">Mọi thắc mắc về sản phẩm và dịch vụ in 3D</p>
-    <div class="faq">${FAQ.map(([q,a],i)=>`<details ${i?'':'open'}><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>`},
-
   /* ---------- ẢNH CÁ NHÂN ---------- */
   photos:{title:'Ảnh của Tín 📸', wide:true, html:() => `
     <h2>Ngoài giờ <span class="blue">văn phòng</span></h2>
     <p style="color:var(--muted)">Đi làm, đi chơi, đi trốn deadline. Bấm vào ảnh để xem lớn.</p>
     <div class="album">${PHOTOS.map((p,i)=>`<figure data-i="${i}"><img src="${p.src}" alt="${p.cap}" loading="lazy"><figcaption>${p.cap}</figcaption></figure>`).join('')}</div>`,
     onOpen: w => w.querySelectorAll('figure').forEach(f => f.onclick = () => lightbox(+f.dataset.i))},
+
+  /* ---------- BLOG CÁ NHÂN ---------- */
+  blog:{title:'Blog cá nhân ✎', wide:true, html:'<div class="bl-root"></div>', onOpen: initBlog},
 
   /* ---------- BUY ME A COFFEE ---------- */
   coffee:{title:'Buy me a coffee ☕', cls:'coffee-win', w:400, html:() => `
@@ -1298,6 +1341,43 @@ const ORACLE = [
   'Câu trả lời là có.',
 ];
 
+/* =====================================================================
+   BLOG CÁ NHÂN - thêm bài mới: copy 1 khối {...} rồi sửa.
+   date: 'YYYY-MM-DD' (tự sắp xếp, bài mới nhất được làm nổi bật) · cover: ảnh bìa
+   excerpt: tóm tắt (bỏ trống thì lấy đoạn văn đầu tiên) · tags: nhãn, dùng để lọc
+   body: nội dung bài, mỗi phần tử là 1 khối:
+     {p:'đoạn văn, dùng được <b>, <i>, <a href>'}     {h:'tiêu đề nhỏ'}     {quote:'câu trích'}
+     {img:'assets/...jpg', cap:'chú thích'}           {gallery:['a.jpg','b.jpg','c.jpg']}
+     {video:'assets/...mp4', poster:'ảnh bìa.jpg'}    {youtube:'ID video YouTube'}   {tiktok:'ID video TikTok'}
+   *** 3 bài dưới đây là BÀI MẪU để xem giao diện - sửa lại nội dung thật của Tín ***
+   ===================================================================== */
+const BLOG = [
+  {id:'clip-portfolio', date:'2026-11-15', title:'Làm clip giới thiệu portfolio trong 1 phút',
+   cover:'assets/intro/poster.jpg', tags:['side project','video'],
+   excerpt:'Thay vì bắt mọi người đọc hết portfolio, mình thử gói mọi thứ vào một clip 1 phút có thuyết minh và nhạc nền.',
+   body:[
+     {p:'Thay vì bắt mọi người đọc hết portfolio, mình thử gói mọi thứ vào một clip 1 phút có thuyết minh và nhạc nền.'},
+     {video:'assets/intro/tin-intro.mp4', poster:'assets/intro/poster.jpg'},
+     {h:'Mình đã làm như thế nào'},
+     {p:'Kịch bản viết trước, chia thành từng cảnh ngắn. Mỗi cảnh chỉ nói đúng một ý để người xem không bị ngợp.'},
+     {quote:'Ngắn thôi, nhưng phải đủ để người ta muốn bấm xem tiếp.'},
+   ]},
+  {id:'shop-9to5', date:'2026-10-01', title:'Mở tiệm 9TO5 - văn phòng phẩm in 3D',
+   cover:'assets/shop/1786616168169.webp', tags:['shop','in 3D'],
+   body:[
+     {p:'Từ một món desk organizer tự in cho bàn làm việc của mình, 9TO5 ra đời để làm đồ decor xinh xắn cho dân văn phòng.'},
+     {gallery:['assets/shop/1786616168169.webp','assets/shop/1786616554782.webp','assets/shop/1786619195363.webp']},
+     {p:'Mỗi món đều custom được tên và màu. Bạn muốn xem thêm thì ghé <a href="#" onclick="openWin(\'shop\');return false">Cửa hàng</a> nha.'},
+   ]},
+  {id:'tin-van-phong', date:'2026-08-20', title:'Hành trình làm kênh Tín Văn Phòng',
+   cover:'assets/me/stage.jpg', tags:['Threads','content'],
+   body:[
+     {p:'Ban ngày viết code, ban đêm viết caption. Kênh Tín Văn Phòng bắt đầu từ những câu chuyện đi làm rất đời thường.'},
+     {img:'assets/me/opera.jpg', cap:'Một buổi đi chơi sau giờ làm'},
+     {p:'Điều mình học được: cứ viết thật, viết đều, người đọc sẽ tự tìm đến.'},
+   ]},
+];
+
 /* Buy me a coffee - các món gợi ý (giá chỉ để gợi ý, QR không tự điền số tiền) */
 const COFFEE = [
   {icon:'☕', name:'Cà phê sữa đá', price:25000},
@@ -1332,19 +1412,18 @@ const ZONES = [
   {id:'work', title:'💼 Công việc chuyên môn', desc:'Profile đi làm', items:[
     {id:'work', type:'folder', label:'Hồ sơ\ncông việc'},
     {id:'resume', type:'pdf', label:'Resume.pdf'},
-    {id:'docs', type:'folder', label:'Tài Liệu'},
-    {id:'tools', type:'folder', label:'Công cụ'},
   ]},
   {id:'book', title:'📣 Booking brand', desc:'Dành cho nhãn hàng', items:[
     {id:'creator', type:'folder', label:'Tín Văn Phòng'},
     {id:'booking', type:'folder', label:'Bảng giá\nbooking'},
-    {id:'partners', type:'folder', label:'Đối tác'},
-    {id:'kind', type:'txt', label:'Kind words.txt'},
   ]},
   {id:'shop', title:'🛍 Shop 9TO5', desc:'Tiệm văn phòng phẩm', items:[
     {id:'shop', type:'folder', label:'Cửa hàng'},
     {id:'makerworld', type:'folder', label:'In hộ\nMakerWorld'},
-    {id:'faq', type:'txt', label:'FAQ.txt'},
+  ]},
+  {id:'util', title:'✦ Tiện ích', desc:'Ghé chơi cho vui', items:[
+    {id:'coffee', type:'coffee', label:'Buy me\na coffee'},
+    {id:'oracle', type:'oracle', label:'Hỏi\nvị thần'},
   ]},
 ];
 const ZONE_OF = {}; ZONES.forEach(z => z.items.forEach(i => ZONE_OF[i.id] = z.id));
@@ -1366,8 +1445,10 @@ const GLYPH = {
   pdf:() => `<svg width="40" height="50" viewBox="0 0 40 50"><path d="M3 3h24l10 10v34H3z" fill="#fff" stroke="#ddd"/><path d="M27 3v10h10" fill="#f2f2f2" stroke="#ddd"/><text x="20" y="35" text-anchor="middle" font-size="9" font-weight="700" fill="#d64545" font-family="sans-serif">PDF</text></svg>`,
   txt:() => `<svg width="40" height="50" viewBox="0 0 40 50"><path d="M3 3h24l10 10v34H3z" fill="#fff" stroke="#ddd"/><path d="M27 3v10h10" fill="#f2f2f2" stroke="#ddd"/><path d="M10 24h20M10 29h20M10 34h14" stroke="#c9c9c9" stroke-width="1.5"/></svg>`,
   trash:() => `<svg width="40" height="46" viewBox="0 0 40 46"><rect x="4" y="3" width="32" height="5" rx="2" fill="#e5e5ea"/><path d="M7 9h26l-2 34H9z" fill="#f2f2f5" stroke="#d6d6dc"/><path d="M14 14v24M20 14v24M26 14v24" stroke="#cfcfd6" stroke-width="1.4"/></svg>`,
+  coffee:() => `<svg class="cup" width="46" height="50" viewBox="0 0 86 92"><g class="steam" stroke="#9a9ab8" stroke-width="3" fill="none" stroke-linecap="round"><path d="M28 22c-4-5 4-8 0-14"/><path d="M40 22c-4-5 4-8 0-14"/><path d="M52 22c-4-5 4-8 0-14"/></g><path d="M66 44h5a9 9 0 0 1 0 18h-6" fill="none" stroke="#14142b" stroke-width="4"/><path d="M14 30h54l-5 46a8 8 0 0 1-8 7H27a8 8 0 0 1-8-7z" fill="#0000F4" stroke="#14142b" stroke-width="4" stroke-linejoin="round"/><circle cx="32" cy="52" r="3" fill="#fff"/><circle cx="50" cy="52" r="3" fill="#fff"/><path d="M35 61q6 6 12 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+  oracle:() => `<svg width="44" height="50" viewBox="0 0 78 86"><g fill="#f6d23a"><path d="M8 14l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M68 6l1.5 3.5 3.5 1.5-3.5 1.5L68 16l-1.5-3.5L63 11l3.5-1.5z"/></g><path d="M16 20h44a4 4 0 0 1 4 4v52a4 4 0 0 1-4 4H16z" fill="#fffaf0" stroke="#14142b" stroke-width="3.5" stroke-linejoin="round"/><path d="M12 16a4 4 0 0 1 4-4h40a4 4 0 0 1 4 4v56a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" fill="#3b1d8f" stroke="#14142b" stroke-width="3.5" stroke-linejoin="round"/><path d="M19 12v64" stroke="#14142b" stroke-width="3"/><path d="M39 30l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#f6d23a"/><circle cx="33" cy="58" r="2.6" fill="#fff"/><circle cx="46" cy="58" r="2.6" fill="#fff"/><path d="M35.5 64q4 3.5 8 0" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`,
 };
-const FOLDER_COLORS = {work:['#3a3a55','#6c6c88'], book:['#2a2af7','#6b6bff'], shop:['#e0a800','#f8cc3c']};
+const FOLDER_COLORS = {work:['#3a3a55','#6c6c88'], book:['#2a2af7','#6b6bff'], shop:['#e0a800','#f8cc3c'], util:['#3b1d8f','#6b4fd8']};
 
 /* =====================================================================
    F. LOGIC
@@ -1431,6 +1512,76 @@ function initRateCard(w){
     const body = `Nhãn hàng: ${f.brand.value}\nLiên hệ: ${f.contact.value}\nGói: ${pkg}\nTuỳ chọn thêm: ${addons.join(', ') || 'Không'}\nƯớc tính: ${total.textContent}\nThời gian: ${f.date.value}\nSản phẩm: ${f.product.value}\n\nGhi chú:\n${f.note.value}`;
     location.href = `mailto:${ME.email}?subject=${encodeURIComponent('[Booking] ' + f.brand.value + ' · ' + pkg)}&body=${encodeURIComponent(body)}`;
   };
+}
+
+// ---------- Blog cá nhân: danh sách bài <-> trang đọc bài ----------
+function initBlog(w){
+  const root = w.querySelector('.bl-root'), body = w.querySelector('.body');
+  const posts = [...BLOG].sort((a, b) => b.date.localeCompare(a.date));
+  const tags = [...new Set(posts.flatMap(p => p.tags || []))];
+  const fmt = d => d.split('-').reverse().join('/');
+  const plain = h => h.replace(/<[^>]+>/g, '');
+  const excerpt = p => p.excerpt || plain(p.body.find(b => b.p)?.p || '');
+  const mins = p => Math.max(1, Math.round(plain(p.body.map(b => b.p || b.h || b.quote || '').join(' ')).split(/\s+/).length / 200));
+  const hasVideo = p => p.body.some(b => b.video || b.youtube || b.tiktok);
+  const tagHtml = p => (p.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+  const cap = b => b.cap ? `<figcaption>${b.cap}</figcaption>` : '';
+  const block = b =>
+    b.p ? `<p>${b.p}</p>` :
+    b.h ? `<h3>${b.h}</h3>` :
+    b.quote ? `<blockquote>${b.quote}</blockquote>` :
+    b.img ? `<figure><img src="${b.img}" alt="${b.cap || ''}" loading="lazy">${cap(b)}</figure>` :
+    b.gallery ? `<figure><div class="bl-gal">${b.gallery.map(src => `<img src="${src}" alt="" loading="lazy">`).join('')}</div>${cap(b)}</figure>` :
+    b.video ? `<figure><video src="${b.video}" ${b.poster ? `poster="${b.poster}"` : ''} controls playsinline preload="metadata"></video>${cap(b)}</figure>` :
+    b.youtube ? `<figure><iframe src="https://www.youtube-nocookie.com/embed/${b.youtube}" title="YouTube" allow="encrypted-media; picture-in-picture; fullscreen" loading="lazy"></iframe>${cap(b)}</figure>` :
+    b.tiktok ? `<figure><iframe src="https://www.tiktok.com/player/v1/${b.tiktok}" title="TikTok" allow="encrypted-media; fullscreen" loading="lazy" style="aspect-ratio:9/16;max-width:340px;margin:0 auto"></iframe>${cap(b)}</figure>` : '';
+  const card = (p, big) => `
+    <button class="bl-card ${big ? 'big' : ''}" type="button" data-id="${p.id}">
+      <div class="bl-img">${p.cover ? `<img src="${p.cover}" alt="" loading="lazy">` : '<div class="bl-noimg">✎</div>'}${hasVideo(p) ? '<span class="bl-play">▶ Video</span>' : ''}</div>
+      <div class="bl-info">
+        ${big ? '<span class="bl-new">✦ Bài mới nhất</span>' : ''}
+        <div class="bl-meta"><span class="bl-date">${fmt(p.date)}</span>${tagHtml(p)}</div>
+        <h3>${p.title}</h3><p>${excerpt(p)}</p><span class="bl-more">Đọc tiếp →</span>
+      </div>
+    </button>`;
+  let cat = 'all';
+  const list = () => {
+    const shown = posts.filter(p => cat === 'all' || p.tags?.includes(cat));
+    root.innerHTML = `
+      <h2><span class="hl">Blog</span> cá nhân của <span class="blue">Tín</span></h2>
+      <p style="color:var(--muted);margin:0 0 12px">Những việc mình đã làm, kể lại bằng chữ, ảnh và video.</p>
+      <div class="chips">${['all', ...tags].map(t => `<button class="chip ${t === cat ? 'on' : ''}" data-cat="${t}">${t === 'all' ? 'Tất cả' : t}</button>`).join('')}<span class="count">${shown.length} bài viết</span></div>
+      ${shown.length ? card(shown[0], true) + `<div class="bl-grid">${shown.slice(1).map(p => card(p)).join('')}</div>` : '<p>Chưa có bài nào ✦</p>'}`;
+    root.querySelectorAll('.chip').forEach(c => c.onclick = () => { cat = c.dataset.cat; list(); });
+    root.querySelectorAll('.bl-card').forEach(c => c.onclick = () => read(c.dataset.id));
+  };
+  const read = id => {
+    const i = posts.findIndex(p => p.id === id), p = posts[i];
+    const newer = posts[i - 1], older = posts[i + 1];
+    const coverUsed = p.body.some(b => b.img === p.cover || b.poster === p.cover || b.gallery?.includes(p.cover));
+    root.innerHTML = `
+      <article class="bl-post">
+        <button class="btn ghost bl-back" type="button">← Tất cả bài viết</button>
+        ${p.cover && !coverUsed ? `<div class="bl-hero"><img src="${p.cover}" alt=""></div>` : ''}
+        <div class="bl-meta"><span class="bl-date">${fmt(p.date)}</span><span class="bl-read">· ${mins(p)} phút đọc</span>${tagHtml(p)}</div>
+        <h2>${p.title}</h2>
+        <div class="bl-content">${p.body.map(block).join('')}</div>
+        <div class="bl-nav">
+          ${newer ? `<button class="bl-navcard prev" type="button" data-id="${newer.id}"><small>← Bài mới hơn</small><b>${newer.title}</b></button>` : ''}
+          ${older ? `<button class="bl-navcard next" type="button" data-id="${older.id}"><small>Bài cũ hơn →</small><b>${older.title}</b></button>` : ''}
+        </div>
+        <div class="btn-row"><a class="btn" href="${ME.threads}" target="_blank">Theo dõi Tín trên Threads ↗</a></div>
+      </article>`;
+    root.querySelector('.bl-back').onclick = () => { list(); body.scrollTop = 0; };
+    root.querySelectorAll('.bl-navcard').forEach(b => b.onclick = () => read(b.dataset.id));
+    root.querySelectorAll('.bl-gal img').forEach(img => img.onclick = () => {
+      const lb = document.createElement('div'); lb.className = 'lightbox';
+      lb.innerHTML = `<div><img src="${img.src}" alt=""></div>`; lb.onclick = () => lb.remove();
+      document.body.appendChild(lb);
+    });
+    body.scrollTop = 0;
+  };
+  list();
 }
 
 // ---------- Đồng hồ: cập nhật đúng lúc sang phút mới ----------
@@ -1570,40 +1721,33 @@ ZONES.forEach(zn => {
   }, 2600);
 })();
 
-// sticker "buy me a coffee": kéo đi đâu cũng được, bấm (không kéo) thì mở cửa sổ mời cà phê
-draggable($(".coffee-sticker"), undefined, {onDrag: () => $(".coffee-sticker").dataset.moved = 1});
-draggable($(".oracle-sticker"), undefined, {onDrag: () => $(".oracle-sticker").dataset.moved = 1});
 
-// Bố cục lúc mới vào: 3 khu xếp dọc bên phải (Booking, Công việc, Shop), 2 sticker ở góc phải dưới cùng
-// (cà phê trái, vị thần phải), pegboard "Giới thiệu nhanh" ngay bên trái cột 3 khu. Màn hình thấp: khu Công việc sang góc trái dưới, sticker theo sau;
-// Thứ gì người xem đã tự kéo thì để yên.
+// Bố cục lúc mới vào: 4 khu xếp dọc bên phải (Booking, Công việc, Shop, Tiện ích), pegboard "Giới thiệu nhanh" ngay bên trái cột.
+// Màn hình thấp: khu Công việc sang góc trái dưới (Tiện ích theo sau nếu cột vẫn chưa đủ chỗ). Thứ gì người xem đã tự kéo thì để yên.
 const deskLayout = () => {
   if (stacked.matches) return;
   const desk = $('#desktop'), W = desk.clientWidth, H = desk.clientHeight, floor = H - 84;   // chừa chỗ cho dock
-  const box = el => ({l: el.offsetLeft, t: el.offsetTop, r: el.offsetLeft + el.offsetWidth, b: el.offsetTop + el.offsetHeight});
   const set = (el, x, y) => { if (!el.dataset.moved) Object.assign(el.style, {left: x + 'px', top: y + 'px', right: 'auto', bottom: 'auto'}); };
-  const [book, work, shop] = ['book', 'work', 'shop'].map(id => zonesEl.querySelector('.zone.' + id));
-  const oracle = $('.oracle-sticker'), coffee = $('.coffee-sticker');
+  const [book, work, shop, util] = ['book', 'work', 'shop', 'util'].map(id => zonesEl.querySelector('.zone.' + id));
   const colX = W - 16 - book.offsetWidth;
-  const col = [book, work, shop];
-  const tall = 16 + col.reduce((n, el) => n + el.offsetHeight + 30, 0) <= floor;
+  const fits = list => 16 + list.reduce((n, el) => n + el.offsetHeight + 30, 0) - 30 <= floor;
+  const col = [[book, work, shop, util], [book, shop, util], [book, shop]].find(fits) || [book, shop];
   let y = 16;
-  (tall ? col : [book, shop]).forEach(el => { set(el, colX, y); y += el.offsetHeight + 30; });
-  if (!tall) set(work, 24, floor - work.offsetHeight);
-  if (y - 20 + Math.max(coffee.offsetHeight, oracle.offsetHeight) + 6 <= floor) {   // sticker góc phải dưới cùng, sát dock
-    set(coffee, colX, floor - coffee.offsetHeight - 6);
-    set(oracle, W - 16 - oracle.offsetWidth, floor - oracle.offsetHeight - 6);
-  } else {                                                   // không đủ chỗ: góc trái phía dưới (cạnh khu Công việc nếu nó ở đó)
-    const wb = box(work), x0 = wb.l < W / 2 ? wb.r + 30 : 40;
-    set(oracle, x0, floor - oracle.offsetHeight - 6);
-    set(coffee, x0 + 140, floor - coffee.offsetHeight - 16);
-  }
+  col.forEach(el => { set(el, colX, y); y += el.offsetHeight + 30; });
+  let x = 24;
+  [work, util].filter(el => !col.includes(el)).forEach(el => { set(el, x, floor - el.offsetHeight); x += el.offsetWidth + 30; });
   // pegboard "Giới thiệu nhanh": cùng cỡ khu Booking, đặt ngay bên trái cột 3 khu;
   // nếu chỗ đó đè lên chữ "portfolio." (màn hình hẹp) thì đặt bên trái chữ như cũ
   const peg = $('#peg'), hb = $('.hero').getBoundingClientRect(), dl = desk.getBoundingClientRect().left;
   peg.style.width = book.offsetWidth + 'px';
   const pegX = colX - 30 - peg.offsetWidth;
   set(peg, pegX > hb.right - dl + 20 ? pegX : Math.max(24, Math.min(hb.left - dl - peg.offsetWidth - 40, W / 2 - 560)), 34);
+  // folder Blog: ngay dưới pegboard; nếu đè lên khu nào ở góc dưới thì xếp cạnh các khu đó
+  const blog = $('#blogFolder');
+  const bx = peg.offsetLeft + (peg.offsetWidth - blog.offsetWidth) / 2, by = peg.offsetTop + peg.offsetHeight + 24;
+  const hit = el => bx < el.offsetLeft + el.offsetWidth && bx + blog.offsetWidth > el.offsetLeft && by < el.offsetTop + el.offsetHeight && by + blog.offsetHeight > el.offsetTop;
+  if (by + blog.offsetHeight <= floor && ![work, util].some(hit)) set(blog, bx, by);
+  else set(blog, x, floor - blog.offsetHeight);
 };
 deskLayout(); addEventListener('resize', deskLayout); document.fonts?.ready.then(deskLayout);
 // pegboard: mỗi món treo đung đưa một nhịp riêng; kéo được như các khu, bấm (không kéo) thì phóng to
@@ -1613,6 +1757,11 @@ pegEl.querySelectorAll('.pg-sway').forEach(el => {
   el.style.setProperty('--sd', (-Math.random() * 6).toFixed(2) + 's');
 });
 draggable(pegEl, pegEl, {enabled: () => !stacked.matches, onDrag: () => pegEl.dataset.moved = 1});
+// folder Blog cá nhân: kéo được, bấm (không kéo) thì mở blog
+const blogEl = $('#blogFolder');
+$('#bfCount').textContent = BLOG.length + ' bài viết';
+draggable(blogEl, blogEl, {enabled: () => !stacked.matches, onDrag: () => blogEl.dataset.moved = 1});
+blogEl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openWin('blog'); } });
 function zoomPeg(){
   if ($('.peg-zoom')) return;
   const from = pegEl.getBoundingClientRect();
@@ -1670,7 +1819,7 @@ function openWin(id){
   w.style.zIndex = ++z;
   if (def.w) w.style.width = `min(${def.w}px, 92vw)`;
   const html = typeof def.html === 'function' ? def.html() : def.html;
-  const tagStyle = zone ? {work:'--c:var(--work)', book:'--c:var(--book)', shop:'--c:var(--shop);--on:var(--ink)'}[zone.id] : '';
+  const tagStyle = zone ? {work:'--c:var(--work)', book:'--c:var(--book)', shop:'--c:var(--shop);--on:var(--ink)', util:'--c:#3b1d8f'}[zone.id] : '';
   w.innerHTML = `<div class="titlebar"><div class="lights"><span class="c" title="Đóng"></span><span class="m" title="Đóng"></span><span class="z" title="Phóng to"></span></div><div class="t">${def.title}</div>${zone ? `<span class="zone-tag" style="${tagStyle}">${zone.title.replace(/^\S+\s/,'')}</span>` : ''}</div><div class="body">${html}</div>`;
   $('#desktop').appendChild(w);
   opened[id] = w;
@@ -2415,7 +2564,7 @@ const MARKET = {
   addEventListener('pointerdown', first, true); addEventListener('keydown', first, true);
 })();
 
-// link trực tiếp: ?open=shop | ?open=booking | ?open=work
+// link trực tiếp: ?open=shop | ?open=booking | ?open=work | ?open=blog
 const q = new URLSearchParams(location.search).get('open');
 if (q) openWin(q);
 </script>
